@@ -15,16 +15,24 @@ import android.widget.FrameLayout;
 import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
+import vn.tale.architecture.App;
+import vn.tale.architecture.AppComponent;
 import vn.tale.architecture.R;
+import vn.tale.architecture.common.AppRouter;
 
 public class ReposActivity extends AppCompatActivity {
 
   private static final String TAG = "ReposActivity";
   private FrameLayout container;
 
+  private AppRouter appRouter;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    injectDependencies();
+
     setContentView(R.layout.activity_repos);
 
     container = (FrameLayout) this.findViewById(R.id.container);
@@ -59,9 +67,23 @@ public class ReposActivity extends AppCompatActivity {
     });
   }
 
+  private void injectDependencies() {
+    final AppComponent appComponent = App.get(this).getAppComponent();
+    appRouter = appComponent.provideAppRouter();
+  }
+
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.repos_menu, menu);
     return super.onCreateOptionsMenu(menu);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_login:
+        startActivity(appRouter.loginIntent(this));
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   private void showContent(View view) {
