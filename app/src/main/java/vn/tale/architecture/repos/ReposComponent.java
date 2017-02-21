@@ -2,6 +2,7 @@ package vn.tale.architecture.repos;
 
 import vn.tale.architecture.AppComponent;
 import vn.tale.architecture.repos.menu.bottom.BottomMenuPresenter;
+import vn.tale.architecture.repos.menu.top.TopMenuPresenter;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
@@ -17,5 +18,9 @@ public class ReposComponent {
 
   BottomMenuPresenter provideBottomMenuPresenter() {
     return new BottomMenuPresenter(appComponent.provideUserModel());
+  }
+
+  TopMenuPresenter provideTopMenuPresenter() {
+    return new TopMenuPresenter(appComponent.provideUserModel());
   }
 }
