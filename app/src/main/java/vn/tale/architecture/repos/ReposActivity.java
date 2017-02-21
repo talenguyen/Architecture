@@ -19,6 +19,10 @@ import vn.tale.architecture.App;
 import vn.tale.architecture.AppComponent;
 import vn.tale.architecture.R;
 import vn.tale.architecture.common.AppRouter;
+import vn.tale.architecture.repos.menu.bottom.BottomMenuPresenter;
+import vn.tale.architecture.repos.menu.bottom.BottomMenuView;
+import vn.tale.architecture.repos.menu.top.TopMenuPresenter;
+import vn.tale.architecture.repos.menu.top.TopMenuView;
 
 public class ReposActivity extends AppCompatActivity {
 
@@ -26,6 +30,10 @@ public class ReposActivity extends AppCompatActivity {
   private FrameLayout container;
 
   private AppRouter appRouter;
+  private BottomMenuPresenter bottomMenuPresenter;
+  private BottomNavigationView bottomNavigationView;
+  private TopMenuPresenter topMenuPresenter;
+  private TopMenuView topMenuView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +52,17 @@ public class ReposActivity extends AppCompatActivity {
       }
     });
 
-    final BottomNavigationView bottomNavigationView =
-        (BottomNavigationView) this.findViewById(R.id.btNavigation);
-
-    final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_my_repos);
+    bottomNavigationView = (BottomNavigationView) this.findViewById(R.id.btNavigation);
 
     bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView
         .OnNavigationItemSelectedListener() {
       @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
           case R.id.action_public_repos:
-            Log.d(TAG, "onNavigationItemSelected: ");
             showContent(recyclerView("public"));
             return true;
           case R.id.action_my_repos:
             showContent(recyclerView("my"));
-            Log.d(TAG, "onNavigationItemSelected: MyRepos");
             return true;
         }
         return false;
@@ -68,14 +70,35 @@ public class ReposActivity extends AppCompatActivity {
     });
   }
 
+  @Override protected void onStart() {
+    super.onStart();
+    bottomMenuPresenter.attachView(new BottomMenuView(bottomNavigationView));
+    if (topMenuView != null) {
+      topMenuPresenter.attachView(topMenuView);
+    }
+  }
+
+  @Override protected void onStop() {
+    bottomMenuPresenter.detachView();
+    topMenuPresenter.detachView();
+    super.onStop();
+  }
+
   private void injectDependencies() {
     final AppComponent appComponent = App.get(this).getAppComponent();
+    final ReposComponent reposComponent = new ReposComponent(appComponent);
     appRouter = appComponent.provideAppRouter();
+    bottomMenuPresenter = reposComponent.provideBottomMenuPresenter();
+    topMenuPresenter = reposComponent.provideTopMenuPresenter();
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.repos_menu, menu);
-    return super.onCreateOptionsMenu(menu);
+    if (topMenuView == null) {
+      topMenuView = new TopMenuView(menu);
+      topMenuPresenter.attachView(topMenuView);
+    }
+    return true;
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {

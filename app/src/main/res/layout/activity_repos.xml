@@ -14,6 +14,7 @@
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_above="@+id/btNavigation"
+      android:layout_alignWithParentIfMissing="true"
       android:layout_alignParentTop="true"/>
 
   <android.support.design.widget.BottomNavigationView
