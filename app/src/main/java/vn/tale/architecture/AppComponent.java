@@ -2,7 +2,7 @@ package vn.tale.architecture;
 
 import vn.tale.architecture.model.manager.RepoModel;
 import vn.tale.architecture.model.manager.UserModel;
-import vn.tale.architecture.utils.EmailValidator;
+import vn.tale.architecture.common.EmailValidator;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
