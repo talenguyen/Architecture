@@ -6,6 +6,7 @@
     android:id="@+id/activity_repos"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context="vn.tale.architecture.repos.ReposActivity">
 
   <FrameLayout
@@ -23,5 +24,5 @@
       app:itemBackground="@color/colorPrimary"
       app:itemIconTint="@color/white"
       app:itemTextColor="@color/white"
-      app:menu="@menu/repos_menu"/>
+      app:menu="@menu/repos_bottom_menu"/>
 </RelativeLayout>

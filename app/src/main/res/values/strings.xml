@@ -5,4 +5,5 @@
   <string name="sign_in">Sign In</string>
   <string name="public_repos">Public Repos</string>
   <string name="my_repos">My Repos</string>
+  <string name="login">Login</string>
 </resources>
