@@ -1,3 +1,8 @@
 <resources>
   <string name="app_name">Architecture</string>
+  <string name="e_mail">e-mail</string>
+  <string name="password">Password</string>
+  <string name="sign_in">Sign In</string>
+  <string name="public_repos">Public Repos</string>
+  <string name="my_repos">My Repos</string>
 </resources>

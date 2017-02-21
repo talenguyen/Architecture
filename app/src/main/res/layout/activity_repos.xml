@@ -3,15 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity_repos"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="vn.tale.architecture.MainActivity">
+    tools:context="vn.tale.architecture.repos.ReposActivity">
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Hello World!"/>
+  <FrameLayout
+      android:id="@+id/container"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_above="@+id/btNavigation"
+      android:layout_alignParentTop="true"/>
 
   <android.support.design.widget.BottomNavigationView
       android:id="@+id/btNavigation"
