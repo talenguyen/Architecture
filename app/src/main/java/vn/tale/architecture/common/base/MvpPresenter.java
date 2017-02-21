@@ -21,7 +21,10 @@ public abstract class MvpPresenter<MvpView> {
   }
 
   public final void detachView() {
-    viewReference.clear();
+    if (viewReference != null) {
+      viewReference.clear();
+      viewReference = null;
+    }
     if (compositeDisposable != null) {
       compositeDisposable.clear();
       compositeDisposable = null;
