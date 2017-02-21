@@ -1,8 +1,7 @@
 package vn.tale.architecture.repos.menu.bottom;
 
 import android.support.design.widget.BottomNavigationView;
-import android.view.MenuItem;
-import vn.tale.architecture.R;
+import android.view.View;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
@@ -10,17 +9,17 @@ import vn.tale.architecture.R;
 
 public class BottomMenuView {
 
-  private final MenuItem myRepoItem;
+  private final BottomNavigationView bottomNavigationView;
 
   public BottomMenuView(BottomNavigationView bottomNavigationView) {
-    myRepoItem = bottomNavigationView.getMenu().findItem(R.id.action_my_repos);
+    this.bottomNavigationView = bottomNavigationView;
   }
 
   public void hideUserRepos() {
-    myRepoItem.setVisible(false);
+    bottomNavigationView.setVisibility(View.GONE);
   }
 
   public void showUserRepos() {
-    myRepoItem.setVisible(true);
+    bottomNavigationView.setVisibility(View.VISIBLE);
   }
 }
