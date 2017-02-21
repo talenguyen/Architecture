@@ -22,7 +22,7 @@
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
       app:itemBackground="@color/colorPrimary"
-      app:itemIconTint="@color/white"
-      app:itemTextColor="@color/white"
+      app:itemIconTint="@drawable/nav_item_color_state"
+      app:itemTextColor="@drawable/nav_item_color_state"
       app:menu="@menu/repos_bottom_menu"/>
 </RelativeLayout>

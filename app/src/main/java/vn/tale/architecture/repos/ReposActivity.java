@@ -52,6 +52,7 @@ public class ReposActivity extends AppCompatActivity {
     bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView
         .OnNavigationItemSelectedListener() {
       @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         switch (item.getItemId()) {
           case R.id.action_public_repos:
             Log.d(TAG, "onNavigationItemSelected: ");
