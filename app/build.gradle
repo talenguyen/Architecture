@@ -17,6 +17,9 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+  packagingOptions {
+    exclude 'META-INF/rxjava.properties'
+  }
 }
 
 dependencies {
@@ -35,6 +38,10 @@ dependencies {
   compile 'vn.tiki.noadapter2:noadapter:2.0.1-SNAPSHOT'
 
   compile 'com.squareup.coordinators:coordinators:0.2'
+  compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+
+  compile 'com.jakewharton:butterknife:8.5.1'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
   testCompile 'junit:junit:4.12'
   testCompile "org.mockito:mockito-core:2.7.0"
