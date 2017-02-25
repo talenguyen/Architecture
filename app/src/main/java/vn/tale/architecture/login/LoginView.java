@@ -6,7 +6,7 @@ import io.reactivex.Observable;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public interface LoginView {
+interface LoginView {
 
   Observable<CharSequence> emailChanges();
 

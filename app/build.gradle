@@ -38,7 +38,7 @@ dependencies {
   compile 'vn.tiki.noadapter2:noadapter:2.0.1-SNAPSHOT'
 
   compile 'com.squareup.coordinators:coordinators:0.2'
-  compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+  compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0-SNAPSHOT'
 
   compile 'com.jakewharton:butterknife:8.5.1'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'

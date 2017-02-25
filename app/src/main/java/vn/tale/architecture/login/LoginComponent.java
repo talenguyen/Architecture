@@ -6,11 +6,15 @@ import vn.tale.architecture.AppComponent;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public class LoginComponent {
+class LoginComponent {
 
   private final AppComponent appComponent;
 
-  public LoginComponent(AppComponent appComponent) {
+  LoginComponent(AppComponent appComponent) {
     this.appComponent = appComponent;
+  }
+
+  LoginPresenter provideLoginPresenter() {
+    return new LoginPresenter(appComponent.provideUserModel(), appComponent.emailValidator());
   }
 }

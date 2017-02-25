@@ -15,11 +15,11 @@ import vn.tale.architecture.model.manager.UserModel;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public class LoginPresenter extends MvpPresenter<LoginView> {
+class LoginPresenter extends MvpPresenter<LoginView> {
   private final UserModel userModel;
   private final EmailValidator emailValidator;
 
-  public LoginPresenter(UserModel userModel, EmailValidator emailValidator) {
+  LoginPresenter(UserModel userModel, EmailValidator emailValidator) {
     this.userModel = userModel;
     this.emailValidator = emailValidator;
   }
