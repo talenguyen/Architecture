@@ -6,6 +6,7 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import org.junit.Test;
 import vn.tale.architecture.common.EmailValidator;
+import vn.tale.architecture.common.SchedulerSingleTransformer;
 import vn.tale.architecture.model.User;
 import vn.tale.architecture.model.exeption.UserNotFoundException;
 import vn.tale.architecture.model.manager.UserModel;
@@ -49,8 +50,8 @@ public class LoginPresenterRobotTest {
   @Test
   public void should_show_error_when_login_fail() throws Exception {
     loginScreen()
-        .inputEmail(VALID_EMAIL)
-        .inputPassword(INVALID_PASSWORD)
+        .inputEmail(INVALID_EMAIL)
+        .inputPassword(VALID_PASSWORD)
         .submit()
         .assertLoginView()
         .loginFailMessageShowed();
@@ -85,7 +86,10 @@ public class LoginPresenterRobotTest {
       emailStream = BehaviorSubject.<CharSequence>createDefault("");
       passwordStream = BehaviorSubject.<CharSequence>createDefault("");
       signInClick = PublishSubject.create();
-      tested = new LoginPresenter(mockedUserModel, new EmailValidator());
+      tested = new LoginPresenter(
+          mockedUserModel,
+          new EmailValidator(),
+          SchedulerSingleTransformer.TEST);
 
       when(mockedLoginView.emailChanges()).thenReturn(emailStream);
       when(mockedLoginView.passwordChanges()).thenReturn(passwordStream);

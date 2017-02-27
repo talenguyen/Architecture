@@ -1,12 +1,13 @@
 package vn.tale.architecture.login;
 
+import android.support.annotation.VisibleForTesting;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Single;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import vn.tale.architecture.common.EmailValidator;
+import vn.tale.architecture.common.SchedulerSingleTransformer;
 import vn.tale.architecture.common.base.MvpPresenter;
 import vn.tale.architecture.model.User;
 import vn.tale.architecture.model.manager.UserModel;
@@ -18,10 +19,19 @@ import vn.tale.architecture.model.manager.UserModel;
 class LoginPresenter extends MvpPresenter<LoginView> {
   private final UserModel userModel;
   private final EmailValidator emailValidator;
+  private SchedulerSingleTransformer schedulerSingleTransformer;
 
   LoginPresenter(UserModel userModel, EmailValidator emailValidator) {
     this.userModel = userModel;
     this.emailValidator = emailValidator;
+    this.schedulerSingleTransformer = SchedulerSingleTransformer.IO;
+  }
+
+  @VisibleForTesting LoginPresenter(UserModel userModel, EmailValidator emailValidator,
+      SchedulerSingleTransformer schedulerSingleTransformer) {
+    this.userModel = userModel;
+    this.emailValidator = emailValidator;
+    this.schedulerSingleTransformer = schedulerSingleTransformer;
   }
 
   @Override protected void onViewAttached() {
@@ -71,12 +81,16 @@ class LoginPresenter extends MvpPresenter<LoginView> {
                 });
           }
         })
-        .flatMapSingle(new Function<String[], Single<User>>() {
-          @Override public Single<User> apply(String[] credential)
-              throws Exception {
-            return userModel.login(credential[0], credential[1]);
+        .subscribe(new Consumer<String[]>() {
+          @Override public void accept(String[] credential) throws Exception {
+            signIn(credential[0], credential[1]);
           }
-        })
+        }));
+  }
+
+  private void signIn(String email, String password) {
+    disposeOnDetach(userModel.login(email, password)
+        .compose(schedulerSingleTransformer.<User>transformer())
         .subscribe(new Consumer<User>() {
           @Override public void accept(User user) throws Exception {
             if (getView() != null) {
@@ -86,6 +100,7 @@ class LoginPresenter extends MvpPresenter<LoginView> {
           }
         }, new Consumer<Throwable>() {
           @Override public void accept(Throwable throwable) throws Exception {
+            throwable.printStackTrace();
             if (getView() != null) {
               getView().showLoginFailMessage();
             }
