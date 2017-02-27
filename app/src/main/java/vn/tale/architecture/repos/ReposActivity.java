@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,14 +18,16 @@ import vn.tale.architecture.App;
 import vn.tale.architecture.AppComponent;
 import vn.tale.architecture.R;
 import vn.tale.architecture.common.AppRouter;
+import vn.tale.architecture.model.manager.UserModel;
 import vn.tale.architecture.repos.menu.bottom.BottomMenuPresenter;
 import vn.tale.architecture.repos.menu.bottom.BottomMenuView;
 import vn.tale.architecture.repos.menu.top.TopMenuPresenter;
 import vn.tale.architecture.repos.menu.top.TopMenuView;
+import vn.tale.architecture.repos.my.MyReposCoordinator;
+import vn.tale.architecture.repos.pub.PublicReposCoordinator;
 
 public class ReposActivity extends AppCompatActivity {
 
-  private static final String TAG = "ReposActivity";
   private FrameLayout container;
 
   private AppRouter appRouter;
@@ -34,6 +35,8 @@ public class ReposActivity extends AppCompatActivity {
   private BottomNavigationView bottomNavigationView;
   private TopMenuPresenter topMenuPresenter;
   private TopMenuView topMenuView;
+  private ReposComponent reposComponent;
+  private UserModel userModel;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +50,12 @@ public class ReposActivity extends AppCompatActivity {
 
     Coordinators.installBinder(container, new CoordinatorProvider() {
       @Nullable @Override public Coordinator provideCoordinator(View view) {
-        Log.d(TAG, "provideCoordinator: " + view.getTag());
-        return new RepoListCoordinator();
+        final Object tag = view.getTag();
+        if ("my".equals(tag)) {
+          return new MyReposCoordinator(reposComponent);
+        } else {
+          return new PublicReposCoordinator(reposComponent);
+        }
       }
     });
 
@@ -68,6 +75,7 @@ public class ReposActivity extends AppCompatActivity {
         return false;
       }
     });
+    showContent(recyclerView("public"));
   }
 
   @Override protected void onStart() {
@@ -86,8 +94,9 @@ public class ReposActivity extends AppCompatActivity {
 
   private void injectDependencies() {
     final AppComponent appComponent = App.get(this).getAppComponent();
-    final ReposComponent reposComponent = new ReposComponent(appComponent);
+    reposComponent = new ReposComponent(appComponent);
     appRouter = appComponent.provideAppRouter();
+    userModel = appComponent.provideUserModel();
     bottomMenuPresenter = reposComponent.provideBottomMenuPresenter();
     topMenuPresenter = reposComponent.provideTopMenuPresenter();
   }
@@ -105,6 +114,9 @@ public class ReposActivity extends AppCompatActivity {
     switch (item.getItemId()) {
       case R.id.action_login:
         startActivity(appRouter.loginIntent(this));
+        return true;
+      case R.id.action_logout:
+        userModel.logout().subscribe();
         return true;
     }
     return super.onOptionsItemSelected(item);
