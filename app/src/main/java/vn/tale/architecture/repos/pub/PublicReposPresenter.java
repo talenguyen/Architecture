@@ -1,11 +1,12 @@
 package vn.tale.architecture.repos.pub;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import java.util.List;
-import vn.tale.architecture.common.SchedulerObservableTransformer;
+import vn.tale.architecture.common.SchedulerSingleTransformer;
 import vn.tale.architecture.common.base.MvpPresenter;
 import vn.tale.architecture.model.Repo;
 import vn.tale.architecture.model.manager.RepoModel;
@@ -18,16 +19,17 @@ public class PublicReposPresenter extends MvpPresenter<PublicReposView> {
 
   private static final String TAG = "ReposPresenter";
   private final RepoModel repoModel;
-  private final SchedulerObservableTransformer schedulerObservableTransformer;
+  private final SchedulerSingleTransformer schedulerSingleTransformer;
 
   public PublicReposPresenter(RepoModel repoModel) {
     this.repoModel = repoModel;
-    this.schedulerObservableTransformer = SchedulerObservableTransformer.IO;
+    this.schedulerSingleTransformer = SchedulerSingleTransformer.IO;
   }
 
-  public PublicReposPresenter(RepoModel repoModel, SchedulerObservableTransformer schedulerObservableTransformer) {
+  @VisibleForTesting PublicReposPresenter(RepoModel repoModel,
+      SchedulerSingleTransformer schedulerSingleTransformer) {
     this.repoModel = repoModel;
-    this.schedulerObservableTransformer = schedulerObservableTransformer;
+    this.schedulerSingleTransformer = schedulerSingleTransformer;
   }
 
   @Override protected void onViewAttached() {
@@ -46,6 +48,7 @@ public class PublicReposPresenter extends MvpPresenter<PublicReposView> {
     getView().showLoading();
     disposeOnDetach(
         repoModel.getPublicRepos()
+            .compose(schedulerSingleTransformer.<List<Repo>>transformer())
             .subscribe(new Consumer<List<Repo>>() {
               @Override public void accept(List<Repo> repos) throws Exception {
                 getView().showRepos(repos);

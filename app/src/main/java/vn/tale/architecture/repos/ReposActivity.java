@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
+import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.AppComponent;
 import vn.tale.architecture.R;
@@ -28,15 +29,14 @@ import vn.tale.architecture.repos.pub.PublicReposCoordinator;
 
 public class ReposActivity extends AppCompatActivity {
 
+  @Inject AppRouter appRouter;
+  @Inject BottomMenuPresenter bottomMenuPresenter;
+  @Inject TopMenuPresenter topMenuPresenter;
+  @Inject UserModel userModel;
   private FrameLayout container;
-
-  private AppRouter appRouter;
-  private BottomMenuPresenter bottomMenuPresenter;
   private BottomNavigationView bottomNavigationView;
-  private TopMenuPresenter topMenuPresenter;
   private TopMenuView topMenuView;
   private ReposComponent reposComponent;
-  private UserModel userModel;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -92,13 +92,17 @@ public class ReposActivity extends AppCompatActivity {
     super.onStop();
   }
 
+  @Override public Object onRetainCustomNonConfigurationInstance() {
+    return reposComponent;
+  }
+
   private void injectDependencies() {
-    final AppComponent appComponent = App.get(this).getAppComponent();
-    reposComponent = new ReposComponent(appComponent);
-    appRouter = appComponent.provideAppRouter();
-    userModel = appComponent.provideUserModel();
-    bottomMenuPresenter = reposComponent.provideBottomMenuPresenter();
-    topMenuPresenter = reposComponent.provideTopMenuPresenter();
+    reposComponent = (ReposComponent) getLastNonConfigurationInstance();
+    if (reposComponent == null) {
+      final AppComponent appComponent = App.get(this).getAppComponent();
+      reposComponent = appComponent.plus(new ReposModule());
+    }
+    reposComponent.inject(this);
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {

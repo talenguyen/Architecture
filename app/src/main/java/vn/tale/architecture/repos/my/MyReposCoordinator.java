@@ -5,6 +5,7 @@ import android.view.View;
 import com.squareup.coordinators.Coordinator;
 import io.reactivex.Observable;
 import java.util.List;
+import javax.inject.Inject;
 import vn.tale.architecture.model.Repo;
 import vn.tale.architecture.repos.RepoListDelegate;
 import vn.tale.architecture.repos.ReposComponent;
@@ -15,12 +16,11 @@ import vn.tale.architecture.repos.ReposComponent;
 
 public class MyReposCoordinator extends Coordinator implements MyReposView {
 
+  @Inject MyReposPresenter presenter;
   private RepoListDelegate repoListDelegate;
-  private ReposComponent reposComponent;
-  private MyReposPresenter presenter;
 
   public MyReposCoordinator(ReposComponent reposComponent) {
-    this.reposComponent = reposComponent;
+    reposComponent.inject(this);
   }
 
   @Override public void attach(View view) {
@@ -33,7 +33,6 @@ public class MyReposCoordinator extends Coordinator implements MyReposView {
 
   private void injectDependencies(RecyclerView recyclerView) {
     repoListDelegate = new RepoListDelegate(recyclerView);
-    presenter = reposComponent.provideMyReposPresenter();
   }
 
   @Override public Observable<Object> loadRepos() {

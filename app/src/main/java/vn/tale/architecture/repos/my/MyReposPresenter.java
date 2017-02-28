@@ -1,7 +1,6 @@
 package vn.tale.architecture.repos.my;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -26,13 +25,7 @@ public class MyReposPresenter extends MvpPresenter<MyReposView> {
   private final UserModel userModel;
   private final SchedulerObservableTransformer schedulerObservableTransformer;
 
-  public MyReposPresenter(UserModel userModel, RepoModel repoModel) {
-    this.userModel = userModel;
-    this.repoModel = repoModel;
-    this.schedulerObservableTransformer = SchedulerObservableTransformer.IO;
-  }
-
-  @VisibleForTesting MyReposPresenter(UserModel userModel, RepoModel repoModel,
+  public MyReposPresenter(UserModel userModel, RepoModel repoModel,
       SchedulerObservableTransformer schedulerObservableTransformer) {
     this.userModel = userModel;
     this.repoModel = repoModel;

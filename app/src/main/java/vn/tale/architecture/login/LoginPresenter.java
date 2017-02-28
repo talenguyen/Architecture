@@ -1,6 +1,5 @@
 package vn.tale.architecture.login;
 
-import android.support.annotation.VisibleForTesting;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.BiFunction;
@@ -21,13 +20,7 @@ class LoginPresenter extends MvpPresenter<LoginView> {
   private final EmailValidator emailValidator;
   private SchedulerSingleTransformer schedulerSingleTransformer;
 
-  LoginPresenter(UserModel userModel, EmailValidator emailValidator) {
-    this.userModel = userModel;
-    this.emailValidator = emailValidator;
-    this.schedulerSingleTransformer = SchedulerSingleTransformer.IO;
-  }
-
-  @VisibleForTesting LoginPresenter(UserModel userModel, EmailValidator emailValidator,
+  LoginPresenter(UserModel userModel, EmailValidator emailValidator,
       SchedulerSingleTransformer schedulerSingleTransformer) {
     this.userModel = userModel;
     this.emailValidator = emailValidator;
@@ -100,7 +93,6 @@ class LoginPresenter extends MvpPresenter<LoginView> {
           }
         }, new Consumer<Throwable>() {
           @Override public void accept(Throwable throwable) throws Exception {
-            throwable.printStackTrace();
             if (getView() != null) {
               getView().showLoginFailMessage();
             }

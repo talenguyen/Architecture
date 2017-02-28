@@ -11,6 +11,7 @@ import butterknife.BindView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import io.reactivex.Observable;
+import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.AppComponent;
 import vn.tale.architecture.R;
@@ -27,8 +28,10 @@ public class LoginActivity extends BaseActivity implements LoginView {
   @BindView(R.id.etPassword) TextInputEditText etPassword;
   @BindView(R.id.btSignIn) Button btSignIn;
   @BindString(R.string.email_is_invalid) String textEmailIsInvalid;
+
   @BindString(R.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
-  private LoginPresenter loginPresenter;
+
+  @Inject LoginPresenter loginPresenter;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -89,6 +92,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
   private void injectDependencies() {
     final AppComponent appComponent = App.get(this).getAppComponent();
-    loginPresenter = new LoginComponent(appComponent).provideLoginPresenter();
+    appComponent.plus(new LoginModule()).inject(this);
   }
 }

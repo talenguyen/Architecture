@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import vn.tale.architecture.common.SchedulerObservableTransformer;
+import vn.tale.architecture.common.SchedulerSingleTransformer;
 import vn.tale.architecture.model.Repo;
 import vn.tale.architecture.model.manager.RepoModel;
 
@@ -33,7 +33,7 @@ public class PublicReposPresenterTest {
     mockedRepoModel = mock(RepoModel.class);
     mockedPublicReposView = mock(PublicReposView.class);
     mockedLoadReposAction = PublishSubject.create();
-    tested = new PublicReposPresenter(mockedRepoModel, SchedulerObservableTransformer.TEST);
+    tested = new PublicReposPresenter(mockedRepoModel, SchedulerSingleTransformer.TEST);
 
     mockedRepos = Collections.singletonList(mock(Repo.class));
     when(mockedPublicReposView.loadRepos()).thenReturn(mockedLoadReposAction);
@@ -65,5 +65,4 @@ public class PublicReposPresenterTest {
     verify(mockedPublicReposView).showLoading();
     verify(mockedPublicReposView).showError(mockedError);
   }
-
 }

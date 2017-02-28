@@ -50,8 +50,8 @@ public class LoginPresenterRobotTest {
   @Test
   public void should_show_error_when_login_fail() throws Exception {
     loginScreen()
-        .inputEmail(INVALID_EMAIL)
-        .inputPassword(VALID_PASSWORD)
+        .inputEmail(VALID_EMAIL)
+        .inputPassword(INVALID_PASSWORD)
         .submit()
         .assertLoginView()
         .loginFailMessageShowed();
@@ -96,7 +96,7 @@ public class LoginPresenterRobotTest {
       when(mockedLoginView.signInClick()).thenReturn(signInClick);
       when(mockedUserModel.login(eq(VALID_EMAIL), eq(VALID_PASSWORD)))
           .thenReturn(Single.just(mock(User.class)));
-      when(mockedUserModel.login(eq(INVALID_EMAIL), eq(VALID_PASSWORD)))
+      when(mockedUserModel.login(eq(VALID_EMAIL), eq(INVALID_PASSWORD)))
           .thenReturn(Single.<User>error(new UserNotFoundException("")));
 
       tested.attachView(mockedLoginView);
@@ -121,47 +121,48 @@ public class LoginPresenterRobotTest {
       return new LoginAssertion(mockedLoginView);
     }
 
-    static class LoginAssertion {
+  }
 
-      LoginView mockedLoginView;
+  private static class LoginAssertion {
 
-      LoginAssertion(LoginView mockedLoginView) {
-        this.mockedLoginView = mockedLoginView;
-      }
+    LoginView mockedLoginView;
 
-      LoginAssertion invalidEmailMessageShowed() {
-        verify(mockedLoginView).showInvalidEmailError();
-        return this;
-      }
+    LoginAssertion(LoginView mockedLoginView) {
+      this.mockedLoginView = mockedLoginView;
+    }
 
-      LoginAssertion invalidEmailMessageNotShowed() {
-        verify(mockedLoginView).hideEmailError();
-        return this;
-      }
+    LoginAssertion invalidEmailMessageShowed() {
+      verify(mockedLoginView).showInvalidEmailError();
+      return this;
+    }
 
-      LoginAssertion loginFailMessageShowed() {
-        verify(mockedLoginView).showLoginFailMessage();
-        return this;
-      }
+    LoginAssertion invalidEmailMessageNotShowed() {
+      verify(mockedLoginView).hideEmailError();
+      return this;
+    }
 
-      LoginAssertion loginSuccessMessageShowed() {
-        verify(mockedLoginView).showSuccessMessage();
-        return this;
-      }
+    LoginAssertion loginFailMessageShowed() {
+      verify(mockedLoginView).showLoginFailMessage();
+      return this;
+    }
 
-      LoginAssertion loginButtonEnabled() {
-        verify(mockedLoginView).enableSignInButton();
-        return this;
-      }
+    LoginAssertion loginSuccessMessageShowed() {
+      verify(mockedLoginView).showSuccessMessage();
+      return this;
+    }
 
-      LoginAssertion loginButtonDisabled() {
-        verify(mockedLoginView).disableSignInButton();
-        return this;
-      }
+    LoginAssertion loginButtonEnabled() {
+      verify(mockedLoginView).enableSignInButton();
+      return this;
+    }
 
-      void hidden() {
-        verify(mockedLoginView).hide();
-      }
+    LoginAssertion loginButtonDisabled() {
+      verify(mockedLoginView).disableSignInButton();
+      return this;
+    }
+
+    void hidden() {
+      verify(mockedLoginView).hide();
     }
   }
 }

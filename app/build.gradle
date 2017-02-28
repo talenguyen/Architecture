@@ -9,7 +9,21 @@ android {
     targetSdkVersion 25
     versionCode 1
     versionName "1.0"
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "vn.tale.architecture.MockTestRunner"
+  }
+  signingConfigs {
+    debug {
+      keyAlias 'tale-debug'
+      keyPassword 'JwsJoHw9ziFmJn[K'
+      storePassword 'JwsJoHw9ziFmJn[K'
+      storeFile file('../keystore/debug.jks')
+    }
+    release {
+      keyAlias 'tale-release'
+      keyPassword 'JwsJoHw9ziFmJn[K'
+      storePassword 'JwsJoHw9ziFmJn[K'
+      storeFile file('../keystore/debug.jks')
+    }
   }
   buildTypes {
     release {
@@ -27,8 +41,8 @@ dependencies {
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  compile 'com.android.support:appcompat-v7:25.1.0'
-  compile "com.android.support:design:25.1.0"
+  compile 'com.android.support:appcompat-v7:25.2.0'
+  compile "com.android.support:design:25.2.0"
 
   compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
   // Because RxAndroid releases are few and far between, it is recommended you also
@@ -42,8 +56,16 @@ dependencies {
 
   compile 'com.jakewharton:butterknife:8.5.1'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+  compile 'com.google.dagger:dagger:2.9'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
 
   testCompile 'junit:junit:4.12'
   testCompile "org.mockito:mockito-core:2.7.0"
   testCompile "com.google.truth:truth:0.31"
+
+  androidTestCompile 'com.android.support:support-annotations:25.2.0'
+  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+  androidTestCompile 'com.android.support.test:runner:0.5'
+  androidTestCompile 'org.mockito:mockito-android:2.7.0'
+  androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.9'
 }

@@ -15,11 +15,11 @@ public class BottomMenuView {
     this.bottomNavigationView = bottomNavigationView;
   }
 
-  public void hideUserRepos() {
+  void hideUserRepos() {
     bottomNavigationView.setVisibility(View.GONE);
   }
 
-  public void showUserRepos() {
+  void showUserRepos() {
     bottomNavigationView.setVisibility(View.VISIBLE);
   }
 }

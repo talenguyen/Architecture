@@ -1,20 +1,12 @@
 package vn.tale.architecture.login;
 
-import vn.tale.architecture.AppComponent;
+import dagger.Subcomponent;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
  */
+@Subcomponent(modules = LoginModule.class)
+public interface LoginComponent {
 
-class LoginComponent {
-
-  private final AppComponent appComponent;
-
-  LoginComponent(AppComponent appComponent) {
-    this.appComponent = appComponent;
-  }
-
-  LoginPresenter provideLoginPresenter() {
-    return new LoginPresenter(appComponent.provideUserModel(), appComponent.emailValidator());
-  }
+  void inject(LoginActivity loginActivity);
 }

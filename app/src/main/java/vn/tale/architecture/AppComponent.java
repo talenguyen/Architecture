@@ -1,42 +1,23 @@
 package vn.tale.architecture;
 
-import vn.tale.architecture.common.AppRouter;
-import vn.tale.architecture.common.EmailValidator;
-import vn.tale.architecture.model.manager.RepoModel;
-import vn.tale.architecture.model.manager.UserModel;
+import dagger.Component;
+import javax.inject.Singleton;
+import vn.tale.architecture.login.LoginComponent;
+import vn.tale.architecture.login.LoginModule;
+import vn.tale.architecture.repos.ReposComponent;
+import vn.tale.architecture.repos.ReposModule;
 
 /**
- * Created by Giang Nguyen on 2/21/17.
+ * Created by Giang Nguyen on 2/27/17.
  */
+@Singleton
+@Component(modules = {
+    AppSingletonModule.class,
+    AppModule.class
+})
+public interface AppComponent {
 
-public class AppComponent {
+  ReposComponent plus(ReposModule reposModule);
 
-  private UserModel userModel;
-  private RepoModel repoModel;
-  private AppRouter appRouter;
-
-  public UserModel provideUserModel() {
-    if (userModel == null) {
-      userModel = new UserModel();
-    }
-    return userModel;
-  }
-
-  public RepoModel provideRepoModel() {
-    if (repoModel == null) {
-      repoModel = new RepoModel();
-    }
-    return repoModel;
-  }
-
-  public AppRouter provideAppRouter() {
-    if (appRouter == null) {
-      appRouter = new AppRouter();
-    }
-    return appRouter;
-  }
-
-  public EmailValidator emailValidator() {
-    return new EmailValidator();
-  }
+  LoginComponent plus(LoginModule loginModule);
 }
