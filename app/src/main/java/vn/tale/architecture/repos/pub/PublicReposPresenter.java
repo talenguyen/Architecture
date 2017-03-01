@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import java.util.List;
 import vn.tale.architecture.common.SchedulerSingleTransformer;
@@ -18,18 +19,17 @@ import vn.tale.architecture.model.manager.RepoModel;
 public class PublicReposPresenter extends MvpPresenter<PublicReposView> {
 
   private static final String TAG = "ReposPresenter";
-  private final RepoModel repoModel;
   private final SchedulerSingleTransformer schedulerSingleTransformer;
+  private Single<List<Repo>> publicReposRequest;
 
   public PublicReposPresenter(RepoModel repoModel) {
-    this.repoModel = repoModel;
-    this.schedulerSingleTransformer = SchedulerSingleTransformer.IO;
+    this(repoModel, SchedulerSingleTransformer.IO);
   }
 
   @VisibleForTesting PublicReposPresenter(RepoModel repoModel,
       SchedulerSingleTransformer schedulerSingleTransformer) {
-    this.repoModel = repoModel;
     this.schedulerSingleTransformer = schedulerSingleTransformer;
+    publicReposRequest = repoModel.getPublicRepos().cache();
   }
 
   @Override protected void onViewAttached() {
@@ -45,16 +45,19 @@ public class PublicReposPresenter extends MvpPresenter<PublicReposView> {
   }
 
   private void loadRepos() {
+    Log.d(TAG, "loadRepos: " + publicReposRequest);
     getView().showLoading();
     disposeOnDetach(
-        repoModel.getPublicRepos()
+        publicReposRequest
             .compose(schedulerSingleTransformer.<List<Repo>>transformer())
             .subscribe(new Consumer<List<Repo>>() {
               @Override public void accept(List<Repo> repos) throws Exception {
+                Log.d(TAG, "accept() called with: repos = [" + repos + "]");
                 getView().showRepos(repos);
               }
             }, new Consumer<Throwable>() {
               @Override public void accept(Throwable throwable) throws Exception {
+                Log.e(TAG, "accept: ", throwable);
                 getView().showError(throwable);
               }
             })

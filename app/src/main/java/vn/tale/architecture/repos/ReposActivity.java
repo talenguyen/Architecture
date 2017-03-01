@@ -97,7 +97,7 @@ public class ReposActivity extends AppCompatActivity {
   }
 
   private void injectDependencies() {
-    reposComponent = (ReposComponent) getLastNonConfigurationInstance();
+    reposComponent = (ReposComponent) getLastCustomNonConfigurationInstance();
     if (reposComponent == null) {
       final AppComponent appComponent = App.get(this).getAppComponent();
       reposComponent = appComponent.plus(new ReposModule());

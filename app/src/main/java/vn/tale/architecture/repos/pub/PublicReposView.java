@@ -8,7 +8,7 @@ import vn.tale.architecture.model.Repo;
  * Created by Giang Nguyen on 2/25/17.
  */
 
-public interface PublicReposView {
+interface PublicReposView {
 
   Observable<Object> loadRepos();
 

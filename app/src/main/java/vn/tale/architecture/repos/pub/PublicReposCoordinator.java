@@ -1,6 +1,7 @@
 package vn.tale.architecture.repos.pub;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import com.squareup.coordinators.Coordinator;
 import io.reactivex.Observable;
@@ -16,11 +17,13 @@ import vn.tale.architecture.repos.ReposComponent;
 
 public class PublicReposCoordinator extends Coordinator implements PublicReposView {
 
+  private static final String TAG = "PublicReposCoordinator";
   @Inject PublicReposPresenter presenter;
   private RepoListDelegate repoListDelegate;
 
   public PublicReposCoordinator(ReposComponent reposComponent) {
     reposComponent.inject(this);
+    Log.d(TAG, "PublicReposCoordinator: " + presenter);
   }
 
   @Override public void attach(View view) {
@@ -29,6 +32,11 @@ public class PublicReposCoordinator extends Coordinator implements PublicReposVi
     injectDependencies(recyclerView);
 
     presenter.attachView(this);
+  }
+
+  @Override public void detach(View view) {
+    super.detach(view);
+    presenter.detachView();
   }
 
   private void injectDependencies(RecyclerView recyclerView) {
