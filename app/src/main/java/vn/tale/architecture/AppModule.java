@@ -20,8 +20,7 @@ import vn.tale.architecture.common.SchedulerSingleTransformer;
 @Module
 public class AppModule {
 
-  @Provides
-  public EmailValidator emailValidator() {
+  @Provides EmailValidator emailValidator() {
     return new EmailValidator();
   }
 

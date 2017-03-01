@@ -19,14 +19,12 @@ import vn.tale.architecture.model.manager.UserModel;
   }
 
   @Provides
-  @Singleton
-  public RepoModel provideRepoModel() {
+  @Singleton RepoModel provideRepoModel() {
     return new RepoModel();
   }
 
   @Provides
-  @Singleton
-  public AppRouter provideAppRouter() {
+  @Singleton AppRouter provideAppRouter() {
     return new AppRouter();
   }
 
