@@ -1,5 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+apply from: "$project.rootDir/tools/script-dependencies.gradle"
+
 buildscript {
   repositories {
     jcenter()
@@ -23,4 +25,16 @@ allprojects {
 
 task clean(type: Delete) {
   delete rootProject.buildDir
+}
+
+project.ext.preDexLibraries = !rootProject.ext.ci
+
+subprojects {
+  project.plugins.whenPluginAdded { plugin ->
+    if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+      project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibraries
+    } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+      project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibraries
+    }
+  }
 }
