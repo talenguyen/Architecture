@@ -1,16 +1,19 @@
 apply plugin: 'com.android.application'
+apply from: "$project.rootDir/tools/script-git-version.gradle"
+apply from: "$project.rootDir/tools/script-findbugs.gradle"
+apply from: "$project.rootDir/tools/script-lint.gradle"
+apply from: "$project.rootDir/tools/script-pmd.gradle"
+apply from: "$project.rootDir/tools/script-java-code-coverage.gradle"
 
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
   defaultConfig {
-    applicationId "vn.tale.architecture"
     minSdkVersion 16
     targetSdkVersion 25
-    versionCode 1
-    versionName "1.0"
     testInstrumentationRunner "vn.tale.architecture.MockTestRunner"
   }
+
   signingConfigs {
     debug {
       keyAlias 'tale-debug'
@@ -22,15 +25,41 @@ android {
       keyAlias 'tale-release'
       keyPassword 'JwsJoHw9ziFmJn[K'
       storePassword 'JwsJoHw9ziFmJn[K'
-      storeFile file('../keystore/debug.jks')
+      storeFile file('../keystore/release.jks')
     }
   }
+
+  productFlavors {
+    dev {
+      signingConfig signingConfigs.debug
+      versionCode gitVersionCodeTime
+      versionName gitVersionName
+      applicationId "vn.tale.architecture.dev"
+    }
+
+    prod {
+      signingConfig signingConfigs.release
+      versionCode gitVersionCode
+      versionName gitVersionName
+      applicationId "vn.tale.architecture"
+    }
+  }
+
   buildTypes {
     release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'),
+          "$project.rootDir/tools/rules-proguard.pro"
+      signingConfig signingConfigs.release
+    }
+    debug {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'),
+          "$project.rootDir/tools/rules-proguard-debug.pro"
+      signingConfig signingConfigs.debug
     }
   }
+
   packagingOptions {
     exclude 'META-INF/rxjava.properties'
   }
