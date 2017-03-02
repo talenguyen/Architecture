@@ -9,7 +9,7 @@ import butterknife.Unbinder;
  * Created by Giang Nguyen on 2/22/17.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
   private Unbinder unbinder;
 
