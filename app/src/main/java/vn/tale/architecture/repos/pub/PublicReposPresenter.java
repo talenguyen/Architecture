@@ -19,6 +19,7 @@ import vn.tale.architecture.model.manager.RepoModel;
 public class PublicReposPresenter extends MvpPresenter<PublicReposView> {
 
   private static final String TAG = "ReposPresenter";
+  private final RepoModel repoModel;
   private final SchedulerSingleTransformer schedulerSingleTransformer;
   private Single<List<Repo>> publicReposRequest;
 
@@ -28,8 +29,8 @@ public class PublicReposPresenter extends MvpPresenter<PublicReposView> {
 
   @VisibleForTesting PublicReposPresenter(RepoModel repoModel,
       SchedulerSingleTransformer schedulerSingleTransformer) {
+    this.repoModel = repoModel;
     this.schedulerSingleTransformer = schedulerSingleTransformer;
-    publicReposRequest = repoModel.getPublicRepos().cache();
   }
 
   @Override protected void onViewAttached() {
@@ -45,19 +46,21 @@ public class PublicReposPresenter extends MvpPresenter<PublicReposView> {
   }
 
   private void loadRepos() {
-    Log.d(TAG, "loadRepos: " + publicReposRequest);
+    if (publicReposRequest == null) {
+      publicReposRequest = repoModel.getPublicRepos().cache();
+    }
+
     getView().showLoading();
+
     disposeOnDetach(
         publicReposRequest
             .compose(schedulerSingleTransformer.<List<Repo>>transformer())
             .subscribe(new Consumer<List<Repo>>() {
               @Override public void accept(List<Repo> repos) throws Exception {
-                Log.d(TAG, "accept() called with: repos = [" + repos + "]");
                 getView().showRepos(repos);
               }
             }, new Consumer<Throwable>() {
               @Override public void accept(Throwable throwable) throws Exception {
-                Log.e(TAG, "accept: ", throwable);
                 getView().showError(throwable);
               }
             })

@@ -1,6 +1,5 @@
 package vn.tale.architecture.model.manager;
 
-import android.util.Log;
 import io.reactivex.Single;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +15,10 @@ import vn.tale.architecture.model.Repo;
 public class RepoModel {
 
   private static final int RESPONSE_TIME = 3000;
-  private static final String TAG = "RepoModel";
 
   public Single<List<Repo>> getPublicRepos() {
     return Single.fromCallable(new Callable<List<Repo>>() {
       @Override public List<Repo> call() throws Exception {
-        Log.d(TAG, "call: getPublicRepo");
         final ArrayList<Repo> repos = new ArrayList<>();
         for (String key : MockManager.REPOS.keySet()) {
           repos.addAll(MockManager.REPOS.get(key));
