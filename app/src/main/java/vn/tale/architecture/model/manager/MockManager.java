@@ -8,6 +8,8 @@ import java.util.Map;
 import vn.tale.architecture.model.Repo;
 import vn.tale.architecture.model.User;
 
+import static vn.tale.architecture.model.Repo.repo;
+
 /**
  * Created by Giang Nguyen on 2/21/17.
  */
@@ -30,7 +32,7 @@ class MockManager {
   private static List<Repo> generateMock(int index, int size) {
     final ArrayList<Repo> repos = new ArrayList<>(size);
     for (int i = 0; i < size; i++) {
-      repos.add(new Repo("Repo " + i, "This is mock repo"));
+      repos.add(repo("Repo " + i, "This is mock repo"));
     }
     return repos;
   }

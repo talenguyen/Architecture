@@ -1,42 +1,17 @@
 package vn.tale.architecture.model;
 
+import com.google.auto.value.AutoValue;
+
 /**
  * Created by Giang Nguyen on 2/21/17.
  */
-
-public class Repo {
-  private final String name;
-  private final String description;
-
-  public Repo(String name, String description) {
-    this.name = name;
-    this.description = description;
+@AutoValue
+public abstract class Repo {
+  public static Repo repo(String name, String description) {
+    return new AutoValue_Repo(name, description);
   }
 
-  public String getName() {
-    return name;
-  }
+  public abstract String name();
 
-  public String getDescription() {
-    return description;
-  }
-
-  @Override public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Repo repo = (Repo) o;
-
-    if (getName() != null ? !getName().equals(repo.getName()) : repo.getName() != null) {
-      return false;
-    }
-    return getDescription() != null ? getDescription().equals(repo.getDescription())
-        : repo.getDescription() == null;
-  }
-
-  @Override public int hashCode() {
-    int result = getName() != null ? getName().hashCode() : 0;
-    result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-    return result;
-  }
+  public abstract String description();
 }
