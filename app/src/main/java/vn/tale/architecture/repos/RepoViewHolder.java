@@ -31,7 +31,7 @@ class RepoViewHolder extends AbsViewHolder {
   @Override public void bind(Object item) {
     super.bind(item);
     final Repo repo = ((Repo) item);
-    tvName.setText(repo.getName());
-    tvDescription.setText(repo.getDescription());
+    tvName.setText(repo.name());
+    tvDescription.setText(repo.description());
   }
 }

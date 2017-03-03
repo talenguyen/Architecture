@@ -3,10 +3,9 @@ package vn.tale.architecture.repos.my;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import com.squareup.coordinators.Coordinator;
-import io.reactivex.Observable;
-import java.util.List;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import javax.inject.Inject;
-import vn.tale.architecture.model.Repo;
 import vn.tale.architecture.repos.RepoListDelegate;
 import vn.tale.architecture.repos.ReposComponent;
 
@@ -14,10 +13,11 @@ import vn.tale.architecture.repos.ReposComponent;
  * Created by Giang Nguyen on 2/26/17.
  */
 
-public class MyReposCoordinator extends Coordinator implements MyReposView {
+public class MyReposCoordinator extends Coordinator {
 
-  @Inject MyReposPresenter presenter;
+  @Inject MyReposViewModel viewModel;
   private RepoListDelegate repoListDelegate;
+  private Disposable disposable;
 
   public MyReposCoordinator(ReposComponent reposComponent) {
     reposComponent.inject(this);
@@ -28,26 +28,34 @@ public class MyReposCoordinator extends Coordinator implements MyReposView {
     final RecyclerView recyclerView = (RecyclerView) view;
     injectDependencies(recyclerView);
 
-    presenter.attachView(this);
+    startBinding();
+    viewModel.loadRepos();
+  }
+
+  @Override public void detach(View view) {
+    super.detach(view);
+    viewModel.unbind();
+    if (disposable != null) {
+      disposable.dispose();
+    }
+  }
+
+  private void startBinding() {
+    disposable = viewModel.getState()
+        .subscribe(new Consumer<MyReposState>() {
+          @Override public void accept(MyReposState myReposState) throws Exception {
+            if (myReposState.loading()) {
+              // TODO: 3/3/17 show loading
+            } else if (myReposState.error() != null) {
+              // TODO: 3/3/17 show error
+            } else {
+              repoListDelegate.setItems(myReposState.items());
+            }
+          }
+        });
   }
 
   private void injectDependencies(RecyclerView recyclerView) {
     repoListDelegate = new RepoListDelegate(recyclerView);
-  }
-
-  @Override public Observable<Object> loadRepos() {
-    return Observable.just(new Object());
-  }
-
-  @Override public void showLoading() {
-
-  }
-
-  @Override public void showError(Throwable throwable) {
-
-  }
-
-  @Override public void showRepos(List<Repo> repos) {
-    repoListDelegate.setItems(repos);
   }
 }

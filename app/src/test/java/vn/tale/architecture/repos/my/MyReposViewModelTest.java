@@ -2,8 +2,7 @@ package vn.tale.architecture.repos.my;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
+import io.reactivex.observers.TestObserver;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
@@ -19,61 +18,61 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Giang Nguyen on 2/25/17.
+ * Created by Giang Nguyen on 3/3/17.
  */
-public class MyReposPresenterTest {
+public class MyReposViewModelTest {
 
   private static final String EMAIL = "foo@tale.vn";
-  User mockedUser;
-  List<Repo> mockedRepos;
-  Throwable mockedError;
-  UserModel mockedUserModel;
-  RepoModel mockedRepoModel;
-  Subject<Object> mockedLoadReposAction;
-  MyReposView mockedPublicReposView;
-  MyReposPresenter tested;
+  private RepoModel mockedRepoModel;
+  private MyReposViewModel tested;
+  private List<Repo> mockedRepos;
+  private TestObserver<Object> stateObserver;
+  private Throwable mockedError;
 
   @Before
   public void setUp() throws Exception {
-    mockedUser = mock(User.class);
+    User mockedUser = mock(User.class);
     mockedError = mock(Throwable.class);
+    UserModel mockedUserModel = mock(UserModel.class);
     mockedRepoModel = mock(RepoModel.class);
-    mockedUserModel = mock(UserModel.class);
-    mockedPublicReposView = mock(MyReposView.class);
-    mockedLoadReposAction = PublishSubject.create();
-    tested = new MyReposPresenter(mockedUserModel, mockedRepoModel, SchedulerObservableTransformer.TEST);
+    tested = new MyReposViewModel(mockedUserModel, mockedRepoModel,
+        SchedulerObservableTransformer.TEST);
 
     mockedRepos = Collections.singletonList(mock(Repo.class));
     when(mockedUser.getEmail()).thenReturn(EMAIL);
     when(mockedUserModel.user()).thenReturn(Observable.just(mockedUser));
-    when(mockedPublicReposView.loadRepos()).thenReturn(mockedLoadReposAction);
     when(mockedRepoModel.getUserRepos(EMAIL)).thenReturn(Single.just(mockedRepos));
 
-    tested.attachView(mockedPublicReposView);
+    stateObserver = TestObserver.create();
+    tested.getState().subscribe(stateObserver);
   }
 
   @Test
   public void should_load_private_repos() throws Exception {
-    mockedLoadReposAction.onNext(new Object());
+    tested.loadRepos();
 
     verify(mockedRepoModel).getUserRepos(EMAIL);
   }
 
   @Test
   public void should_show_loading_then_repos() throws Exception {
-    mockedLoadReposAction.onNext(new Object());
+    tested.loadRepos();
 
-    verify(mockedPublicReposView).showLoading();
-    verify(mockedPublicReposView).showRepos(mockedRepos);
+    stateObserver.assertValues(
+        MyReposState.builder().loading(true).build(),
+        MyReposState.builder().items(mockedRepos).build()
+    );
   }
 
   @Test
   public void should_show_loading_then_error_when_load_error() throws Exception {
     when(mockedRepoModel.getUserRepos(EMAIL)).thenReturn(Single.<List<Repo>>error(mockedError));
 
-    mockedLoadReposAction.onNext(new Object());
+    tested.loadRepos();
 
-    verify(mockedPublicReposView).showLoading();
-    verify(mockedPublicReposView).showError(mockedError);
+    stateObserver.assertValues(
+        MyReposState.builder().loading(true).build(),
+        MyReposState.builder().error(mockedError).build()
+    );
   }
 }
