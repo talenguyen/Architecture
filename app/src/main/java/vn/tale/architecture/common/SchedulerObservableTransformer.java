@@ -1,9 +1,9 @@
 package vn.tale.architecture.common;
 
+import android.support.annotation.VisibleForTesting;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -12,19 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public interface SchedulerObservableTransformer {
 
-  SchedulerObservableTransformer IO = new SchedulerObservableTransformer() {
-    @SuppressWarnings("unchecked")
-    @Override public <T> ObservableTransformer<T, T> transformer() {
-      return (ObservableTransformer<T, T>) new ObservableTransformer() {
-        @Override public ObservableSource apply(Observable upstream) {
-          return upstream.subscribeOn(Schedulers.io())
-              .observeOn(AndroidSchedulers.mainThread());
-        }
-      };
-    }
-  };
-
-  SchedulerObservableTransformer TEST = new SchedulerObservableTransformer() {
+  @VisibleForTesting SchedulerObservableTransformer TEST = new SchedulerObservableTransformer() {
     @SuppressWarnings("unchecked")
     @Override public <T> ObservableTransformer<T, T> transformer() {
       return (ObservableTransformer<T, T>) new ObservableTransformer() {
