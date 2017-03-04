@@ -30,3 +30,6 @@
 
 # Proguard configurations for common Android libraries:
 # https://github.com/krschultz/android-proguard-snippets
+
+# Retro-lambda
+-dontwarn java.lang.invoke.*

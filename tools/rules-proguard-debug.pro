@@ -20,3 +20,6 @@
 -dontobfuscate
 -dontoptimize
 -ignorewarnings
+
+# Retro-lambda
+-dontwarn java.lang.invoke.*

@@ -7,7 +7,8 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.2.3'
+    classpath 'com.android.tools.build:gradle:2.3.0'
+    classpath 'me.tatarka:gradle-retrolambda:3.6.0'
 
     // NOTE: Do not place your application dependencies here; they belong
     // in the individual module build.gradle files
@@ -31,9 +32,9 @@ project.ext.preDexLibraries = !rootProject.ext.ci
 
 subprojects {
   project.plugins.whenPluginAdded { plugin ->
-    if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+    if ("com.android.build.gradle.AppPlugin" == plugin.class.name) {
       project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibraries
-    } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+    } else if ("com.android.build.gradle.LibraryPlugin" == plugin.class.name) {
       project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibraries
     }
   }
