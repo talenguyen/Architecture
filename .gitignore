@@ -105,7 +105,8 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml
+.idea/misc.xml
 # *.ipr
 
 # End of https://www.gitignore.io/api/android,intellij
+.idea/
