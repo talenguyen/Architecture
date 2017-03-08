@@ -26,14 +26,14 @@ public interface AsyncLoad {
     void showError(Throwable error);
   }
 
-  interface Model<T> {
+  interface GetDataInteractor<T> {
 
     Observable<T> getData();
   }
 
   class AsyncLoadPresenter<T> {
 
-    private final AsyncLoad.Model<T> model;
+    private final GetDataInteractor<T> getDataInteractor;
     private final Scheduler threadScheduler;
     private final Scheduler uiScheduler;
     private final boolean cache;
@@ -43,9 +43,9 @@ public interface AsyncLoad {
     private Observable<T> getData;
     private boolean error;
 
-    public AsyncLoadPresenter(AsyncLoad.Model<T> model, Scheduler threadScheduler,
+    public AsyncLoadPresenter(GetDataInteractor<T> getDataInteractor, Scheduler threadScheduler,
         Scheduler uiScheduler, boolean cache) {
-      this.model = model;
+      this.getDataInteractor = getDataInteractor;
       this.threadScheduler = threadScheduler;
       this.uiScheduler = uiScheduler;
       this.cache = cache;
@@ -72,7 +72,7 @@ public interface AsyncLoad {
         return;
       }
       if (getData == null || error) {
-        getData = cache ? model.getData().cache() : model.getData();
+        getData = cache ? getDataInteractor.getData().cache() : getDataInteractor.getData();
         error = false;
       }
       view.showLoading();

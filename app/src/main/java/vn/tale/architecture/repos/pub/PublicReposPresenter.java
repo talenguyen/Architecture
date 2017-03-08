@@ -12,8 +12,8 @@ import vn.tale.architecture.model.Repo;
 public class PublicReposPresenter extends AsyncLoad.AsyncLoadPresenter<List<Repo>> {
 
   public PublicReposPresenter(
-      AsyncLoad.Model<List<Repo>> model, Scheduler threadScheduler,
+      AsyncLoad.GetDataInteractor<List<Repo>> getDataInteractor, Scheduler threadScheduler,
       Scheduler uiScheduler, boolean cache) {
-    super(model, threadScheduler, uiScheduler, cache);
+    super(getDataInteractor, threadScheduler, uiScheduler, cache);
   }
 }

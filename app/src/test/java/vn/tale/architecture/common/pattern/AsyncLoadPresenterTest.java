@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class AsyncLoadPresenterTest {
   Object mockedData;
   Throwable mockedError;
-  AsyncLoad.Model mockedModel;
+  AsyncLoad.GetDataInteractor mockedGetDataInteractor;
   Subject<Object> mockedLoadAction;
   Subject<Object> mockedDestroyAction;
   AsyncLoad.View mockedView;
@@ -28,12 +28,12 @@ public class AsyncLoadPresenterTest {
   @Before
   public void setUp() throws Exception {
     mockedError = mock(Throwable.class);
-    mockedModel = mock(AsyncLoad.Model.class);
+    mockedGetDataInteractor = mock(AsyncLoad.GetDataInteractor.class);
     mockedView = mock(AsyncLoad.View.class);
     mockedLoadAction = PublishSubject.create();
     mockedDestroyAction = PublishSubject.create();
     tested = new AsyncLoad.AsyncLoadPresenter<>(
-        mockedModel,
+        mockedGetDataInteractor,
         Schedulers.trampoline(),
         Schedulers.trampoline(),
         true);
@@ -41,7 +41,7 @@ public class AsyncLoadPresenterTest {
     mockedData = mock(Object.class);
     when(mockedView.onLoad()).thenReturn(mockedLoadAction);
     when(mockedView.onDestroy()).thenReturn(mockedDestroyAction);
-    when(mockedModel.getData()).thenReturn(Observable.just(mockedData));
+    when(mockedGetDataInteractor.getData()).thenReturn(Observable.just(mockedData));
 
     tested.attachView(mockedView);
   }
@@ -56,7 +56,7 @@ public class AsyncLoadPresenterTest {
 
   @Test
   public void should_show_loading_then_error_when_load_error() throws Exception {
-    when(mockedModel.getData()).thenReturn(Observable.error(mockedError));
+    when(mockedGetDataInteractor.getData()).thenReturn(Observable.error(mockedError));
     mockedLoadAction.onNext(new Object());
 
     verify(mockedView).showLoading();
@@ -65,10 +65,10 @@ public class AsyncLoadPresenterTest {
 
   @Test
   public void should_reloadable_when_error_occurred() throws Exception {
-    when(mockedModel.getData()).thenReturn(Observable.error(mockedError));
+    when(mockedGetDataInteractor.getData()).thenReturn(Observable.error(mockedError));
     mockedLoadAction.onNext(new Object());
 
-    when(mockedModel.getData()).thenReturn(Observable.just(mockedData));
+    when(mockedGetDataInteractor.getData()).thenReturn(Observable.just(mockedData));
     mockedLoadAction.onNext(new Object());
 
     verify(mockedView, times(2)).showLoading();

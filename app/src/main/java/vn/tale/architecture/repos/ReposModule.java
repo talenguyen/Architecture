@@ -11,7 +11,7 @@ import vn.tale.architecture.model.manager.UserModel;
 import vn.tale.architecture.repos.menu.bottom.BottomMenuPresenter;
 import vn.tale.architecture.repos.menu.top.TopMenuPresenter;
 import vn.tale.architecture.repos.my.MyReposViewModel;
-import vn.tale.architecture.repos.pub.PublicReposModel;
+import vn.tale.architecture.repos.pub.PublicReposGetDataInteractor;
 import vn.tale.architecture.repos.pub.PublicReposPresenter;
 
 /**
@@ -28,12 +28,12 @@ public class ReposModule {
     return new TopMenuPresenter(userModel);
   }
 
-  @ActivityScope @Provides PublicReposModel providePublicReposModel(RepoModel repoModel) {
-    return new PublicReposModel(repoModel);
+  @ActivityScope @Provides PublicReposGetDataInteractor providePublicReposModel(RepoModel repoModel) {
+    return new PublicReposGetDataInteractor(repoModel);
   }
 
   @ActivityScope @Provides PublicReposPresenter providePublicReposPresenter(
-      PublicReposModel repoModel) {
+      PublicReposGetDataInteractor repoModel) {
     return new PublicReposPresenter(
         repoModel,
         Schedulers.io(),

@@ -10,11 +10,11 @@ import vn.tale.architecture.model.manager.RepoModel;
  * Created by Giang Nguyen on 3/3/17.
  */
 
-public class PublicReposModel implements AsyncLoad.Model<List<Repo>> {
+public class PublicReposGetDataInteractor implements AsyncLoad.GetDataInteractor<List<Repo>> {
 
   private RepoModel repoModel;
 
-  public PublicReposModel(RepoModel repoModel) {
+  public PublicReposGetDataInteractor(RepoModel repoModel) {
     this.repoModel = repoModel;
   }
 
