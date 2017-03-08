@@ -64,6 +64,19 @@ public class AsyncLoadPresenterTest {
   }
 
   @Test
+  public void should_reloadable_when_error_occurred() throws Exception {
+    when(mockedModel.getData()).thenReturn(Observable.error(mockedError));
+    mockedLoadAction.onNext(new Object());
+
+    when(mockedModel.getData()).thenReturn(Observable.just(mockedData));
+    mockedLoadAction.onNext(new Object());
+
+    verify(mockedView, times(2)).showLoading();
+    verify(mockedView).showContent(mockedData);
+  }
+
+
+  @Test
   public void should_clean_on_destroy() throws Exception {
     mockedDestroyAction.onNext(new Object());
 

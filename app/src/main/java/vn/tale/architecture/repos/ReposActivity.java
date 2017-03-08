@@ -1,7 +1,6 @@
 package vn.tale.architecture.repos;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -61,19 +60,16 @@ public class ReposActivity extends AppCompatActivity {
 
     bottomNavigationView = (BottomNavigationView) this.findViewById(R.id.btNavigation);
 
-    bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView
-        .OnNavigationItemSelectedListener() {
-      @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-          case R.id.action_public_repos:
-            showContent(recyclerView("public"));
-            return true;
-          case R.id.action_my_repos:
-            showContent(recyclerView("my"));
-            return true;
-        }
-        return false;
+    bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+      switch (item.getItemId()) {
+        case R.id.action_public_repos:
+          showContent(recyclerView("public"));
+          return true;
+        case R.id.action_my_repos:
+          showContent(recyclerView("my"));
+          return true;
       }
+      return false;
     });
     showContent(recyclerView("public"));
   }

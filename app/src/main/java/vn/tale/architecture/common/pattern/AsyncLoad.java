@@ -5,7 +5,6 @@ import android.support.annotation.VisibleForTesting;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import java.lang.ref.WeakReference;
 
 /**
@@ -42,6 +41,7 @@ public interface AsyncLoad {
     private WeakReference<View<T>> viewRef;
     private CompositeDisposable compositeDisposable;
     private Observable<T> getData;
+    private boolean error;
 
     public AsyncLoadPresenter(AsyncLoad.Model<T> model, Scheduler threadScheduler,
         Scheduler uiScheduler, boolean cache) {
@@ -56,18 +56,10 @@ public interface AsyncLoad {
       compositeDisposable = new CompositeDisposable();
 
       compositeDisposable.add(view.onLoad()
-          .subscribe(new Consumer<Object>() {
-            @Override public void accept(Object object) throws Exception {
-              load();
-            }
-          }));
+          .subscribe(object -> load()));
 
       compositeDisposable.add(view.onDestroy()
-          .subscribe(new Consumer<Object>() {
-            @Override public void accept(Object object) throws Exception {
-              detachView();
-            }
-          }));
+          .subscribe(object -> detachView()));
     }
 
     private void load() {
@@ -79,25 +71,23 @@ public interface AsyncLoad {
         view.showContent(data);
         return;
       }
-      if (getData == null) {
+      if (getData == null || error) {
         getData = cache ? model.getData().cache() : model.getData();
+        error = false;
       }
       view.showLoading();
       compositeDisposable.add(getData
           .subscribeOn(threadScheduler)
           .observeOn(uiScheduler)
-          .subscribe(new Consumer<T>() {
-            @Override public void accept(T t) throws Exception {
-              data = t;
-              if (getView() != null) {
-                getView().showContent(t);
-              }
+          .subscribe(t -> {
+            data = t;
+            if (getView() != null) {
+              getView().showContent(t);
             }
-          }, new Consumer<Throwable>() {
-            @Override public void accept(Throwable throwable) throws Exception {
-              if (getView() != null) {
-                getView().showError(throwable);
-              }
+          }, throwable -> {
+            error = true;
+            if (getView() != null) {
+              getView().showError(throwable);
             }
           }));
     }
