@@ -3,7 +3,7 @@ machine:
         version: oraclejdk8
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
-        CODECOV_TOKEN: "2fc2826d-9f4f-43a3-8b24-25270f398a50"
+        CODECOV_TOKEN: "573f682c-e1b4-4726-b2ae-63fa9576fa90"
 
 dependencies:
     pre:
