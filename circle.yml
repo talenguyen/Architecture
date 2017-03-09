@@ -1,0 +1,45 @@
+machine:
+    java:
+        version: oraclejdk8
+    environment:
+        ANDROID_HOME: /usr/local/android-sdk-linux
+        CODECOV_TOKEN: 2fc2826d-9f4f-43a3-8b24-25270f398a50
+    ruby:
+        version: 2.3.0
+    node:
+        version: v5.10.1
+
+dependencies:
+    pre:
+        - (source tools/environmentSetup.sh && getAndroidSDK)
+        - chmod +x gradlew
+        - bash ./gradlew dependencies
+    cache_directories:
+        - ~/.android
+        - ~/android
+
+test:
+    override:
+        - ./gradlew :app:check :app:javaCodeCoverage
+        - bash <(curl -s https://codecov.io/bash)
+
+deployment:
+    develop:
+        branch: /dev\/([0-9]+\.)+[0-9]+/
+        commands:
+            - bash scripts/badge.sh $CIRCLE_BRANCH $CIRCLE_BUILD_NUM
+            - bash scripts/build.sh release dev
+            - bash scripts/deploy.sh dev
+
+    pre-release:
+        tag: /v([0-9]+\.)+[0-9]+-rc[0-9]+/
+        commands:
+            - bash scripts/badge.sh $CIRCLE_TAG $CIRCLE_BUILD_NUM
+            - bash scripts/build.sh release product
+            - bash scripts/deploy.sh product
+    
+    release:
+        tag: /v([0-9]+\.)+[0-9]+/
+        commands:
+            - bash scripts/build.sh release product
+            - bash scripts/deploy.sh product
