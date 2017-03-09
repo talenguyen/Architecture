@@ -5,7 +5,7 @@ task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDevDebugUnitTest') {
   reports {
     xml {
       enabled true
-      destination "$project.buildDir/reports/jacoco/testDevDebugUnitTestReport.xml"
+      destination "$project.buildDir/reports/jacoco/jacocoTestDevDebugUnitTestReport.xml"
     }
     html {
       enabled true
