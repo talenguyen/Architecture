@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public abstract class MvpPresenter<MvpView> {
+public class MvpPresenter<MvpView> {
 
   private WeakReference<MvpView> viewReference;
   private CompositeDisposable compositeDisposable;

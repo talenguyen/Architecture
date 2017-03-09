@@ -9,6 +9,7 @@ import vn.tale.architecture.model.Repo;
 import vn.tale.architecture.model.User;
 
 import static vn.tale.architecture.model.Repo.repo;
+import static vn.tale.architecture.model.User.user;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
@@ -19,8 +20,8 @@ class MockManager {
 
   static {
     USER_MAP = new ArrayMap<>();
-    USER_MAP.put(new Pair<>("foo@tiki.vn", "foo123"), new User("foo@tiki.vn", "Mr. Foo"));
-    USER_MAP.put(new Pair<>("bar@tiki.vn", "bar123"), new User("bar@tiki.vn", "Mr. Bar"));
+    USER_MAP.put(new Pair<>("foo@tiki.vn", "foo123"), user("foo@tiki.vn", "Mr. Foo"));
+    USER_MAP.put(new Pair<>("bar@tiki.vn", "bar123"), user("bar@tiki.vn", "Mr. Bar"));
   }
 
   static {
@@ -31,7 +32,7 @@ class MockManager {
 
   private static List<Repo> generateMock(int index, int size) {
     final ArrayList<Repo> repos = new ArrayList<>(size);
-    for (int i = 0; i < size; i++) {
+    for (int i = index; i < index + size; i++) {
       repos.add(repo("Repo " + i, "This is mock repo"));
     }
     return repos;

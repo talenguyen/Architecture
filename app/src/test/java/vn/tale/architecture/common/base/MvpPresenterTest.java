@@ -21,7 +21,7 @@ public class MvpPresenterTest {
   public void setUp() throws Exception {
     mockedView = mock(Object.class);
     mockedDisposable = mock(Disposable.class);
-    tested = new MvpPresenter<Object>() {};
+    tested = new MvpPresenter<>();
 
     tested.attachView(mockedView);
     tested.disposeOnDetach(mockedDisposable);

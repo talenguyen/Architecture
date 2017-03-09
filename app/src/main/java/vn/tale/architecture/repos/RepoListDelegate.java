@@ -18,7 +18,7 @@ import vn.tiki.noadapter2.ViewHolderFactory;
 
 public class RepoListDelegate extends Coordinator {
 
-  private OnlyAdapter adapter;
+  private final OnlyAdapter adapter;
 
   public RepoListDelegate(RecyclerView recyclerView) {
     configureRecyclerView(recyclerView);

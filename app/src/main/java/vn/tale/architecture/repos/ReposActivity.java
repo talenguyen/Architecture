@@ -61,13 +61,13 @@ public class ReposActivity extends AppCompatActivity {
     bottomNavigationView = (BottomNavigationView) this.findViewById(R.id.btNavigation);
 
     bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-      switch (item.getItemId()) {
-        case R.id.action_public_repos:
-          showContent(recyclerView("public"));
-          return true;
-        case R.id.action_my_repos:
-          showContent(recyclerView("my"));
-          return true;
+      int id = item.getItemId();
+      if (id == R.id.action_public_repos) {
+        showContent(recyclerView("public"));
+        return true;
+      } else if (id == R.id.action_my_repos) {
+        showContent(recyclerView("my"));
+        return true;
       }
       return false;
     });
@@ -111,13 +111,12 @@ public class ReposActivity extends AppCompatActivity {
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.action_login:
-        startActivity(appRouter.loginIntent(this));
-        return true;
-      case R.id.action_logout:
-        userModel.logout().subscribe();
-        return true;
+    if (item.getItemId() == R.id.action_login) {
+      startActivity(appRouter.loginIntent(this));
+      return true;
+    } else if (item.getItemId() == R.id.action_logout) {
+      userModel.logout().subscribe();
+      return true;
     }
     return super.onOptionsItemSelected(item);
   }

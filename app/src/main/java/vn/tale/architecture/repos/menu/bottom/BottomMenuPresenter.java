@@ -12,7 +12,7 @@ import vn.tale.architecture.model.manager.UserModel;
 
 public class BottomMenuPresenter extends MvpPresenter<BottomMenuView> {
 
-  private UserModel userModel;
+  private final UserModel userModel;
 
   public BottomMenuPresenter(UserModel userModel) {
     this.userModel = userModel;

@@ -12,7 +12,7 @@ import vn.tale.architecture.model.manager.RepoModel;
 
 public class PublicReposGetDataInteractor implements AsyncLoad.GetDataInteractor<List<Repo>> {
 
-  private RepoModel repoModel;
+  private final RepoModel repoModel;
 
   public PublicReposGetDataInteractor(RepoModel repoModel) {
     this.repoModel = repoModel;

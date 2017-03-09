@@ -11,7 +11,7 @@ import vn.tiki.noadapter2.AbsViewHolder;
 /**
  * Created by Giang Nguyen on 2/21/17.
  */
-class RepoViewHolder extends AbsViewHolder {
+final class RepoViewHolder extends AbsViewHolder {
 
   private final TextView tvName;
   private final TextView tvDescription;

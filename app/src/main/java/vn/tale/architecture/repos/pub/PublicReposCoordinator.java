@@ -21,9 +21,9 @@ import vn.tale.architecture.repos.ReposComponent;
 public class PublicReposCoordinator extends Coordinator implements AsyncLoad.View<List<Repo>> {
 
   private static final String TAG = "PublicReposCoordinator";
+  private final Subject<Object> destroySubject = PublishSubject.create();
   @Inject PublicReposPresenter presenter;
   private RepoListDelegate repoListDelegate;
-  private Subject<Object> destroySubject = PublishSubject.create();
 
   public PublicReposCoordinator(ReposComponent reposComponent) {
     reposComponent.inject(this);

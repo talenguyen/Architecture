@@ -4,10 +4,7 @@ import android.support.v4.util.Pair;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.BiConsumer;
 import io.reactivex.subjects.BehaviorSubject;
-import java.util.concurrent.Callable;
 import vn.tale.architecture.model.User;
 import vn.tale.architecture.model.exeption.UserNotFoundException;
 
@@ -17,9 +14,9 @@ import vn.tale.architecture.model.exeption.UserNotFoundException;
 
 public class UserModel {
 
-  public static final User ANNOYMOUS = new User("annoymous@tale.vn", "annoymous");
+  public static final User ANNOYMOUS = User.user("annoymous@tale.vn", "annoymous");
 
-  private BehaviorSubject<User> userSubject = BehaviorSubject.createDefault(ANNOYMOUS);
+  private final BehaviorSubject<User> userSubject = BehaviorSubject.createDefault(ANNOYMOUS);
 
   public Observable<User> user() {
     return userSubject;
@@ -27,28 +24,20 @@ public class UserModel {
 
   public Single<User> login(final String email, final String password) {
     final Pair<String, String> authInfo = new Pair<>(email, password);
-    return Single.fromCallable(new Callable<User>() {
-      @Override public User call() throws Exception {
-        Thread.sleep(500);
-        if (MockManager.USER_MAP.containsKey(authInfo)) {
-          return MockManager.USER_MAP.get(authInfo);
-        }
-        throw new UserNotFoundException("user name & password is not matched");
+    return Single.fromCallable(() -> {
+      Thread.sleep(500);
+      if (MockManager.USER_MAP.containsKey(authInfo)) {
+        return MockManager.USER_MAP.get(authInfo);
       }
-    }).doOnEvent(new BiConsumer<User, Throwable>() {
-      @Override public void accept(User user, Throwable throwable) throws Exception {
-        if (user != null) {
-          userSubject.onNext(user);
-        }
+      throw new UserNotFoundException("user name & password is not matched");
+    }).doOnEvent((user, throwable) -> {
+      if (user != null) {
+        userSubject.onNext(user);
       }
     });
   }
 
   public Completable logout() {
-    return Completable.fromAction(new Action() {
-      @Override public void run() throws Exception {
-        userSubject.onNext(ANNOYMOUS);
-      }
-    });
+    return Completable.fromAction(() -> userSubject.onNext(ANNOYMOUS));
   }
 }

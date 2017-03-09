@@ -38,4 +38,12 @@ subprojects {
       project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibraries
     }
   }
+
+  tasks.whenTaskAdded { task ->
+    if (task.name == 'check') {
+      task.dependsOn('findbugs')
+      task.dependsOn('lint')
+      task.dependsOn('pmd')
+    }
+  }
 }

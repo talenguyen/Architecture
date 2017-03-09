@@ -2,13 +2,10 @@ package vn.tale.architecture.login;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import vn.tale.architecture.common.EmailValidator;
 import vn.tale.architecture.common.SchedulerSingleTransformer;
 import vn.tale.architecture.common.base.MvpPresenter;
-import vn.tale.architecture.model.User;
 import vn.tale.architecture.model.manager.UserModel;
 
 /**
@@ -18,7 +15,7 @@ import vn.tale.architecture.model.manager.UserModel;
 class LoginPresenter extends MvpPresenter<LoginView> {
   private final UserModel userModel;
   private final EmailValidator emailValidator;
-  private SchedulerSingleTransformer schedulerSingleTransformer;
+  private final SchedulerSingleTransformer schedulerSingleTransformer;
 
   LoginPresenter(UserModel userModel, EmailValidator emailValidator,
       SchedulerSingleTransformer schedulerSingleTransformer) {
@@ -45,19 +42,9 @@ class LoginPresenter extends MvpPresenter<LoginView> {
       return;
     }
 
-    final Observable<String> email = view.emailChanges().map(new Function<CharSequence,
-        String>() {
-      @Override public String apply(CharSequence charSequence) throws Exception {
-        return charSequence.toString();
-      }
-    });
+    final Observable<String> email = view.emailChanges().map(CharSequence::toString);
 
-    final Observable<String> password = view.passwordChanges().map(new Function<CharSequence,
-        String>() {
-      @Override public String apply(CharSequence charSequence) throws Exception {
-        return charSequence.toString();
-      }
-    });
+    final Observable<String> password = view.passwordChanges().map(CharSequence::toString);
 
     disposeOnDetach(view.signInClick()
         .flatMap(new Function<Object, ObservableSource<String[]>>() {
@@ -66,36 +53,23 @@ class LoginPresenter extends MvpPresenter<LoginView> {
             return Observable.zip(
                 email,
                 password,
-                new BiFunction<String, String, String[]>() {
-                  @Override public String[] apply(String email, String password)
-                      throws Exception {
-                    return new String[] { email, password };
-                  }
-                });
+                (email1, password1) -> new String[] { email1, password1 });
           }
         })
-        .subscribe(new Consumer<String[]>() {
-          @Override public void accept(String[] credential) throws Exception {
-            signIn(credential[0], credential[1]);
-          }
-        }));
+        .subscribe(credential -> signIn(credential[0], credential[1])));
   }
 
   private void signIn(String email, String password) {
     disposeOnDetach(userModel.login(email, password)
-        .compose(schedulerSingleTransformer.<User>transformer())
-        .subscribe(new Consumer<User>() {
-          @Override public void accept(User user) throws Exception {
-            if (getView() != null) {
-              getView().showSuccessMessage();
-              getView().hide();
-            }
+        .compose(schedulerSingleTransformer.transformer())
+        .subscribe(user -> {
+          if (getView() != null) {
+            getView().showSuccessMessage();
+            getView().hide();
           }
-        }, new Consumer<Throwable>() {
-          @Override public void accept(Throwable throwable) throws Exception {
-            if (getView() != null) {
-              getView().showLoginFailMessage();
-            }
+        }, throwable -> {
+          if (getView() != null) {
+            getView().showLoginFailMessage();
           }
         }));
   }
@@ -103,24 +77,18 @@ class LoginPresenter extends MvpPresenter<LoginView> {
   private void validateInput(LoginView view) {
     view.disableSignInButton();
     disposeOnDetach(view.emailChanges().skip(1)
-        .map(new Function<CharSequence, Boolean>() {
-          @Override public Boolean apply(CharSequence email) throws Exception {
-            return emailValidator.isValid(email);
+        .map(emailValidator::isValid)
+        .subscribe(validInput -> {
+          final LoginView view1 = getView();
+          if (view1 == null) {
+            return;
           }
-        })
-        .subscribe(new Consumer<Boolean>() {
-          @Override public void accept(Boolean validInput) throws Exception {
-            final LoginView view = getView();
-            if (view == null) {
-              return;
-            }
-            if (validInput) {
-              view.hideEmailError();
-              view.enableSignInButton();
-            } else {
-              view.showInvalidEmailError();
-              view.disableSignInButton();
-            }
+          if (validInput) {
+            view1.hideEmailError();
+            view1.enableSignInButton();
+          } else {
+            view1.showInvalidEmailError();
+            view1.disableSignInButton();
           }
         }));
   }

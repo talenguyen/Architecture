@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import com.squareup.coordinators.Coordinator;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import javax.inject.Inject;
 import vn.tale.architecture.repos.RepoListDelegate;
 import vn.tale.architecture.repos.ReposComponent;
@@ -42,15 +41,13 @@ public class MyReposCoordinator extends Coordinator {
 
   private void startBinding() {
     disposable = viewModel.getState()
-        .subscribe(new Consumer<MyReposState>() {
-          @Override public void accept(MyReposState myReposState) throws Exception {
-            if (myReposState.loading()) {
-              // TODO: 3/3/17 show loading
-            } else if (myReposState.error() != null) {
-              // TODO: 3/3/17 show error
-            } else {
-              repoListDelegate.setItems(myReposState.items());
-            }
+        .subscribe(myReposState -> {
+          if (myReposState.loading()) {
+            // TODO: 3/3/17 show loading
+          } else if (myReposState.error() == null) {
+            repoListDelegate.setItems(myReposState.items());
+          } else {
+            // TODO: 3/3/17 show error
           }
         });
   }

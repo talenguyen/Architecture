@@ -39,7 +39,7 @@ public class MyReposViewModelTest {
         SchedulerObservableTransformer.TEST);
 
     mockedRepos = Collections.singletonList(mock(Repo.class));
-    when(mockedUser.getEmail()).thenReturn(EMAIL);
+    when(mockedUser.email()).thenReturn(EMAIL);
     when(mockedUserModel.user()).thenReturn(Observable.just(mockedUser));
     when(mockedRepoModel.getUserRepos(EMAIL)).thenReturn(Single.just(mockedRepos));
 
@@ -66,7 +66,7 @@ public class MyReposViewModelTest {
 
   @Test
   public void should_show_loading_then_error_when_load_error() throws Exception {
-    when(mockedRepoModel.getUserRepos(EMAIL)).thenReturn(Single.<List<Repo>>error(mockedError));
+    when(mockedRepoModel.getUserRepos(EMAIL)).thenReturn(Single.error(mockedError));
 
     tested.loadRepos();
 

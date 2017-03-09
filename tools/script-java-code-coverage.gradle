@@ -3,9 +3,9 @@ apply plugin: 'jacoco'
 task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDevDebugUnitTest') {
 
   reports {
-    xml.enabled = false
+    xml.enabled = true
     html.enabled = true
-    html.destination "$project.buildDir/outputs/jacoco/"
+    html.destination "$project.buildDir/reports/jacoco/"
   }
 
   def classFileTree = fileTree(dir: "${buildDir}/intermediates/classes/",
@@ -15,7 +15,9 @@ task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDevDebugUnitTest') {
                  '**/Manifest*.*',
                  '**/*Test*.*',
                  'android/**/*.*',
-                 '**/*$*.class'],
+                 '**/*Factory.*',
+                 '**/*$*.class'
+      ],
       includes: ['**/*Presenter*.class'])
 
   classDirectories = files([classFileTree])

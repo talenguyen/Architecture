@@ -3,7 +3,6 @@ package vn.tale.architecture.repos.my;
 import io.reactivex.Observable;
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
@@ -24,7 +23,7 @@ public class MyReposViewModel {
   private final UserModel userModel;
   private final SchedulerObservableTransformer schedulerObservableTransformer;
 
-  private Subject<MyReposState> state = BehaviorSubject.create();
+  private final Subject<MyReposState> state = BehaviorSubject.create();
   private Disposable disposable;
   private Observable<List<Repo>> getRepos;
 
@@ -35,35 +34,29 @@ public class MyReposViewModel {
     this.schedulerObservableTransformer = schedulerObservableTransformer;
   }
 
-  public Subject<MyReposState> getState() {
+  Subject<MyReposState> getState() {
     return state;
   }
 
-  public void loadRepos() {
+  void loadRepos() {
     if (getRepos == null) {
       getRepos = userModel.user()
           .flatMapSingle(new Function<User, SingleSource<List<Repo>>>() {
             @Override public SingleSource<List<Repo>> apply(User user) throws Exception {
-              return repoModel.getUserRepos(user.getEmail());
+              return repoModel.getUserRepos(user.email());
             }
           })
           .cache();
     }
     state.onNext(MyReposState.builder().loading(true).build());
     disposable = getRepos
-        .compose(schedulerObservableTransformer.<List<Repo>>transformer())
-        .subscribe(new Consumer<List<Repo>>() {
-          @Override public void accept(List<Repo> repos) throws Exception {
-            state.onNext(MyReposState.builder().items(repos).build());
-          }
-        }, new Consumer<Throwable>() {
-          @Override public void accept(Throwable throwable) throws Exception {
-            state.onNext(MyReposState.builder().error(throwable).build());
-          }
-        });
+        .compose(schedulerObservableTransformer.transformer())
+        .subscribe(
+            repos -> state.onNext(MyReposState.builder().items(repos).build()),
+            throwable -> state.onNext(MyReposState.builder().error(throwable).build()));
   }
 
-  public void unbind() {
+  void unbind() {
     if (disposable != null) {
       disposable.dispose();
     }

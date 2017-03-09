@@ -23,7 +23,7 @@ public class AsyncLoadPresenterTest {
   Subject<Object> mockedLoadAction;
   Subject<Object> mockedDestroyAction;
   AsyncLoad.View mockedView;
-  AsyncLoad.AsyncLoadPresenter tested;
+  AsyncLoadPresenter tested;
 
   @Before
   public void setUp() throws Exception {
@@ -32,7 +32,7 @@ public class AsyncLoadPresenterTest {
     mockedView = mock(AsyncLoad.View.class);
     mockedLoadAction = PublishSubject.create();
     mockedDestroyAction = PublishSubject.create();
-    tested = new AsyncLoad.AsyncLoadPresenter<>(
+    tested = new AsyncLoadPresenter<>(
         mockedGetDataInteractor,
         Schedulers.trampoline(),
         Schedulers.trampoline(),
@@ -44,6 +44,20 @@ public class AsyncLoadPresenterTest {
     when(mockedGetDataInteractor.getData()).thenReturn(Observable.just(mockedData));
 
     tested.attachView(mockedView);
+  }
+
+  @Test
+  public void should_return_no_op_view_when_detached() throws Exception {
+    tested.detachView();
+
+    assertThat(tested.getView()).isInstanceOf(NoOpView.class);
+  }
+
+  @Test
+  public void should_clean_on_destroy() throws Exception {
+    mockedDestroyAction.onNext(new Object());
+
+    assertThat(tested.getView()).isInstanceOf(NoOpView.class);
   }
 
   @Test
@@ -73,14 +87,6 @@ public class AsyncLoadPresenterTest {
 
     verify(mockedView, times(2)).showLoading();
     verify(mockedView).showContent(mockedData);
-  }
-
-
-  @Test
-  public void should_clean_on_destroy() throws Exception {
-    mockedDestroyAction.onNext(new Object());
-
-    assertThat(tested.getView()).isNull();
   }
 
   @Test
