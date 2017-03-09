@@ -18,5 +18,3 @@ test:
     override:
         - ./gradlew :app:check :app:javaCodeCoverage
         - bash <(curl -s https://codecov.io/bash)
-
-deployment:
