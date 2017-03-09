@@ -4,10 +4,6 @@ machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
         CODECOV_TOKEN: 2fc2826d-9f4f-43a3-8b24-25270f398a50
-    ruby:
-        version: 2.3.0
-    node:
-        version: v5.10.1
 
 dependencies:
     pre:
