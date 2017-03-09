@@ -19,10 +19,15 @@ task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDevDebugUnitTest') {
                  '**/BuildConfig.*',
                  '**/Manifest*.*',
                  '**/*Test*.*',
+                 '**/App.*',
+                 '**/*Activity.*',
+                 '**/*Module.*',
+                 '**/*Component.*',
+                 '**/*MembersInjector.*',
+                 '**/*AutoValue_*.*',
                  'android/**/*.*',
                  '**/*Factory.*',
-                 '**/*$*.class'],
-      includes: ['**/*Presenter*.class'])
+                 '**/*$*.class'])
 
   classDirectories = files([classFileTree])
   sourceDirectories = files("${project.projectDir}/android/src/main/java")
