@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import vn.tale.architecture.login.LoginActivity;
 import vn.tale.architecture.model.User;
-import vn.tale.architecture.model.exeption.UserNotFoundException;
+import vn.tale.architecture.model.error.AuthenticateError;
 import vn.tale.architecture.model.manager.UserModel;
 
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
@@ -57,7 +57,7 @@ public class LoginTest {
     when(mockedUserModel.login(eq(VALID_EMAIL), eq(VALID_PASSWORD)))
         .thenReturn(Single.just(mock(User.class)));
     when(mockedUserModel.login(eq(VALID_EMAIL), eq(INVALID_PASSWORD)))
-        .thenReturn(Single.<User>error(new UserNotFoundException("")));
+        .thenReturn(Single.<User>error(new AuthenticateError("")));
   }
 
   @Test

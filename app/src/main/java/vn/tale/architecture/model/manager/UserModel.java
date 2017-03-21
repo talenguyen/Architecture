@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subjects.BehaviorSubject;
 import vn.tale.architecture.model.User;
-import vn.tale.architecture.model.exeption.UserNotFoundException;
+import vn.tale.architecture.model.error.AuthenticateError;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
@@ -29,7 +29,7 @@ public class UserModel {
       if (MockManager.USER_MAP.containsKey(authInfo)) {
         return MockManager.USER_MAP.get(authInfo);
       }
-      throw new UserNotFoundException("user name & password is not matched");
+      throw new AuthenticateError();
     }).doOnEvent((user, throwable) -> {
       if (user != null) {
         userSubject.onNext(user);

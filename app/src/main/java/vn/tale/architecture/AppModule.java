@@ -2,11 +2,7 @@ package vn.tale.architecture;
 
 import dagger.Module;
 import dagger.Provides;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -17,8 +13,7 @@ import vn.tale.architecture.common.SchedulerSingleTransformer;
 /**
  * Created by Giang Nguyen on 2/27/17.
  */
-@Module
-public class AppModule {
+@Module class AppModule {
 
   @Provides EmailValidator emailValidator() {
     return new EmailValidator();
@@ -29,12 +24,8 @@ public class AppModule {
     return new SchedulerObservableTransformer() {
       @SuppressWarnings("unchecked")
       @Override public <T> ObservableTransformer<T, T> transformer() {
-        return (ObservableTransformer<T, T>) new ObservableTransformer() {
-          @Override public ObservableSource apply(Observable upstream) {
-            return upstream.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-          }
-        };
+        return upstream -> upstream.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
       }
     };
   }
@@ -44,12 +35,8 @@ public class AppModule {
     return new SchedulerSingleTransformer() {
       @SuppressWarnings("unchecked")
       @Override public <T> SingleTransformer<T, T> transformer() {
-        return (SingleTransformer<T, T>) new SingleTransformer() {
-          @Override public SingleSource apply(Single upstream) {
-            return upstream.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-          }
-        };
+        return upstream -> upstream.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
       }
     };
   }

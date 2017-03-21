@@ -13,41 +13,47 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import io.reactivex.Observable;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
-import vn.tale.architecture.AppComponent;
 import vn.tale.architecture.R;
-import vn.tale.architecture.common.base.BaseActivity;
+import vn.tale.architecture.common.base.MvpActivity;
+import vn.tale.architecture.common.dagger.DaggerComponentFactory;
+import vn.tale.architecture.common.mvp.MvpPresenter;
+import vn.tale.architecture.model.error.AuthenticateError;
+import vn.tale.architecture.model.error.InvalidEmailError;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public class LoginActivity extends BaseActivity implements LoginView {
+public class LoginActivity extends MvpActivity<LoginComponent, LoginViewState, LoginView>
+    implements LoginView {
 
   @BindView(R.id.etEmail) TextInputEditText etEmail;
   @BindView(R.id.tilEmailWrapper) TextInputLayout tilEmailWrapper;
   @BindView(R.id.etPassword) TextInputEditText etPassword;
   @BindView(R.id.btSignIn) Button btSignIn;
+  @BindString(R.string.successfully) String textSuccessfully;
   @BindString(R.string.email_is_invalid) String textEmailIsInvalid;
-
   @BindString(R.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
 
   @Inject LoginPresenter loginPresenter;
+
+  @Override protected DaggerComponentFactory<LoginComponent> daggerComponentFactory() {
+    return () -> App.get(this).getAppComponent().plus(new LoginModule());
+  }
+
+  @Override protected MvpPresenter<LoginViewState, LoginView> presenter() {
+    return loginPresenter;
+  }
+
+  @Override protected LoginView mvpView() {
+    return this;
+  }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     bindViews(this);
-    injectDependencies();
-  }
-
-  @Override protected void onStart() {
-    super.onStart();
-    loginPresenter.attachView(this);
-  }
-
-  @Override protected void onStop() {
-    loginPresenter.detachView();
-    super.onStop();
+    daggerComponent().inject(this);
   }
 
   @Override public Observable<CharSequence> emailChanges() {
@@ -62,36 +68,27 @@ public class LoginActivity extends BaseActivity implements LoginView {
     return RxView.clicks(btSignIn);
   }
 
-  @Override public void showInvalidEmailError() {
-    tilEmailWrapper.setError(textEmailIsInvalid);
-  }
+  @SuppressWarnings("ThrowableResultOfMethodCallIgnored") @Override
+  public void render(LoginViewState state) {
+    if (state.success()) {
+      Toast.makeText(this, textSuccessfully, Toast.LENGTH_SHORT).show();
+      finish();
+      return;
+    }
 
-  @Override public void hideEmailError() {
+    final Throwable error = state.error();
+
+    if (error instanceof InvalidEmailError) {
+      tilEmailWrapper.setError(textEmailIsInvalid);
+      btSignIn.setEnabled(false);
+      return;
+    }
+
     tilEmailWrapper.setError(null);
-  }
-
-  @Override public void showLoginFailMessage() {
-    tilEmailWrapper.setError(textEmailAndPasswordAreMismatch);
-  }
-
-  @Override public void showSuccessMessage() {
-    Toast.makeText(this, R.string.successfully, Toast.LENGTH_SHORT).show();
-  }
-
-  @Override public void disableSignInButton() {
-    btSignIn.setEnabled(false);
-  }
-
-  @Override public void enableSignInButton() {
     btSignIn.setEnabled(true);
-  }
 
-  @Override public void hide() {
-    finish();
-  }
-
-  private void injectDependencies() {
-    final AppComponent appComponent = App.get(this).getAppComponent();
-    appComponent.plus(new LoginModule()).inject(this);
+    if (error instanceof AuthenticateError) {
+      tilEmailWrapper.setError(textEmailAndPasswordAreMismatch);
+    }
   }
 }

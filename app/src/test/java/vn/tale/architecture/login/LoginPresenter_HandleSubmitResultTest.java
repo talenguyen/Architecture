@@ -9,7 +9,7 @@ import org.junit.Test;
 import vn.tale.architecture.common.EmailValidator;
 import vn.tale.architecture.common.SchedulerSingleTransformer;
 import vn.tale.architecture.model.User;
-import vn.tale.architecture.model.exeption.UserNotFoundException;
+import vn.tale.architecture.model.error.AuthenticateError;
 import vn.tale.architecture.model.manager.UserModel;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Giang Nguyen on 2/21/17.
  */
-public class LoginPresenterTest {
+public class LoginPresenter_HandleSubmitResultTest {
 
   private static final String INVALID_EMAIL = "foo@";
   private static final String VALID_EMAIL = "foo@tiki.vn";
@@ -37,8 +37,8 @@ public class LoginPresenterTest {
   public void setUp() throws Exception {
     mockedLoginView = mock(LoginView.class);
     mockedUserModel = mock(UserModel.class);
-    emailStream = BehaviorSubject.<CharSequence>createDefault("");
-    passwordStream = BehaviorSubject.<CharSequence>createDefault("");
+    emailStream = BehaviorSubject.createDefault("");
+    passwordStream = BehaviorSubject.createDefault("");
     signInClick = PublishSubject.create();
     tested = new LoginPresenter(
         mockedUserModel,
@@ -51,48 +51,26 @@ public class LoginPresenterTest {
     when(mockedUserModel.login(eq(VALID_EMAIL), eq(VALID_PASSWORD)))
         .thenReturn(Single.just(mock(User.class)));
     when(mockedUserModel.login(eq(INVALID_EMAIL), eq(VALID_PASSWORD)))
-        .thenReturn(Single.<User>error(new UserNotFoundException("")));
+        .thenReturn(Single.error(new AuthenticateError()));
 
     tested.attachView(mockedLoginView);
   }
 
   @Test
-  public void should_disable_login_button_by_default() throws Exception {
-    verify(mockedLoginView).disableSignInButton();
-  }
-
-  @Test
-  public void should_show_email_error_when_email_invalid() throws Exception {
-    emailStream.onNext(INVALID_EMAIL);
-
-    verify(mockedLoginView).showInvalidEmailError();
-  }
-
-  @Test
-  public void should_hide_email_error_android_enable_sign_button_when_email_is_corrected()
-      throws Exception {
-    emailStream.onNext(VALID_EMAIL);
-
-    verify(mockedLoginView).hideEmailError();
-    verify(mockedLoginView).enableSignInButton();
-  }
-
-  @Test
-  public void should_show_error_when_login_fail() throws Exception {
+  public void error() throws Exception {
     emailStream.onNext(INVALID_EMAIL);
     passwordStream.onNext(VALID_PASSWORD);
     signInClick.onNext(new Object());
 
-    verify(mockedLoginView).showLoginFailMessage();
+    verify(mockedLoginView).render(LoginViewState.loginState(false, new AuthenticateError()));
   }
 
   @Test
-  public void should_success_message_then_hide_when_login_success() throws Exception {
+  public void success() throws Exception {
     emailStream.onNext(VALID_EMAIL);
     passwordStream.onNext(VALID_PASSWORD);
     signInClick.onNext(new Object());
 
-    verify(mockedLoginView).showSuccessMessage();
-    verify(mockedLoginView).hide();
+    verify(mockedLoginView).render(LoginViewState.loginState(true, null));
   }
 }
