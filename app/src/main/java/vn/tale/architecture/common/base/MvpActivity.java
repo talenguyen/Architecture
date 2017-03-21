@@ -18,8 +18,11 @@ public abstract class MvpActivity<DaggerComponent, ViewState, View extends MvpVi
 
   protected abstract View mvpView();
 
+  protected abstract void injectDependencies();
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    injectDependencies();
     mvpLifecycleDelegate = new MvpLifecycleDelegate<>(presenter(), mvpView());
   }
 

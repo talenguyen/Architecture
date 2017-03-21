@@ -53,14 +53,14 @@ android {
   buildTypes {
     release {
       minifyEnabled true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'),
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
           "$project.rootDir/tools/rules-proguard.pro"
       signingConfig signingConfigs.release
     }
     debug {
       minifyEnabled true
       testCoverageEnabled true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'),
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
           "$project.rootDir/tools/rules-proguard-debug.pro"
       signingConfig signingConfigs.debug
     }

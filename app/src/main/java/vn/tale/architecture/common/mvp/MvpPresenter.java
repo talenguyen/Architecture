@@ -46,6 +46,9 @@ public class MvpPresenter<ViewState, View extends MvpView<ViewState>> {
 
   protected void setState(ViewState state) {
     this.state = state;
+    if (view != null) {
+      view.render(state);
+    }
   }
 
   protected void onViewAttached() {
@@ -57,7 +60,7 @@ public class MvpPresenter<ViewState, View extends MvpView<ViewState>> {
   }
 
   /**
-   * Good place to release resources. This will be called when activity destroy and not re-create
+   * Good place to release resources. This will be called when activity release and not re-create
    */
   protected void onStop() {
 
