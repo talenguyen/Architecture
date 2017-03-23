@@ -30,11 +30,7 @@ public class UserModel {
         return MockManager.USER_MAP.get(authInfo);
       }
       throw new AuthenticateError();
-    }).doOnEvent((user, throwable) -> {
-      if (user != null) {
-        userSubject.onNext(user);
-      }
-    });
+    }).doOnSuccess(userSubject::onNext);
   }
 
   public Completable logout() {

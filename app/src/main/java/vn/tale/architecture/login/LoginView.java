@@ -7,7 +7,7 @@ import vn.tale.architecture.common.mvp.MvpView;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-interface LoginView extends MvpView<LoginViewState> {
+interface LoginView extends MvpView<LoginUiState> {
 
   Observable<CharSequence> emailChanges();
 

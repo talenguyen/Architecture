@@ -43,7 +43,7 @@ public class MyReposCoordinator extends Coordinator {
     disposable = viewModel.getState()
         .subscribe(myReposState -> {
           if (myReposState.loading()) {
-            // TODO: 3/3/17 show loading
+            // TODO: 3/3/17 show inProgress
           } else if (myReposState.error() == null) {
             repoListDelegate.setItems(myReposState.items());
           } else {

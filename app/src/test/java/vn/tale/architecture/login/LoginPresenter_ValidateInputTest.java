@@ -6,7 +6,6 @@ import io.reactivex.subjects.Subject;
 import org.junit.Before;
 import org.junit.Test;
 import vn.tale.architecture.common.EmailValidator;
-import vn.tale.architecture.common.SchedulerSingleTransformer;
 import vn.tale.architecture.model.error.InvalidEmailError;
 import vn.tale.architecture.model.manager.UserModel;
 
@@ -34,8 +33,8 @@ public class LoginPresenter_ValidateInputTest {
     passwordStream = BehaviorSubject.createDefault("");
     tested = new LoginPresenter(
         mock(UserModel.class),
-        new EmailValidator(),
-        SchedulerSingleTransformer.TEST);
+        new EmailValidator()
+    );
 
     when(mockedLoginView.emailChanges()).thenReturn(emailStream);
     when(mockedLoginView.passwordChanges()).thenReturn(passwordStream);
@@ -45,16 +44,16 @@ public class LoginPresenter_ValidateInputTest {
   }
 
   @Test
-  public void invalidEmail() throws Exception {
+  public void invalid_email_THEN_render_error_state() throws Exception {
     emailStream.onNext(INVALID_EMAIL);
 
-    verify(mockedLoginView).render(LoginViewState.loginState(false, new InvalidEmailError()));
+    verify(mockedLoginView).render(LoginUiState.error(new InvalidEmailError()));
   }
 
   @Test
-  public void validEmail() throws Exception {
+  public void valid_email_THEN_render_idle_state() throws Exception {
     emailStream.onNext(VALID_EMAIL);
 
-    verify(mockedLoginView).render(LoginViewState.loginState(false, null));
+    verify(mockedLoginView).render(LoginUiState.idle());
   }
 }

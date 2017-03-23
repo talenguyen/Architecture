@@ -17,6 +17,7 @@ public class LcePresenter<Content>
 
   @Override protected void onViewAttached() {
     super.onViewAttached();
+
     disposeOnDetach(getView().loadIntent().subscribe(o -> load()));
   }
 

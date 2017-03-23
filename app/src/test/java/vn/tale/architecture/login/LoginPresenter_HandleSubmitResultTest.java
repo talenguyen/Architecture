@@ -5,12 +5,13 @@ import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import vn.tale.architecture.common.EmailValidator;
-import vn.tale.architecture.common.SchedulerSingleTransformer;
 import vn.tale.architecture.model.User;
 import vn.tale.architecture.model.error.AuthenticateError;
 import vn.tale.architecture.model.manager.UserModel;
+import vn.tale.architecture.rxjava.ImmediateSchedulersRule;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -25,6 +26,9 @@ public class LoginPresenter_HandleSubmitResultTest {
   private static final String INVALID_EMAIL = "foo@";
   private static final String VALID_EMAIL = "foo@tiki.vn";
   private static final String VALID_PASSWORD = "123456";
+
+  @Rule public final ImmediateSchedulersRule immediateSchedulersRule =
+      new ImmediateSchedulersRule();
 
   LoginView mockedLoginView;
   UserModel mockedUserModel;
@@ -42,8 +46,8 @@ public class LoginPresenter_HandleSubmitResultTest {
     signInClick = PublishSubject.create();
     tested = new LoginPresenter(
         mockedUserModel,
-        new EmailValidator(),
-        SchedulerSingleTransformer.TEST);
+        new EmailValidator()
+    );
 
     when(mockedLoginView.emailChanges()).thenReturn(emailStream);
     when(mockedLoginView.passwordChanges()).thenReturn(passwordStream);
@@ -62,7 +66,7 @@ public class LoginPresenter_HandleSubmitResultTest {
     passwordStream.onNext(VALID_PASSWORD);
     signInClick.onNext(new Object());
 
-    verify(mockedLoginView).render(LoginViewState.loginState(false, new AuthenticateError()));
+    verify(mockedLoginView).render(LoginUiState.error(new AuthenticateError()));
   }
 
   @Test
@@ -71,6 +75,6 @@ public class LoginPresenter_HandleSubmitResultTest {
     passwordStream.onNext(VALID_PASSWORD);
     signInClick.onNext(new Object());
 
-    verify(mockedLoginView).render(LoginViewState.loginState(true, null));
+    verify(mockedLoginView).render(LoginUiState.success());
   }
 }
