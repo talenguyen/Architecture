@@ -1,6 +1,5 @@
 package vn.tale.architecture.rxjava;
 
-import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import org.junit.rules.TestRule;
@@ -18,13 +17,10 @@ public class ImmediateSchedulersRule implements TestRule {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setNewThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        RxAndroidPlugins.reset();
-        RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
         try {
           base.evaluate();
         } finally {
           RxJavaPlugins.reset();
-          RxAndroidPlugins.reset();
         }
       }
     };
