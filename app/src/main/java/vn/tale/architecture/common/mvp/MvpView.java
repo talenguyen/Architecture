@@ -4,7 +4,7 @@ package vn.tale.architecture.common.mvp;
  * Created by Giang Nguyen on 3/20/17.
  */
 
-public interface MvpView<UiState> {
+public interface MvpView<UiModel> {
 
-  void render(UiState state);
+  void render(UiModel state);
 }

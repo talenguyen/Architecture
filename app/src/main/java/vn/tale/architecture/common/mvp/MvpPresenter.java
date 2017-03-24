@@ -9,9 +9,9 @@ import io.reactivex.disposables.Disposable;
  * Created by Giang Nguyen on 3/20/17.
  */
 
-public class MvpPresenter<UiState, View extends MvpView<UiState>> {
+public class MvpPresenter<UiModel, View extends MvpView<UiModel>> {
 
-  @VisibleForTesting UiState state;
+  @VisibleForTesting UiModel state;
   private CompositeDisposable disposablesToDisposeOnStop;
   private CompositeDisposable disposablesToDisposeOnDetach;
   private View view;
@@ -44,7 +44,7 @@ public class MvpPresenter<UiState, View extends MvpView<UiState>> {
     return view;
   }
 
-  protected void setState(UiState state) {
+  protected void setState(UiModel state) {
     if (state.equals(this.state)) {
       return;
     }

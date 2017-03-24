@@ -14,10 +14,10 @@ import vn.tale.architecture.model.manager.UserModel;
 public class LoginModule {
 
   @Provides
-  ViewModel<LoginUiState> provideLoginViewModel(UserModel userModel,
+  ViewModel<LoginUiModel> provideLoginViewModel(UserModel userModel,
       EmailValidator emailValidator) {
-    return new Builder<LoginUiState>()
-        .initialState(LoginUiState.idle())
+    return new Builder<LoginUiModel>()
+        .initialState(LoginUiModel.idle())
         .reducer(new Reducer())
         .transformers(
             new CheckEmailTransformer(emailValidator),

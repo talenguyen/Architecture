@@ -47,13 +47,13 @@ public class LoginPresenter_ValidateInputTest {
   public void invalid_email_THEN_render_error_state() throws Exception {
     emailStream.onNext(INVALID_EMAIL);
 
-    verify(mockedLoginView).render(LoginUiState.error(new InvalidEmailError()));
+    verify(mockedLoginView).render(LoginUiModel.error(new InvalidEmailError()));
   }
 
   @Test
   public void valid_email_THEN_render_idle_state() throws Exception {
     emailStream.onNext(VALID_EMAIL);
 
-    verify(mockedLoginView).render(LoginUiState.idle());
+    verify(mockedLoginView).render(LoginUiModel.idle());
   }
 }

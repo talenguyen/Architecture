@@ -11,14 +11,14 @@ import vn.tale.architecture.common.mvvm.ViewModel;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public abstract class MvvmActivity<DaggerComponent, UiState> extends BaseActivity<DaggerComponent> {
+public abstract class MvvmActivity<DaggerComponent, UiModel> extends BaseActivity<DaggerComponent> {
 
-  private LifecycleDelegate<UiState> lifecycleDelegate;
+  private LifecycleDelegate<UiModel> lifecycleDelegate;
   private CompositeDisposable disposables = new CompositeDisposable();
 
   protected abstract void injectDependencies();
 
-  protected abstract ViewModel<UiState> viewModel();
+  protected abstract ViewModel<UiModel> viewModel();
 
   protected void disposeOnStop(Disposable disposable) {
     disposables.add(disposable);

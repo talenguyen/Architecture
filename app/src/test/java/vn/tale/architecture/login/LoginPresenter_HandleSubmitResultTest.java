@@ -66,7 +66,7 @@ public class LoginPresenter_HandleSubmitResultTest {
     passwordStream.onNext(VALID_PASSWORD);
     signInClick.onNext(new Object());
 
-    verify(mockedLoginView).render(LoginUiState.error(new AuthenticateError()));
+    verify(mockedLoginView).render(LoginUiModel.error(new AuthenticateError()));
   }
 
   @Test
@@ -75,6 +75,6 @@ public class LoginPresenter_HandleSubmitResultTest {
     passwordStream.onNext(VALID_PASSWORD);
     signInClick.onNext(new Object());
 
-    verify(mockedLoginView).render(LoginUiState.success());
+    verify(mockedLoginView).render(LoginUiModel.success());
   }
 }

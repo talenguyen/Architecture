@@ -11,17 +11,17 @@ import io.reactivex.subjects.PublishSubject;
 /**
  * Created by Giang Nguyen on 3/23/17.
  */
-public class ViewModel<UiState> {
+public class ViewModel<UiModel> {
 
-  private final UiState initialState;
-  private final BiFunction<UiState, Result, UiState> reducer;
+  private final UiModel initialState;
+  private final BiFunction<UiModel, Result, UiModel> reducer;
   private final ObservableTransformer<Action, Result>[] transformers;
   private final PublishSubject<Action> action$;
-  private final BehaviorSubject<UiState> state$;
+  private final BehaviorSubject<UiModel> state$;
   private Disposable disposable;
 
-  ViewModel(@NonNull UiState initialState,
-      @NonNull BiFunction<UiState, Result, UiState> reducer,
+  ViewModel(@NonNull UiModel initialState,
+      @NonNull BiFunction<UiModel, Result, UiModel> reducer,
       @NonNull ObservableTransformer<Action, Result>[] transformers) {
     this.initialState = initialState;
     this.reducer = reducer;
@@ -30,7 +30,7 @@ public class ViewModel<UiState> {
     this.state$ = BehaviorSubject.create();
   }
 
-  public Observable<UiState> state$() {
+  public Observable<UiModel> state$() {
     return state$;
   }
 

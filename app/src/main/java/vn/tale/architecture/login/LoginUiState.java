@@ -3,7 +3,7 @@ package vn.tale.architecture.login;
 /**
  * Created by Giang Nguyen on 3/21/17.
  */
-public final class LoginUiState {
+public final class LoginUiModel {
 
   public final boolean inProgress;
 
@@ -11,33 +11,33 @@ public final class LoginUiState {
 
   public final Throwable error;
 
-  private LoginUiState(boolean inProgress, boolean success, Throwable error) {
+  private LoginUiModel(boolean inProgress, boolean success, Throwable error) {
     this.inProgress = inProgress;
     this.success = success;
     this.error = error;
   }
 
-  public static LoginUiState idle() {
-    return new LoginUiState(false, false, null);
+  public static LoginUiModel idle() {
+    return new LoginUiModel(false, false, null);
   }
 
-  public static LoginUiState inProgress() {
-    return new LoginUiState(true, false, null);
+  public static LoginUiModel inProgress() {
+    return new LoginUiModel(true, false, null);
   }
 
-  public static LoginUiState success() {
-    return new LoginUiState(false, true, null);
+  public static LoginUiModel success() {
+    return new LoginUiModel(false, true, null);
   }
 
-  public static LoginUiState error(Throwable throwable) {
-    return new LoginUiState(false, false, throwable);
+  public static LoginUiModel error(Throwable throwable) {
+    return new LoginUiModel(false, false, throwable);
   }
 
   @Override public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    LoginUiState that = (LoginUiState) o;
+    LoginUiModel that = (LoginUiModel) o;
 
     if (inProgress != that.inProgress) return false;
     if (success != that.success) return false;
@@ -52,7 +52,7 @@ public final class LoginUiState {
   }
 
   @Override public String toString() {
-    return "LoginUiState{" +
+    return "LoginUiModel{" +
         "inProgress=" + inProgress +
         ", success=" + success +
         ", error=" + error +

@@ -9,15 +9,15 @@ import vn.tale.architecture.login.result.SubmitResult;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public class Reducer implements BiFunction<LoginUiState, Result, LoginUiState> {
+public class Reducer implements BiFunction<LoginUiModel, Result, LoginUiModel> {
 
-  @Override public LoginUiState apply(LoginUiState loginUiState, Result result) {
+  @Override public LoginUiModel apply(LoginUiModel loginUiModel, Result result) {
     if (result == SubmitResult.IN_FLIGHT) {
-      return LoginUiState.inProgress();
+      return LoginUiModel.inProgress();
     } else if (result == CheckEmailResult.SUCCESS) {
-      return LoginUiState.idle();
+      return LoginUiModel.idle();
     } else if (result == SubmitResult.SUCCESS) {
-      return LoginUiState.success();
+      return LoginUiModel.success();
     }
     final Throwable error;
     if (result instanceof SubmitResult) {
@@ -27,6 +27,6 @@ public class Reducer implements BiFunction<LoginUiState, Result, LoginUiState> {
     } else {
       error = new IllegalArgumentException("unknown result " + result);
     }
-    return LoginUiState.error(error);
+    return LoginUiModel.error(error);
   }
 }

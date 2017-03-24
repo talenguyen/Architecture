@@ -28,7 +28,7 @@ import vn.tale.architecture.model.error.OnErrorNotImplementedException;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiState> {
+public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiModel> {
 
   @BindView(R.id.etEmail) TextInputEditText etEmail;
   @BindView(R.id.tilEmailWrapper) TextInputLayout tilEmailWrapper;
@@ -39,7 +39,7 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiState> {
   @BindString(R.string.email_is_invalid) String textEmailIsInvalid;
   @BindString(R.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
 
-  @Inject ViewModel<LoginUiState> viewModel;
+  @Inject ViewModel<LoginUiModel> viewModel;
 
   @Override protected DaggerComponentFactory<LoginComponent> daggerComponentFactory() {
     return () -> App.get(this).getAppComponent().plus(new LoginModule());
@@ -49,7 +49,7 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiState> {
     daggerComponent().inject(this);
   }
 
-  @Override protected ViewModel<LoginUiState> viewModel() {
+  @Override protected ViewModel<LoginUiModel> viewModel() {
     return viewModel;
   }
 
@@ -78,7 +78,7 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiState> {
   }
 
   @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
-  public void render(LoginUiState state) {
+  public void render(LoginUiModel state) {
     runOnUiThread(() -> {
       if (state.inProgress) {
         renderLoading();
