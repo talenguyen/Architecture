@@ -2,8 +2,10 @@ package vn.tale.architecture.common.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import vn.tale.architecture.common.mvvm.Action;
 import vn.tale.architecture.common.mvvm.LifecycleDelegate;
 import vn.tale.architecture.common.mvvm.ViewModel;
 
@@ -24,6 +26,8 @@ public abstract class MvvmActivity<DaggerComponent, UiModel> extends BaseActivit
     disposables.add(disposable);
   }
 
+  @WorkerThread protected abstract void render(UiModel uiModel);
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     injectDependencies();
@@ -33,11 +37,18 @@ public abstract class MvvmActivity<DaggerComponent, UiModel> extends BaseActivit
   @Override protected void onStart() {
     super.onStart();
     lifecycleDelegate.onStart();
+    disposeOnStop(viewModel().state$()
+        .distinctUntilChanged()
+        .subscribe(this::render));
   }
 
   @Override protected void onStop() {
     super.onStop();
     lifecycleDelegate.onStop(isFinishing());
     disposables.clear();
+  }
+
+  protected void dispatch(Action action) {
+    viewModel().dispatch(action);
   }
 }

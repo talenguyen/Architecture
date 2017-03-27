@@ -3,8 +3,9 @@ package vn.tale.architecture.login;
 import dagger.Module;
 import dagger.Provides;
 import vn.tale.architecture.common.EmailValidator;
-import vn.tale.architecture.common.mvvm.Builder;
 import vn.tale.architecture.common.mvvm.ViewModel;
+import vn.tale.architecture.login.transformer.CheckEmailTransformer;
+import vn.tale.architecture.login.transformer.SubmitTransformer;
 import vn.tale.architecture.model.manager.UserModel;
 
 /**
@@ -16,9 +17,9 @@ public class LoginModule {
   @Provides
   ViewModel<LoginUiModel> provideLoginViewModel(UserModel userModel,
       EmailValidator emailValidator) {
-    return new Builder<LoginUiModel>()
+    return ViewModel.<LoginUiModel>builder()
         .initialState(LoginUiModel.idle())
-        .reducer(new Reducer())
+        .reducer(new LoginReducer())
         .transformers(
             new CheckEmailTransformer(emailValidator),
             new SubmitTransformer(userModel)

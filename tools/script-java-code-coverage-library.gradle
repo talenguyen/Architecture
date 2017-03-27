@@ -1,11 +1,11 @@
 apply plugin: 'jacoco'
 
-task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDevDebugUnitTest') {
+task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
   reports {
     xml {
       enabled true
-      destination "$project.buildDir/reports/jacoco/jacocoTestDevDebugUnitTestReport.xml"
+      destination "$project.buildDir/reports/jacoco/jacocoTestReport.xml"
     }
     html {
       enabled true
@@ -13,7 +13,7 @@ task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDevDebugUnitTest') {
     }
   }
 
-  def classFileTree = fileTree(dir: "${buildDir}/intermediates/classes/",
+  def classFileTree = fileTree(dir: "${buildDir}/intermediates/classes/debug",
       excludes: ['**/R.class',
                  '**/R$*.class',
                  '**/BR.class',
@@ -39,5 +39,5 @@ task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDevDebugUnitTest') {
 
   classDirectories = files([classFileTree])
   sourceDirectories = files("${project.projectDir}/android/src/main/java")
-  executionData = files("${buildDir}/jacoco/testDevDebugUnitTest.exec")
+  executionData = files("${buildDir}/jacoco/testDebugUnitTest.exec")
 }

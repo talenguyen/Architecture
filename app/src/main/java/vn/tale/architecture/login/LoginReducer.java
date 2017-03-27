@@ -1,6 +1,5 @@
 package vn.tale.architecture.login;
 
-import io.reactivex.functions.BiFunction;
 import vn.tale.architecture.common.mvvm.Result;
 import vn.tale.architecture.login.result.CheckEmailResult;
 import vn.tale.architecture.login.result.SubmitResult;
@@ -9,7 +8,7 @@ import vn.tale.architecture.login.result.SubmitResult;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public class Reducer implements BiFunction<LoginUiModel, Result, LoginUiModel> {
+public class LoginReducer implements vn.tale.architecture.common.mvvm.Reducer<LoginUiModel> {
 
   @Override public LoginUiModel apply(LoginUiModel loginUiModel, Result result) {
     if (result == SubmitResult.IN_FLIGHT) {

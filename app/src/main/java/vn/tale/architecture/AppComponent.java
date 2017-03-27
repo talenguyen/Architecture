@@ -2,6 +2,8 @@ package vn.tale.architecture;
 
 import dagger.Component;
 import javax.inject.Singleton;
+import vn.tale.architecture.counter.CounterComponent;
+import vn.tale.architecture.counter.CounterModule;
 import vn.tale.architecture.login.LoginComponent;
 import vn.tale.architecture.login.LoginModule;
 import vn.tale.architecture.repos.ReposComponent;
@@ -20,4 +22,6 @@ public interface AppComponent {
   ReposComponent plus(ReposModule reposModule);
 
   LoginComponent plus(LoginModule loginModule);
+
+  CounterComponent plus(CounterModule counterModule);
 }

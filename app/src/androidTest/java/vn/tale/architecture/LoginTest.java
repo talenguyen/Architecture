@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Rule;
@@ -55,9 +55,9 @@ public class LoginTest {
     ((TestAppComponent) app.getAppComponent()).inject(this);
 
     when(mockedUserModel.login(eq(VALID_EMAIL), eq(VALID_PASSWORD)))
-        .thenReturn(Observable.just(mock(User.class)));
+        .thenReturn(Single.just(mock(User.class)));
     when(mockedUserModel.login(eq(VALID_EMAIL), eq(INVALID_PASSWORD)))
-        .thenReturn(Observable.error(new AuthenticateError()));
+        .thenReturn(Single.error(new AuthenticateError()));
   }
 
   @Test

@@ -1,7 +1,9 @@
 package vn.tale.architecture.login;
 
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
@@ -65,20 +67,17 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiModel> {
     disposeOnStop(RxTextView.textChanges(etEmail)
         .debounce(200, TimeUnit.MILLISECONDS)
         .map(email -> new CheckEmailAction(email.toString()))
-        .subscribe(viewModel::dispatch));
+        .subscribe(this::dispatch));
 
     disposeOnStop(RxView.clicks(btSignIn)
         .map(ignored -> new SubmitAction(
             etEmail.getText().toString(),
             etPassword.getText().toString()))
-        .subscribe(viewModel::dispatch));
-
-    disposeOnStop(viewModel.state$()
-        .subscribe(this::render));
+        .subscribe(this::dispatch));
   }
 
-  @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
-  public void render(LoginUiModel state) {
+  @WorkerThread
+  @Override public void render(LoginUiModel state) {
     runOnUiThread(() -> {
       if (state.inProgress) {
         renderLoading();
@@ -98,6 +97,7 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiModel> {
     tilEmailWrapper.setError(null);
   }
 
+  @MainThread
   private void renderError(Throwable error) {
     btSignIn.setVisibility(View.VISIBLE);
     pbProgress.setVisibility(View.GONE);
@@ -111,11 +111,13 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiModel> {
     }
   }
 
+  @MainThread
   private void renderSuccess() {
     Toast.makeText(this, textSuccessfully, Toast.LENGTH_SHORT).show();
     finish();
   }
 
+  @MainThread
   private void renderLoading() {
     btSignIn.setVisibility(View.GONE);
     pbProgress.setVisibility(View.VISIBLE);
