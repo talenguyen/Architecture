@@ -1,54 +1,58 @@
 package vn.tale.architecture.common.base;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import vn.tale.architecture.common.mvvm.Action;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import vn.tale.architecture.common.mvvm.LifecycleDelegate;
-import vn.tale.architecture.common.mvvm.ViewModel;
+import vn.tale.architecture.common.mvvm.Store;
 
 /**
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public abstract class MvvmActivity<DaggerComponent, UiModel> extends BaseActivity<DaggerComponent> {
+public abstract class ReduxActivity<DaggerComponent, UiState>
+    extends BaseActivity<DaggerComponent> {
 
-  private LifecycleDelegate<UiModel> lifecycleDelegate;
+  private LifecycleDelegate<UiState> lifecycleDelegate;
   private CompositeDisposable disposables = new CompositeDisposable();
 
   protected abstract void injectDependencies();
 
-  protected abstract ViewModel<UiModel> viewModel();
+  protected abstract Store<UiState> store();
 
   protected void disposeOnStop(Disposable disposable) {
     disposables.add(disposable);
   }
 
-  @WorkerThread protected abstract void render(UiModel uiModel);
+  private Consumer<? super UiState> render() {
+    return (state) -> render(state).run();
+  }
+
+  @NonNull protected abstract Action render(UiState state);
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     injectDependencies();
-    lifecycleDelegate = new LifecycleDelegate<>(viewModel());
+    lifecycleDelegate = new LifecycleDelegate<>(store());
   }
 
   @Override protected void onStart() {
     super.onStart();
     lifecycleDelegate.onStart();
-    disposeOnStop(viewModel().state$()
+    disposeOnStop(store().state$()
         .distinctUntilChanged()
-        .subscribe(this::render));
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(render()));
   }
 
   @Override protected void onStop() {
     super.onStop();
     lifecycleDelegate.onStop(isFinishing());
     disposables.clear();
-  }
-
-  protected void dispatch(Action action) {
-    viewModel().dispatch(action);
   }
 }

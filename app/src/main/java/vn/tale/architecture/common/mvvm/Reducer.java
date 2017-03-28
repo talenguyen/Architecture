@@ -6,5 +6,5 @@ import io.reactivex.functions.BiFunction;
  * Created by Giang Nguyen on 3/24/17.
  */
 
-public interface Reducer<UiModel> extends BiFunction<UiModel, Result, UiModel> {
+public interface Reducer<UiState> extends BiFunction<UiState, Result, UiState> {
 }

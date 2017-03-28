@@ -4,21 +4,21 @@ package vn.tale.architecture.common.mvvm;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public class LifecycleDelegate<UiModel> {
+public class LifecycleDelegate<UiState> {
 
-  private final ViewModel<UiModel> viewModel;
+  private final Store<UiState> store;
 
-  public LifecycleDelegate(ViewModel<UiModel> viewModel) {
-    this.viewModel = viewModel;
+  public LifecycleDelegate(Store<UiState> store) {
+    this.store = store;
   }
 
   public void onStart() {
-    viewModel.startBinding();
+    store.startBinding();
   }
 
   public void onStop(boolean finishing) {
     if (finishing) {
-      viewModel.stopBinding();
+      store.stopBinding();
     }
   }
 }

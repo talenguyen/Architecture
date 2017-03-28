@@ -1,9 +1,8 @@
 package vn.tale.architecture.login;
 
 import android.os.Bundle;
-import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
@@ -13,13 +12,14 @@ import butterknife.BindString;
 import butterknife.BindView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+import io.reactivex.functions.Action;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
-import vn.tale.architecture.common.base.MvvmActivity;
+import vn.tale.architecture.common.base.ReduxActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
-import vn.tale.architecture.common.mvvm.ViewModel;
+import vn.tale.architecture.common.mvvm.Store;
 import vn.tale.architecture.login.action.CheckEmailAction;
 import vn.tale.architecture.login.action.SubmitAction;
 import vn.tale.architecture.model.error.AuthenticateError;
@@ -30,7 +30,7 @@ import vn.tale.architecture.model.error.OnErrorNotImplementedException;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiModel> {
+public class LoginActivity extends ReduxActivity<LoginComponent, LoginUiState> {
 
   @BindView(R.id.etEmail) TextInputEditText etEmail;
   @BindView(R.id.tilEmailWrapper) TextInputLayout tilEmailWrapper;
@@ -41,7 +41,7 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiModel> {
   @BindString(R.string.email_is_invalid) String textEmailIsInvalid;
   @BindString(R.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
 
-  @Inject ViewModel<LoginUiModel> viewModel;
+  @Inject Store<LoginUiState> store;
 
   @Override protected DaggerComponentFactory<LoginComponent> daggerComponentFactory() {
     return () -> App.get(this).getAppComponent().plus(new LoginModule());
@@ -51,8 +51,8 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiModel> {
     daggerComponent().inject(this);
   }
 
-  @Override protected ViewModel<LoginUiModel> viewModel() {
-    return viewModel;
+  @Override protected Store<LoginUiState> store() {
+    return store;
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,59 +67,61 @@ public class LoginActivity extends MvvmActivity<LoginComponent, LoginUiModel> {
     disposeOnStop(RxTextView.textChanges(etEmail)
         .debounce(200, TimeUnit.MILLISECONDS)
         .map(email -> new CheckEmailAction(email.toString()))
-        .subscribe(this::dispatch));
+        .subscribe(action -> store.dispatch(action)));
 
     disposeOnStop(RxView.clicks(btSignIn)
         .map(ignored -> new SubmitAction(
             etEmail.getText().toString(),
             etPassword.getText().toString()))
-        .subscribe(this::dispatch));
+        .subscribe(action -> store.dispatch(action)));
   }
 
-  @WorkerThread
-  @Override public void render(LoginUiModel state) {
-    runOnUiThread(() -> {
-      if (state.inProgress) {
-        renderLoading();
-      } else if (state.success) {
-        renderSuccess();
-      } else if (state.error != null) {
-        renderError(state.error);
-      } else {
-        renderIdle();
-      }
-    });
-  }
-
-  private void renderIdle() {
-    btSignIn.setVisibility(View.VISIBLE);
-    pbProgress.setVisibility(View.GONE);
-    tilEmailWrapper.setError(null);
-  }
-
-  @MainThread
-  private void renderError(Throwable error) {
-    btSignIn.setVisibility(View.VISIBLE);
-    pbProgress.setVisibility(View.GONE);
-
-    if (error instanceof InvalidEmailError) {
-      tilEmailWrapper.setError(textEmailIsInvalid);
-    } else if (error instanceof AuthenticateError) {
-      tilEmailWrapper.setError(textEmailAndPasswordAreMismatch);
+  @NonNull public Action render(LoginUiState state) {
+    if (state.inProgress) {
+      return renderLoading();
+    } else if (state.success) {
+      return renderSuccess();
+    } else if (state.error != null) {
+      return renderError(state.error);
     } else {
-      throw new OnErrorNotImplementedException(error);
+      return renderIdle();
     }
   }
 
-  @MainThread
-  private void renderSuccess() {
-    Toast.makeText(this, textSuccessfully, Toast.LENGTH_SHORT).show();
-    finish();
+  @NonNull private Action renderLoading() {
+    return () -> {
+      btSignIn.setVisibility(View.GONE);
+      pbProgress.setVisibility(View.VISIBLE);
+    };
   }
 
-  @MainThread
-  private void renderLoading() {
-    btSignIn.setVisibility(View.GONE);
-    pbProgress.setVisibility(View.VISIBLE);
+  @NonNull private Action renderSuccess() {
+    return () -> {
+      Toast.makeText(this, textSuccessfully, Toast.LENGTH_SHORT).show();
+      finish();
+    };
+  }
+
+  @NonNull private Action renderError(Throwable error) {
+    return () -> {
+      btSignIn.setVisibility(View.VISIBLE);
+      pbProgress.setVisibility(View.GONE);
+
+      if (error instanceof InvalidEmailError) {
+        tilEmailWrapper.setError(textEmailIsInvalid);
+      } else if (error instanceof AuthenticateError) {
+        tilEmailWrapper.setError(textEmailAndPasswordAreMismatch);
+      } else {
+        throw new OnErrorNotImplementedException(error);
+      }
+    };
+  }
+
+  @NonNull private Action renderIdle() {
+    return () -> {
+      btSignIn.setVisibility(View.VISIBLE);
+      pbProgress.setVisibility(View.GONE);
+      tilEmailWrapper.setError(null);
+    };
   }
 }

@@ -24,4 +24,10 @@ public class CheckEmailResult implements Result {
   public Throwable error() {
     return error;
   }
+
+  @Override public String toString() {
+    return "CheckEmailResult{" +
+        "error=" + error +
+        '}';
+  }
 }

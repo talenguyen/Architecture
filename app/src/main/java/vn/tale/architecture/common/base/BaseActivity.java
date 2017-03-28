@@ -21,18 +21,18 @@ public abstract class BaseActivity<DaggerComponent> extends AppCompatActivity {
 
   protected abstract DaggerComponentFactory<DaggerComponent> daggerComponentFactory();
 
+  @Override public final Object onRetainCustomNonConfigurationInstance() {
+    return daggerLifecycleDelegate.onRetainCustomNonConfigurationInstance();
+  }
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     daggerLifecycleDelegate = new DaggerLifecycleDelegate<>(daggerComponentFactory());
     daggerLifecycleDelegate.onCreate(this);
   }
 
-  protected DaggerComponent daggerComponent() {
+  protected final DaggerComponent daggerComponent() {
     return daggerLifecycleDelegate.daggerComponent();
-  }
-
-  @Override public Object onRetainCustomNonConfigurationInstance() {
-    return daggerLifecycleDelegate.onRetainCustomNonConfigurationInstance();
   }
 
   protected void bindViews(Activity activity) {

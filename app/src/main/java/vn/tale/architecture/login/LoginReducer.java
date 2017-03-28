@@ -8,15 +8,15 @@ import vn.tale.architecture.login.result.SubmitResult;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public class LoginReducer implements vn.tale.architecture.common.mvvm.Reducer<LoginUiModel> {
+public class LoginReducer implements vn.tale.architecture.common.mvvm.Reducer<LoginUiState> {
 
-  @Override public LoginUiModel apply(LoginUiModel loginUiModel, Result result) {
+  @Override public LoginUiState apply(LoginUiState loginUiState, Result result) {
     if (result == SubmitResult.IN_FLIGHT) {
-      return LoginUiModel.inProgress();
+      return LoginUiState.inProgress();
     } else if (result == CheckEmailResult.SUCCESS) {
-      return LoginUiModel.idle();
+      return LoginUiState.idle();
     } else if (result == SubmitResult.SUCCESS) {
-      return LoginUiModel.success();
+      return LoginUiState.success();
     }
     final Throwable error;
     if (result instanceof SubmitResult) {
@@ -24,8 +24,8 @@ public class LoginReducer implements vn.tale.architecture.common.mvvm.Reducer<Lo
     } else if (result instanceof CheckEmailResult) {
       error = ((CheckEmailResult) result).error();
     } else {
-      error = new IllegalArgumentException("unknown result " + result);
+      return loginUiState;
     }
-    return LoginUiModel.error(error);
+    return LoginUiState.error(error);
   }
 }

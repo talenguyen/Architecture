@@ -3,9 +3,10 @@ package vn.tale.architecture.login.transformer;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import vn.tale.architecture.common.mvvm.Action;
+import vn.tale.architecture.common.mvvm.Function0;
 import vn.tale.architecture.common.mvvm.Result;
 import vn.tale.architecture.common.mvvm.Transformer;
-import vn.tale.architecture.login.LoginUiModel;
+import vn.tale.architecture.login.LoginUiState;
 import vn.tale.architecture.login.action.SubmitAction;
 import vn.tale.architecture.login.result.SubmitResult;
 import vn.tale.architecture.model.manager.UserModel;
@@ -14,7 +15,7 @@ import vn.tale.architecture.model.manager.UserModel;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public class SubmitTransformer implements Transformer<LoginUiModel> {
+public class SubmitTransformer implements Transformer<LoginUiState> {
 
   private final UserModel userModel;
 
@@ -22,8 +23,8 @@ public class SubmitTransformer implements Transformer<LoginUiModel> {
     this.userModel = userModel;
   }
 
-  @Override
-  public Observable<Result> transform(Observable<Action> action$, LoginUiModel loginUiModel) {
+  @Override public Observable<Result> transform(Observable<Action> action$,
+      Function0<LoginUiState> getState) {
     return action$.ofType(SubmitAction.class)
         .flatMap(action -> userModel.login(action.email, action.password)
             .toObservable()

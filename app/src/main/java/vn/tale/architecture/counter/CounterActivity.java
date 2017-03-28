@@ -1,33 +1,35 @@
 package vn.tale.architecture.counter;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Action;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
-import vn.tale.architecture.common.base.MvvmActivity;
+import vn.tale.architecture.common.base.ReduxActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
-import vn.tale.architecture.common.mvvm.ViewModel;
+import vn.tale.architecture.common.mvvm.Store;
 import vn.tale.architecture.counter.action.ChangeValueAction;
 
 /**
  * Created by Giang Nguyen on 3/24/17.
  */
 
-public class CounterActivity extends MvvmActivity<CounterComponent, CounterUiModel> {
+public class CounterActivity extends ReduxActivity<CounterComponent, CounterUiState> {
 
-  @Inject ViewModel<CounterUiModel> viewModel;
+  @Inject Store<CounterUiState> store;
   @BindView(R.id.tvValue) TextView tvValue;
 
   @Override protected void injectDependencies() {
     daggerComponent().inject(this);
   }
 
-  @Override protected ViewModel<CounterUiModel> viewModel() {
-    return viewModel;
+  @Override protected Store<CounterUiState> store() {
+    return store;
   }
 
   @Override protected DaggerComponentFactory<CounterComponent> daggerComponentFactory() {
@@ -41,14 +43,14 @@ public class CounterActivity extends MvvmActivity<CounterComponent, CounterUiMod
   }
 
   @OnClick(R.id.increase) public void onIncreaseClick() {
-    dispatch(ChangeValueAction.INCREASE);
+    store.dispatch(ChangeValueAction.INCREASE);
   }
 
   @OnClick(R.id.decrease) public void onDecreaseClick() {
-    dispatch(ChangeValueAction.DECREASE);
+    store.dispatch(ChangeValueAction.DECREASE);
   }
 
-  @Override protected void render(CounterUiModel model) {
-    runOnUiThread(() -> tvValue.setText(String.valueOf(model.value())));
+  @NonNull @Override protected Action render(CounterUiState state) {
+    return () -> tvValue.setText(String.valueOf(state.value()));
   }
 }

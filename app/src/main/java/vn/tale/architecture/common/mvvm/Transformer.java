@@ -6,7 +6,7 @@ import io.reactivex.Observable;
  * Created by Giang Nguyen on 3/24/17.
  */
 
-public interface Transformer<UiModel> {
+public interface Transformer<UiState> {
 
-  Observable<Result> transform(Observable<Action> action$, UiModel uiModel);
+  Observable<Result> transform(Observable<Action> action$, Function0<UiState> getState);
 }
