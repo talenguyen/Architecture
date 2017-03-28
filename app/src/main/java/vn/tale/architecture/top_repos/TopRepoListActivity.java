@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import butterknife.BindView;
 import io.reactivex.functions.Action;
 import javax.inject.Inject;
-import timber.log.Timber;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
 import vn.tale.architecture.common.base.ReduxActivity;
@@ -99,7 +98,6 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
 
   @Override protected void onStart() {
     super.onStart();
-    Timber.d("store => %s", store);
     store.dispatch(LoadTopRepoAction.LOAD);
   }
 

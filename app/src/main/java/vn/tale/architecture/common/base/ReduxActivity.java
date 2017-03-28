@@ -3,7 +3,6 @@ package vn.tale.architecture.common.base;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -30,7 +29,13 @@ public abstract class ReduxActivity<DaggerComponent, UiState>
   }
 
   private Consumer<? super UiState> render() {
-    return (state) -> render(state).run();
+    return (state) -> runOnUiThread(() -> {
+      try {
+        render(state).run();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
   }
 
   @NonNull protected abstract Action render(UiState state);
@@ -46,7 +51,6 @@ public abstract class ReduxActivity<DaggerComponent, UiState>
     lifecycleDelegate.onStart();
     disposeOnStop(store().state$()
         .distinctUntilChanged()
-        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(render()));
   }
 
