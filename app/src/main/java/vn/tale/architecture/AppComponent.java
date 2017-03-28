@@ -6,8 +6,8 @@ import vn.tale.architecture.counter.CounterComponent;
 import vn.tale.architecture.counter.CounterModule;
 import vn.tale.architecture.login.LoginComponent;
 import vn.tale.architecture.login.LoginModule;
-import vn.tale.architecture.repos.ReposComponent;
-import vn.tale.architecture.repos.ReposModule;
+import vn.tale.architecture.top_repos.TopRepoListComponent;
+import vn.tale.architecture.top_repos.TopRepoListModule;
 
 /**
  * Created by Giang Nguyen on 2/27/17.
@@ -19,9 +19,9 @@ import vn.tale.architecture.repos.ReposModule;
 })
 public interface AppComponent {
 
-  ReposComponent plus(ReposModule reposModule);
-
   LoginComponent plus(LoginModule loginModule);
 
   CounterComponent plus(CounterModule counterModule);
+
+  TopRepoListComponent plus(TopRepoListModule topRepoListModule);
 }

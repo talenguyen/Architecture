@@ -1,12 +1,11 @@
 package vn.tale.architecture.model.manager;
 
 import io.reactivex.Single;
-import java.util.ArrayList;
+import ix.Ix;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
+import vn.tale.architecture.model.Owner;
 import vn.tale.architecture.model.Repo;
+import vn.tale.architecture.model.api.GithubApi;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
@@ -14,29 +13,24 @@ import vn.tale.architecture.model.Repo;
 
 public class RepoModel {
 
-  private static final int RESPONSE_TIME = 3000;
+  private final GithubApi githubApi;
 
-  public Single<List<Repo>> getPublicRepos() {
-    return Single.fromCallable(new Callable<List<Repo>>() {
-      @Override public List<Repo> call() throws Exception {
-        final ArrayList<Repo> repos = new ArrayList<>();
-        for (String key : MockManager.REPOS.keySet()) {
-          repos.addAll(MockManager.REPOS.get(key));
-        }
-        return repos;
-      }
-    }).delay(3, TimeUnit.SECONDS);
+  public RepoModel(GithubApi githubApi) {
+    this.githubApi = githubApi;
   }
 
-  public Single<List<Repo>> getUserRepos(final String email) {
-    return Single.fromCallable(new Callable<List<Repo>>() {
-      @Override public List<Repo> call() throws Exception {
-        Thread.sleep(RESPONSE_TIME);
-        if (MockManager.REPOS.containsKey(email)) {
-          return MockManager.REPOS.get(email);
-        }
-        throw new NoSuchElementException("no data");
-      }
-    });
+  public Single<List<Repo>> getPublicRepos(int page) {
+    return githubApi.searchRepos("language:java", "stars", "desc", page, 10)
+        .map(response ->
+            Ix.from(response.getItems())
+                .map(repoResponse ->
+                    Repo.builder()
+                        .name(repoResponse.getName())
+                        .description(repoResponse.getDescription())
+                        .forksCount(repoResponse.getForksCount())
+                        .stargazersCount(repoResponse.getStargazersCount())
+                        .owner(Owner.make(repoResponse.getUserResponse().getAvatarUrl()))
+                        .make())
+                .toList());
   }
 }
