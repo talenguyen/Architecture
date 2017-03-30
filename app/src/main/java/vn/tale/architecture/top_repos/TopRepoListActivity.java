@@ -12,10 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.BindView;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import java.util.List;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
+import vn.tale.architecture.R2;
 import vn.tale.architecture.common.base.ReduxActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
 import vn.tale.architecture.common.mvvm.Store;
@@ -35,9 +37,9 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
   @Inject ImageLoader imageLoader;
   @Inject Store<TopRepoListUiState> store;
 
-  @BindView(R.id.rvRepoList) RecyclerView rvRepoList;
-  @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
-  @BindView(R.id.contentView) RelativeLayout contentView;
+  @BindView(R2.id.rvRepoList) RecyclerView rvRepoList;
+  @BindView(R2.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+  @BindView(R2.id.contentView) RelativeLayout contentView;
 
   private OnlyAdapter adapter;
   private Snackbar errorSnackbar;
@@ -66,17 +68,20 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
     super.onStart();
     store.dispatch(LoadTopRepoAction.LOAD);
 
-    final Observable<TopRepoListUiState> loading$ = store.state$()
+    final Observable<TopRepoListUiState> state$ = store.state$()
+        .observeOn(AndroidSchedulers.mainThread());
+
+    final Observable<TopRepoListUiState> loading$ = state$
         .filter(TopRepoListUiState::loading);
 
-    final Observable<TopRepoListUiState> refreshing$ = store.state$()
+    final Observable<TopRepoListUiState> refreshing$ = state$
         .filter(TopRepoListUiState::refreshing);
 
-    final Observable<Throwable> loadError$ = store.state$()
+    final Observable<Throwable> loadError$ = state$
         .filter(state -> state.loadError() != null)
         .map(TopRepoListUiState::loadError);
 
-    final Observable<Throwable> refreshError$ = store.state$()
+    final Observable<Throwable> refreshError$ = state$
         .filter(state -> state.refreshError() != null)
         .map(TopRepoListUiState::refreshError);
 
@@ -151,8 +156,10 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
   }
 
   private void renderContent(List<Repo> repoList) {
-    swipeRefreshLayout.setRefreshing(false);
-    adapter.setItems(repoList);
+    runOnUiThread(() -> {
+      swipeRefreshLayout.setRefreshing(false);
+      adapter.setItems(repoList);
+    });
   }
 
   private void renderLoadError(Throwable error) {

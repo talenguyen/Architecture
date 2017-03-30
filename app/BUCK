@@ -1,0 +1,854 @@
+android_resource(
+	name = 'res_prodDebug',
+	package = 'vn.tale.architecture',
+	res = res_glob([
+		('src/main/res', '**'),
+	]),
+	resource_union = True,
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_build_config(
+	name = 'build_config_prodDebug',
+	package = 'vn.tale.architecture',
+	values = [
+		'String APPLICATION_ID = "vn.tale.architecture"',
+		'String BUILD_TYPE = "debug"',
+		'String FLAVOR = "prod"',
+		'int VERSION_CODE = 0',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_library(
+	name = 'src_prodDebug',
+	srcs = glob([
+		'src/main/java/**/*.java',
+	]),
+	manifest = 'build/okbuck/prodDebug/AndroidManifest.xml',
+	annotation_processors = [
+		'butterknife.compiler.ButterKnifeProcessor',
+		'dagger.internal.codegen.ComponentProcessor',
+		'com.google.auto.value.processor.AutoAnnotationProcessor',
+		'com.google.auto.value.processor.AutoValueBuilderProcessor',
+		'com.google.auto.value.processor.AutoValueProcessor',
+	],
+	annotation_processor_deps = [
+		'//.okbuck/cache:com.android.support.support-annotations-25.2.0.jar',
+		'//.okbuck/cache:com.github.akarnokd.ixjava-1.0.0-RC5.jar',
+		'//.okbuck/cache:com.github.bumptech.glide.glide-3.7.0.jar',
+		'//.okbuck/cache:com.google.auto.auto-common-0.6.jar',
+		'//.okbuck/cache:com.google.auto.service.auto-service-1.0-rc2.jar',
+		'//.okbuck/cache:com.google.auto.value.auto-value-1.3.jar',
+		'//.okbuck/cache:com.google.code.gson.gson-2.8.0.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-2.9.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-compiler-2.9.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-producers-2.9.jar',
+		'//.okbuck/cache:com.google.guava.guava-20.0.jar',
+		'//.okbuck/cache:com.jakewharton.auto.value.auto-value-annotations-1.3.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-annotations-8.5.1.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-compiler-8.5.1.jar',
+		'//.okbuck/cache:com.squareup.javapoet-1.8.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.logging-interceptor-3.5.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.okhttp-3.6.0.jar',
+		'//.okbuck/cache:com.squareup.okio.okio-1.11.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.adapter-rxjava2-2.2.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.converter-gson-2.1.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.retrofit-2.2.0.jar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxjava-2.0.2.jar',
+		'//.okbuck/cache:javax.inject.javax.inject-1.jar',
+		'//.okbuck/cache:org.reactivestreams.reactive-streams-1.0.0.jar',
+	],
+	provided_deps = [
+		'//.okbuck/cache/retrolambda:rt-stub.jar',
+		'//.okbuck/cache:com.google.auto.value.auto-value-1.3.jar',
+	],
+	source = '8',
+	target = '8',
+	postprocess_classes_commands = [
+		'(read CLASSES_DIR && java -Dretrolambda.inputDir="${CLASSES_DIR}" -Dretrolambda.classpath="${COMPILATION_BOOTCLASSPATH}":"${COMPILATION_CLASSPATH}":"${CLASSES_DIR}" -jar .okbuck/cache/retrolambda/retrolambda-2.5.0.jar) <<<',
+	],
+	final_r_name = 'R2',
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-annotations-25.2.0.jar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.github.akarnokd.ixjava-1.0.0-RC5.jar',
+		'//.okbuck/cache:com.github.bumptech.glide.glide-3.7.0.jar',
+		'//.okbuck/cache:com.google.code.gson.gson-2.8.0.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-2.9.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-annotations-8.5.1.jar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:com.squareup.okhttp3.logging-interceptor-3.5.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.okhttp-3.6.0.jar',
+		'//.okbuck/cache:com.squareup.okio.okio-1.11.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.adapter-rxjava2-2.2.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.converter-gson-2.1.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.retrofit-2.2.0.jar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxjava-2.0.2.jar',
+		'//.okbuck/cache:javax.inject.javax.inject-1.jar',
+		'//.okbuck/cache:org.reactivestreams.reactive-streams-1.0.0.jar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+		':build_config_prodDebug',
+		':res_prodDebug',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+genrule(
+	name = 'lint_prodDebug',
+	srcs = [
+		'src/main/java',
+		'src/main/res',
+		'build/okbuck/prodDebug',
+	],
+	out = 'lint_prodDebug_out',
+	bash = '' \
+	'export ANDROID_LINT_JARS="$(location //.okbuck/cache:com.jakewharton.timber.timber-4.5.0-lint.jar):$(location //.okbuck/cache:com.jakewharton.butterknife-8.5.1-lint.jar)"; ' \
+	'mkdir -p $OUT; ' \
+	'exec java ' \
+	'-Djava.awt.headless=true ' \
+	'-Xmx1024m ' \
+	'-classpath $(location //.okbuck/cache/lint:okbuck_lint) ' \
+	'com.android.tools.lint.Main ' \
+	'--classpath $(location :src_prodDebug) ' \
+	'--exitcode ' \
+	'--fullpath ' \
+	'-Werror ' \
+	'--config $(location //.okbuck/cache/lint:tools_rules-lint.xml) ' \
+	'--html "$OUT/lint-results.html" ' \
+	'--sources src/main/java ' \
+	'--resources src/main/res ' \
+	'build/okbuck/prodDebug ' \
+	'',
+)
+
+android_manifest(
+	name = 'manifest_prodDebug',
+	skeleton = 'build/okbuck/prodDebug/AndroidManifest.xml',
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_binary(
+	name = 'bin_prodDebug',
+	manifest = ':manifest_prodDebug',
+	keystore = '//.okbuck/keystore/app:key_store_prodDebug.keystore',
+	manifest_entries = {
+		'placeholders': {
+			'applicationId': 'vn.tale.architecture',
+		},
+	},
+	includes_vector_drawables = True,
+	deps = [
+		':res_prodDebug',
+		':src_prodDebug',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_resource(
+	name = 'res_devRelease',
+	package = 'vn.tale.architecture',
+	res = res_glob([
+		('src/main/res', '**'),
+	]),
+	resource_union = True,
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_build_config(
+	name = 'build_config_devRelease',
+	package = 'vn.tale.architecture',
+	values = [
+		'String APPLICATION_ID = "vn.tale.architecture.dev"',
+		'String BUILD_TYPE = "release"',
+		'String FLAVOR = "dev"',
+		'int VERSION_CODE = 1490845087',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_library(
+	name = 'src_devRelease',
+	srcs = glob([
+		'src/main/java/**/*.java',
+	]),
+	manifest = 'build/okbuck/devRelease/AndroidManifest.xml',
+	annotation_processors = [
+		'butterknife.compiler.ButterKnifeProcessor',
+		'dagger.internal.codegen.ComponentProcessor',
+		'com.google.auto.value.processor.AutoAnnotationProcessor',
+		'com.google.auto.value.processor.AutoValueBuilderProcessor',
+		'com.google.auto.value.processor.AutoValueProcessor',
+	],
+	annotation_processor_deps = [
+		'//.okbuck/cache:com.android.support.support-annotations-25.2.0.jar',
+		'//.okbuck/cache:com.github.akarnokd.ixjava-1.0.0-RC5.jar',
+		'//.okbuck/cache:com.github.bumptech.glide.glide-3.7.0.jar',
+		'//.okbuck/cache:com.google.auto.auto-common-0.6.jar',
+		'//.okbuck/cache:com.google.auto.service.auto-service-1.0-rc2.jar',
+		'//.okbuck/cache:com.google.auto.value.auto-value-1.3.jar',
+		'//.okbuck/cache:com.google.code.gson.gson-2.8.0.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-2.9.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-compiler-2.9.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-producers-2.9.jar',
+		'//.okbuck/cache:com.google.guava.guava-20.0.jar',
+		'//.okbuck/cache:com.jakewharton.auto.value.auto-value-annotations-1.3.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-annotations-8.5.1.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-compiler-8.5.1.jar',
+		'//.okbuck/cache:com.squareup.javapoet-1.8.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.logging-interceptor-3.5.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.okhttp-3.6.0.jar',
+		'//.okbuck/cache:com.squareup.okio.okio-1.11.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.adapter-rxjava2-2.2.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.converter-gson-2.1.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.retrofit-2.2.0.jar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxjava-2.0.2.jar',
+		'//.okbuck/cache:javax.inject.javax.inject-1.jar',
+		'//.okbuck/cache:org.reactivestreams.reactive-streams-1.0.0.jar',
+	],
+	provided_deps = [
+		'//.okbuck/cache/retrolambda:rt-stub.jar',
+		'//.okbuck/cache:com.google.auto.value.auto-value-1.3.jar',
+	],
+	source = '8',
+	target = '8',
+	postprocess_classes_commands = [
+		'(read CLASSES_DIR && java -Dretrolambda.inputDir="${CLASSES_DIR}" -Dretrolambda.classpath="${COMPILATION_BOOTCLASSPATH}":"${COMPILATION_CLASSPATH}":"${CLASSES_DIR}" -jar .okbuck/cache/retrolambda/retrolambda-2.5.0.jar) <<<',
+	],
+	final_r_name = 'R2',
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-annotations-25.2.0.jar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.github.akarnokd.ixjava-1.0.0-RC5.jar',
+		'//.okbuck/cache:com.github.bumptech.glide.glide-3.7.0.jar',
+		'//.okbuck/cache:com.google.code.gson.gson-2.8.0.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-2.9.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-annotations-8.5.1.jar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:com.squareup.okhttp3.logging-interceptor-3.5.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.okhttp-3.6.0.jar',
+		'//.okbuck/cache:com.squareup.okio.okio-1.11.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.adapter-rxjava2-2.2.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.converter-gson-2.1.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.retrofit-2.2.0.jar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxjava-2.0.2.jar',
+		'//.okbuck/cache:javax.inject.javax.inject-1.jar',
+		'//.okbuck/cache:org.reactivestreams.reactive-streams-1.0.0.jar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+		':build_config_devRelease',
+		':res_devRelease',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+genrule(
+	name = 'lint_devRelease',
+	srcs = [
+		'src/main/java',
+		'src/main/res',
+		'build/okbuck/devRelease',
+	],
+	out = 'lint_devRelease_out',
+	bash = '' \
+	'export ANDROID_LINT_JARS="$(location //.okbuck/cache:com.jakewharton.timber.timber-4.5.0-lint.jar):$(location //.okbuck/cache:com.jakewharton.butterknife-8.5.1-lint.jar)"; ' \
+	'mkdir -p $OUT; ' \
+	'exec java ' \
+	'-Djava.awt.headless=true ' \
+	'-Xmx1024m ' \
+	'-classpath $(location //.okbuck/cache/lint:okbuck_lint) ' \
+	'com.android.tools.lint.Main ' \
+	'--classpath $(location :src_devRelease) ' \
+	'--exitcode ' \
+	'--fullpath ' \
+	'-Werror ' \
+	'--config $(location //.okbuck/cache/lint:tools_rules-lint.xml) ' \
+	'--html "$OUT/lint-results.html" ' \
+	'--sources src/main/java ' \
+	'--resources src/main/res ' \
+	'build/okbuck/devRelease ' \
+	'',
+)
+
+android_manifest(
+	name = 'manifest_devRelease',
+	skeleton = 'build/okbuck/devRelease/AndroidManifest.xml',
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_binary(
+	name = 'bin_devRelease',
+	manifest = ':manifest_devRelease',
+	keystore = '//.okbuck/keystore/app:key_store_devRelease.keystore',
+	package_type = 'release',
+	android_sdk_proguard_config = 'none',
+	proguard_config = 'build/okbuck/devRelease/proguard.pro',
+	manifest_entries = {
+		'placeholders': {
+			'applicationId': 'vn.tale.architecture.dev',
+		},
+	},
+	includes_vector_drawables = True,
+	deps = [
+		':res_devRelease',
+		':src_devRelease',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_resource(
+	name = 'res_devDebug',
+	package = 'vn.tale.architecture',
+	res = res_glob([
+		('src/main/res', '**'),
+	]),
+	resource_union = True,
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_build_config(
+	name = 'build_config_devDebug',
+	package = 'vn.tale.architecture',
+	values = [
+		'String APPLICATION_ID = "vn.tale.architecture.dev"',
+		'String BUILD_TYPE = "debug"',
+		'String FLAVOR = "dev"',
+		'int VERSION_CODE = 1490845087',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_library(
+	name = 'src_devDebug',
+	srcs = glob([
+		'src/main/java/**/*.java',
+	]),
+	manifest = 'build/okbuck/devDebug/AndroidManifest.xml',
+	annotation_processors = [
+		'butterknife.compiler.ButterKnifeProcessor',
+		'dagger.internal.codegen.ComponentProcessor',
+		'com.google.auto.value.processor.AutoAnnotationProcessor',
+		'com.google.auto.value.processor.AutoValueBuilderProcessor',
+		'com.google.auto.value.processor.AutoValueProcessor',
+	],
+	annotation_processor_deps = [
+		'//.okbuck/cache:com.android.support.support-annotations-25.2.0.jar',
+		'//.okbuck/cache:com.github.akarnokd.ixjava-1.0.0-RC5.jar',
+		'//.okbuck/cache:com.github.bumptech.glide.glide-3.7.0.jar',
+		'//.okbuck/cache:com.google.auto.auto-common-0.6.jar',
+		'//.okbuck/cache:com.google.auto.service.auto-service-1.0-rc2.jar',
+		'//.okbuck/cache:com.google.auto.value.auto-value-1.3.jar',
+		'//.okbuck/cache:com.google.code.gson.gson-2.8.0.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-2.9.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-compiler-2.9.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-producers-2.9.jar',
+		'//.okbuck/cache:com.google.guava.guava-20.0.jar',
+		'//.okbuck/cache:com.jakewharton.auto.value.auto-value-annotations-1.3.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-annotations-8.5.1.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-compiler-8.5.1.jar',
+		'//.okbuck/cache:com.squareup.javapoet-1.8.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.logging-interceptor-3.5.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.okhttp-3.6.0.jar',
+		'//.okbuck/cache:com.squareup.okio.okio-1.11.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.adapter-rxjava2-2.2.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.converter-gson-2.1.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.retrofit-2.2.0.jar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxjava-2.0.2.jar',
+		'//.okbuck/cache:javax.inject.javax.inject-1.jar',
+		'//.okbuck/cache:org.reactivestreams.reactive-streams-1.0.0.jar',
+	],
+	provided_deps = [
+		'//.okbuck/cache/retrolambda:rt-stub.jar',
+		'//.okbuck/cache:com.google.auto.value.auto-value-1.3.jar',
+	],
+	source = '8',
+	target = '8',
+	postprocess_classes_commands = [
+		'(read CLASSES_DIR && java -Dretrolambda.inputDir="${CLASSES_DIR}" -Dretrolambda.classpath="${COMPILATION_BOOTCLASSPATH}":"${COMPILATION_CLASSPATH}":"${CLASSES_DIR}" -jar .okbuck/cache/retrolambda/retrolambda-2.5.0.jar) <<<',
+	],
+	final_r_name = 'R2',
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-annotations-25.2.0.jar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.github.akarnokd.ixjava-1.0.0-RC5.jar',
+		'//.okbuck/cache:com.github.bumptech.glide.glide-3.7.0.jar',
+		'//.okbuck/cache:com.google.code.gson.gson-2.8.0.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-2.9.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-annotations-8.5.1.jar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:com.squareup.okhttp3.logging-interceptor-3.5.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.okhttp-3.6.0.jar',
+		'//.okbuck/cache:com.squareup.okio.okio-1.11.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.adapter-rxjava2-2.2.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.converter-gson-2.1.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.retrofit-2.2.0.jar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxjava-2.0.2.jar',
+		'//.okbuck/cache:javax.inject.javax.inject-1.jar',
+		'//.okbuck/cache:org.reactivestreams.reactive-streams-1.0.0.jar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+		':build_config_devDebug',
+		':res_devDebug',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+genrule(
+	name = 'lint_devDebug',
+	srcs = [
+		'src/main/java',
+		'src/main/res',
+		'build/okbuck/devDebug',
+	],
+	out = 'lint_devDebug_out',
+	bash = '' \
+	'export ANDROID_LINT_JARS="$(location //.okbuck/cache:com.jakewharton.timber.timber-4.5.0-lint.jar):$(location //.okbuck/cache:com.jakewharton.butterknife-8.5.1-lint.jar)"; ' \
+	'mkdir -p $OUT; ' \
+	'exec java ' \
+	'-Djava.awt.headless=true ' \
+	'-Xmx1024m ' \
+	'-classpath $(location //.okbuck/cache/lint:okbuck_lint) ' \
+	'com.android.tools.lint.Main ' \
+	'--classpath $(location :src_devDebug) ' \
+	'--exitcode ' \
+	'--fullpath ' \
+	'-Werror ' \
+	'--config $(location //.okbuck/cache/lint:tools_rules-lint.xml) ' \
+	'--html "$OUT/lint-results.html" ' \
+	'--sources src/main/java ' \
+	'--resources src/main/res ' \
+	'build/okbuck/devDebug ' \
+	'',
+)
+
+android_manifest(
+	name = 'manifest_devDebug',
+	skeleton = 'build/okbuck/devDebug/AndroidManifest.xml',
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_binary(
+	name = 'bin_devDebug',
+	manifest = ':manifest_devDebug',
+	keystore = '//.okbuck/keystore/app:key_store_devDebug.keystore',
+	manifest_entries = {
+		'placeholders': {
+			'applicationId': 'vn.tale.architecture.dev',
+		},
+	},
+	includes_vector_drawables = True,
+	deps = [
+		':res_devDebug',
+		':src_devDebug',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_resource(
+	name = 'res_prodRelease',
+	package = 'vn.tale.architecture',
+	res = res_glob([
+		('src/main/res', '**'),
+	]),
+	resource_union = True,
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_build_config(
+	name = 'build_config_prodRelease',
+	package = 'vn.tale.architecture',
+	values = [
+		'String APPLICATION_ID = "vn.tale.architecture"',
+		'String BUILD_TYPE = "release"',
+		'String FLAVOR = "prod"',
+		'int VERSION_CODE = 0',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_library(
+	name = 'src_prodRelease',
+	srcs = glob([
+		'src/main/java/**/*.java',
+	]),
+	manifest = 'build/okbuck/prodRelease/AndroidManifest.xml',
+	annotation_processors = [
+		'butterknife.compiler.ButterKnifeProcessor',
+		'dagger.internal.codegen.ComponentProcessor',
+		'com.google.auto.value.processor.AutoAnnotationProcessor',
+		'com.google.auto.value.processor.AutoValueBuilderProcessor',
+		'com.google.auto.value.processor.AutoValueProcessor',
+	],
+	annotation_processor_deps = [
+		'//.okbuck/cache:com.android.support.support-annotations-25.2.0.jar',
+		'//.okbuck/cache:com.github.akarnokd.ixjava-1.0.0-RC5.jar',
+		'//.okbuck/cache:com.github.bumptech.glide.glide-3.7.0.jar',
+		'//.okbuck/cache:com.google.auto.auto-common-0.6.jar',
+		'//.okbuck/cache:com.google.auto.service.auto-service-1.0-rc2.jar',
+		'//.okbuck/cache:com.google.auto.value.auto-value-1.3.jar',
+		'//.okbuck/cache:com.google.code.gson.gson-2.8.0.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-2.9.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-compiler-2.9.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-producers-2.9.jar',
+		'//.okbuck/cache:com.google.guava.guava-20.0.jar',
+		'//.okbuck/cache:com.jakewharton.auto.value.auto-value-annotations-1.3.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-annotations-8.5.1.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-compiler-8.5.1.jar',
+		'//.okbuck/cache:com.squareup.javapoet-1.8.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.logging-interceptor-3.5.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.okhttp-3.6.0.jar',
+		'//.okbuck/cache:com.squareup.okio.okio-1.11.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.adapter-rxjava2-2.2.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.converter-gson-2.1.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.retrofit-2.2.0.jar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxjava-2.0.2.jar',
+		'//.okbuck/cache:javax.inject.javax.inject-1.jar',
+		'//.okbuck/cache:org.reactivestreams.reactive-streams-1.0.0.jar',
+	],
+	provided_deps = [
+		'//.okbuck/cache/retrolambda:rt-stub.jar',
+		'//.okbuck/cache:com.google.auto.value.auto-value-1.3.jar',
+	],
+	source = '8',
+	target = '8',
+	postprocess_classes_commands = [
+		'(read CLASSES_DIR && java -Dretrolambda.inputDir="${CLASSES_DIR}" -Dretrolambda.classpath="${COMPILATION_BOOTCLASSPATH}":"${COMPILATION_CLASSPATH}":"${CLASSES_DIR}" -jar .okbuck/cache/retrolambda/retrolambda-2.5.0.jar) <<<',
+	],
+	final_r_name = 'R2',
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-annotations-25.2.0.jar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.github.akarnokd.ixjava-1.0.0-RC5.jar',
+		'//.okbuck/cache:com.github.bumptech.glide.glide-3.7.0.jar',
+		'//.okbuck/cache:com.google.code.gson.gson-2.8.0.jar',
+		'//.okbuck/cache:com.google.dagger.dagger-2.9.jar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-annotations-8.5.1.jar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:com.squareup.okhttp3.logging-interceptor-3.5.0.jar',
+		'//.okbuck/cache:com.squareup.okhttp3.okhttp-3.6.0.jar',
+		'//.okbuck/cache:com.squareup.okio.okio-1.11.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.adapter-rxjava2-2.2.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.converter-gson-2.1.0.jar',
+		'//.okbuck/cache:com.squareup.retrofit2.retrofit-2.2.0.jar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxjava-2.0.2.jar',
+		'//.okbuck/cache:javax.inject.javax.inject-1.jar',
+		'//.okbuck/cache:org.reactivestreams.reactive-streams-1.0.0.jar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+		':build_config_prodRelease',
+		':res_prodRelease',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+genrule(
+	name = 'lint_prodRelease',
+	srcs = [
+		'src/main/java',
+		'src/main/res',
+		'build/okbuck/prodRelease',
+	],
+	out = 'lint_prodRelease_out',
+	bash = '' \
+	'export ANDROID_LINT_JARS="$(location //.okbuck/cache:com.jakewharton.timber.timber-4.5.0-lint.jar):$(location //.okbuck/cache:com.jakewharton.butterknife-8.5.1-lint.jar)"; ' \
+	'mkdir -p $OUT; ' \
+	'exec java ' \
+	'-Djava.awt.headless=true ' \
+	'-Xmx1024m ' \
+	'-classpath $(location //.okbuck/cache/lint:okbuck_lint) ' \
+	'com.android.tools.lint.Main ' \
+	'--classpath $(location :src_prodRelease) ' \
+	'--exitcode ' \
+	'--fullpath ' \
+	'-Werror ' \
+	'--config $(location //.okbuck/cache/lint:tools_rules-lint.xml) ' \
+	'--html "$OUT/lint-results.html" ' \
+	'--sources src/main/java ' \
+	'--resources src/main/res ' \
+	'build/okbuck/prodRelease ' \
+	'',
+)
+
+android_manifest(
+	name = 'manifest_prodRelease',
+	skeleton = 'build/okbuck/prodRelease/AndroidManifest.xml',
+	deps = [
+		'//.okbuck/cache:com.android.support.animated-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.appcompat-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.design-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.recyclerview-v7-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-ui-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-core-utils-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-fragment-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-media-compat-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-v4-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.support-vector-drawable-25.2.0.aar',
+		'//.okbuck/cache:com.android.support.transition-25.2.0.aar',
+		'//.okbuck/cache:com.jakewharton.butterknife-8.5.1.aar',
+		'//.okbuck/cache:com.jakewharton.rxbinding2.rxbinding-2.0.0.aar',
+		'//.okbuck/cache:com.jakewharton.timber.timber-4.5.0.aar',
+		'//.okbuck/cache:com.squareup.coordinators.coordinators-0.2.aar',
+		'//.okbuck/cache:io.reactivex.rxjava2.rxandroid-2.0.1.aar',
+		'//.okbuck/cache:vn.tiki.noadapter2.noadapter-2.0.1-SNAPSHOT.aar',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+
+android_binary(
+	name = 'bin_prodRelease',
+	manifest = ':manifest_prodRelease',
+	keystore = '//.okbuck/keystore/app:key_store_prodRelease.keystore',
+	package_type = 'release',
+	android_sdk_proguard_config = 'none',
+	proguard_config = 'build/okbuck/prodRelease/proguard.pro',
+	manifest_entries = {
+		'placeholders': {
+			'applicationId': 'vn.tale.architecture',
+		},
+	},
+	includes_vector_drawables = True,
+	deps = [
+		':res_prodRelease',
+		':src_prodRelease',
+	],
+	visibility = [
+		'PUBLIC',
+	],
+)
+

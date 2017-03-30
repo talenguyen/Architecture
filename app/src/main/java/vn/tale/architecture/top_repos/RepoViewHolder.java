@@ -8,6 +8,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vn.tale.architecture.R;
+import vn.tale.architecture.R2;
 import vn.tale.architecture.common.util.ImageLoader;
 import vn.tale.architecture.model.Repo;
 import vn.tiki.noadapter2.AbsViewHolder;
@@ -15,11 +16,11 @@ import vn.tiki.noadapter2.AbsViewHolder;
 @SuppressWarnings("WeakerAccess") class RepoViewHolder extends AbsViewHolder {
 
   private final ImageLoader imageLoader;
-  @BindView(R.id.tvName) TextView tvName;
-  @BindView(R.id.tvDescription) TextView tvDescription;
-  @BindView(R.id.tvStars) TextView tvStars;
-  @BindView(R.id.tvForks) TextView tvForks;
-  @BindView(R.id.ivOwnerAvatar) ImageView ivOwnerAvatar;
+  @BindView(R2.id.tvName) TextView tvName;
+  @BindView(R2.id.tvDescription) TextView tvDescription;
+  @BindView(R2.id.tvStars) TextView tvStars;
+  @BindView(R2.id.tvForks) TextView tvForks;
+  @BindView(R2.id.ivOwnerAvatar) ImageView ivOwnerAvatar;
 
   private RepoViewHolder(View view, ImageLoader imageLoader) {
     super(view);

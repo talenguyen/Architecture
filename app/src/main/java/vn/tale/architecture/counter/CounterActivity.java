@@ -8,6 +8,7 @@ import butterknife.OnClick;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
+import vn.tale.architecture.R2;
 import vn.tale.architecture.common.base.ReduxActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
 import vn.tale.architecture.common.mvvm.Store;
@@ -20,7 +21,7 @@ import vn.tale.architecture.counter.action.ChangeValueAction;
 public class CounterActivity extends ReduxActivity<CounterComponent, CounterUiState> {
 
   @Inject Store<CounterUiState> store;
-  @BindView(R.id.tvValue) TextView tvValue;
+  @BindView(R2.id.tvValue) TextView tvValue;
 
   @Override protected void injectDependencies() {
     daggerComponent().inject(this);
@@ -40,11 +41,11 @@ public class CounterActivity extends ReduxActivity<CounterComponent, CounterUiSt
     bindViews(this);
   }
 
-  @OnClick(R.id.increase) public void onIncreaseClick() {
+  @OnClick(R2.id.increase) public void onIncreaseClick() {
     store.dispatch(ChangeValueAction.INCREASE);
   }
 
-  @OnClick(R.id.decrease) public void onDecreaseClick() {
+  @OnClick(R2.id.decrease) public void onDecreaseClick() {
     store.dispatch(ChangeValueAction.DECREASE);
   }
 

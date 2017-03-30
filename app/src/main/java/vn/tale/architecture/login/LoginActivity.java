@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
+import vn.tale.architecture.R2;
 import vn.tale.architecture.common.base.ReduxActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
 import vn.tale.architecture.common.mvvm.Store;
@@ -31,14 +32,14 @@ import vn.tale.architecture.model.error.OnErrorNotImplementedException;
 
 public class LoginActivity extends ReduxActivity<LoginComponent, LoginUiState> {
 
-  @BindView(R.id.etEmail) TextInputEditText etEmail;
-  @BindView(R.id.tilEmailWrapper) TextInputLayout tilEmailWrapper;
-  @BindView(R.id.etPassword) TextInputEditText etPassword;
-  @BindView(R.id.pbProgress) View pbProgress;
-  @BindView(R.id.btSignIn) Button btSignIn;
-  @BindString(R.string.successfully) String textSuccessfully;
-  @BindString(R.string.email_is_invalid) String textEmailIsInvalid;
-  @BindString(R.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
+  @BindView(R2.id.etEmail) TextInputEditText etEmail;
+  @BindView(R2.id.tilEmailWrapper) TextInputLayout tilEmailWrapper;
+  @BindView(R2.id.etPassword) TextInputEditText etPassword;
+  @BindView(R2.id.pbProgress) View pbProgress;
+  @BindView(R2.id.btSignIn) Button btSignIn;
+  @BindString(R2.string.successfully) String textSuccessfully;
+  @BindString(R2.string.email_is_invalid) String textEmailIsInvalid;
+  @BindString(R2.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
 
   @Inject Store<LoginUiState> store;
 
