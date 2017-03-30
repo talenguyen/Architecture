@@ -1,7 +1,6 @@
 package vn.tale.architecture.login;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -12,7 +11,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-import io.reactivex.functions.Action;
+import io.reactivex.Observable;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
@@ -74,54 +73,52 @@ public class LoginActivity extends ReduxActivity<LoginComponent, LoginUiState> {
             etEmail.getText().toString(),
             etPassword.getText().toString()))
         .subscribe(action -> store.dispatch(action)));
+
+    final Observable<LoginUiState> idle$ = store.state$()
+        .filter(state -> state.equals(LoginUiState.idle()));
+
+    final Observable<LoginUiState> loading$ = store.state$()
+        .filter(state -> state.inProgress);
+
+    final Observable<LoginUiState> success$ = store.state$()
+        .filter(state -> state.success);
+
+    final Observable<Throwable> error$ = store.state$()
+        .filter(state -> state.error != null)
+        .map(state -> state.error);
+
+    disposeOnStop(idle$.subscribe(ignored -> renderIdle()));
+    disposeOnStop(loading$.subscribe(ignored -> renderLoading()));
+    disposeOnStop(success$.subscribe(ignored -> renderSuccess()));
+    disposeOnStop(error$.subscribe(this::renderError));
   }
 
-  @NonNull public Action render(LoginUiState state) {
-    if (state.inProgress) {
-      return renderLoading();
-    } else if (state.success) {
-      return renderSuccess();
-    } else if (state.error != null) {
-      return renderError(state.error);
+  private void renderLoading() {
+    btSignIn.setVisibility(View.GONE);
+    pbProgress.setVisibility(View.VISIBLE);
+  }
+
+  private void renderSuccess() {
+    Toast.makeText(this, textSuccessfully, Toast.LENGTH_SHORT).show();
+    finish();
+  }
+
+  private void renderError(Throwable error) {
+    btSignIn.setVisibility(View.VISIBLE);
+    pbProgress.setVisibility(View.GONE);
+
+    if (error instanceof InvalidEmailError) {
+      tilEmailWrapper.setError(textEmailIsInvalid);
+    } else if (error instanceof AuthenticateError) {
+      tilEmailWrapper.setError(textEmailAndPasswordAreMismatch);
     } else {
-      return renderIdle();
+      throw new OnErrorNotImplementedException(error);
     }
   }
 
-  @NonNull private Action renderLoading() {
-    return () -> {
-      btSignIn.setVisibility(View.GONE);
-      pbProgress.setVisibility(View.VISIBLE);
-    };
-  }
-
-  @NonNull private Action renderSuccess() {
-    return () -> {
-      Toast.makeText(this, textSuccessfully, Toast.LENGTH_SHORT).show();
-      finish();
-    };
-  }
-
-  @NonNull private Action renderError(Throwable error) {
-    return () -> {
-      btSignIn.setVisibility(View.VISIBLE);
-      pbProgress.setVisibility(View.GONE);
-
-      if (error instanceof InvalidEmailError) {
-        tilEmailWrapper.setError(textEmailIsInvalid);
-      } else if (error instanceof AuthenticateError) {
-        tilEmailWrapper.setError(textEmailAndPasswordAreMismatch);
-      } else {
-        throw new OnErrorNotImplementedException(error);
-      }
-    };
-  }
-
-  @NonNull private Action renderIdle() {
-    return () -> {
-      btSignIn.setVisibility(View.VISIBLE);
-      pbProgress.setVisibility(View.GONE);
-      tilEmailWrapper.setError(null);
-    };
+  private void renderIdle() {
+    btSignIn.setVisibility(View.VISIBLE);
+    pbProgress.setVisibility(View.GONE);
+    tilEmailWrapper.setError(null);
   }
 }

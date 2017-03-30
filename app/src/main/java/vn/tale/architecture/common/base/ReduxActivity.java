@@ -1,12 +1,9 @@
 package vn.tale.architecture.common.base;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import vn.tale.architecture.common.mvvm.LifecycleDelegate;
 import vn.tale.architecture.common.mvvm.Store;
 
@@ -28,18 +25,6 @@ public abstract class ReduxActivity<DaggerComponent, UiState>
     disposables.add(disposable);
   }
 
-  private Consumer<? super UiState> render() {
-    return (state) -> runOnUiThread(() -> {
-      try {
-        render(state).run();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    });
-  }
-
-  @NonNull protected abstract Action render(UiState state);
-
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     injectDependencies();
@@ -49,9 +34,6 @@ public abstract class ReduxActivity<DaggerComponent, UiState>
   @Override protected void onStart() {
     super.onStart();
     lifecycleDelegate.onStart();
-    disposeOnStop(store().state$()
-        .distinctUntilChanged()
-        .subscribe(render()));
   }
 
   @Override protected void onStop() {

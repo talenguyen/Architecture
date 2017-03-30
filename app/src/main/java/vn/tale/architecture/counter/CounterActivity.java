@@ -1,12 +1,10 @@
 package vn.tale.architecture.counter;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.functions.Action;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
@@ -50,7 +48,10 @@ public class CounterActivity extends ReduxActivity<CounterComponent, CounterUiSt
     store.dispatch(ChangeValueAction.DECREASE);
   }
 
-  @NonNull @Override protected Action render(CounterUiState state) {
-    return () -> tvValue.setText(String.valueOf(state.value()));
+  @Override protected void onStart() {
+    super.onStart();
+    disposeOnStop(store.state$()
+        .distinctUntilChanged()
+        .subscribe((state) -> tvValue.setText(String.valueOf(state.value()))));
   }
 }
