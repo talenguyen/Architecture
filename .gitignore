@@ -106,6 +106,7 @@ obj/
 /out/
 
 # User-specific configurations
+.idea
 .idea/libraries/
 .idea/.name
 .idea/compiler.xml
@@ -171,5 +172,6 @@ buck-out/
 .buckd/
 .buckversion
 .fakebuckversion
-
+.okbuck
+**/BUCK
 # End of https://www.gitignore.io/api/buck,android,androidstudio
