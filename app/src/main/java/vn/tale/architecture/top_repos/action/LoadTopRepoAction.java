@@ -8,5 +8,6 @@ import vn.tale.architecture.common.mvvm.Action;
 
 public interface LoadTopRepoAction {
   Action LOAD = new Action() {};
+  Action LOAD_MORE = new Action() {};
   Action REFRESH = new Action() {};
 }

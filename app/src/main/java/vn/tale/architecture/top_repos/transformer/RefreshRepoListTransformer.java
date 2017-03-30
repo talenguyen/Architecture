@@ -9,30 +9,29 @@ import vn.tale.architecture.common.mvvm.Transformer;
 import vn.tale.architecture.model.manager.RepoModel;
 import vn.tale.architecture.top_repos.TopRepoListUiState;
 import vn.tale.architecture.top_repos.action.LoadTopRepoAction;
-import vn.tale.architecture.top_repos.result.LoadTopRepoResult;
+import vn.tale.architecture.top_repos.result.RefreshTopRepoResult;
 
 /**
  * Created by Giang Nguyen on 3/28/17.
  */
 
-public class TopRepoListTransformer implements Transformer<TopRepoListUiState> {
+public class RefreshRepoListTransformer implements Transformer<TopRepoListUiState> {
 
   private final RepoModel repoModel;
 
-  public TopRepoListTransformer(RepoModel repoModel) {
+  public RefreshRepoListTransformer(RepoModel repoModel) {
     this.repoModel = repoModel;
   }
 
   @Override public Observable<Result> transform(Observable<Action> action$,
       Function0<TopRepoListUiState> getState) {
     return action$
-        .filter(action -> action == LoadTopRepoAction.LOAD)
-        .filter(ignored -> getState.apply().content().isEmpty())
-        .flatMap(ignored -> repoModel.getPublicRepos(false, 1)
+        .filter(action -> action == LoadTopRepoAction.REFRESH)
+        .flatMap(ignored -> repoModel.getPublicRepos(true, 1)
             .toObservable()
-            .map(LoadTopRepoResult::success)
-            .onErrorReturn(LoadTopRepoResult::failure)
+            .map(RefreshTopRepoResult::success)
+            .onErrorReturn(RefreshTopRepoResult::failure)
             .subscribeOn(Schedulers.io())
-            .startWith(LoadTopRepoResult.inProgress()));
+            .startWith(RefreshTopRepoResult.inProgress()));
   }
 }

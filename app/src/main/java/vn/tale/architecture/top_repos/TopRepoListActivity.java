@@ -1,7 +1,6 @@
 package vn.tale.architecture.top_repos;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
@@ -10,8 +9,10 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import butterknife.BindView;
-import io.reactivex.functions.Action;
+import io.reactivex.Observable;
+import java.util.List;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
@@ -21,6 +22,7 @@ import vn.tale.architecture.common.mvvm.Store;
 import vn.tale.architecture.common.util.ImageLoader;
 import vn.tale.architecture.common.util.InfiniteScrollListener;
 import vn.tale.architecture.model.Constants;
+import vn.tale.architecture.model.Repo;
 import vn.tale.architecture.top_repos.action.LoadTopRepoAction;
 import vn.tiki.noadapter2.OnlyAdapter;
 
@@ -52,53 +54,44 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
     return store;
   }
 
-  @SuppressWarnings("ThrowableResultOfMethodCallIgnored") @NonNull @Override
-  protected Action render(TopRepoListUiState topRepoListUiState) {
-    if (topRepoListUiState.loading()) {
-      return renderLoading();
-    } else if (topRepoListUiState.error() != null) {
-      topRepoListUiState.error().printStackTrace();
-      return renderError(topRepoListUiState.error());
-    } else {
-      return renderContent(topRepoListUiState);
-    }
-  }
-
-  @NonNull private Action renderContent(TopRepoListUiState topRepoListUiState) {
-    return () -> {
-      swipeRefreshLayout.setRefreshing(false);
-      adapter.setItems(topRepoListUiState.content());
-    };
-  }
-
-  @NonNull private Action renderError(Throwable error) {
-    return () -> {
-      errorSnackbar = Snackbar.make(contentView, error.getMessage(),
-          BaseTransientBottomBar.LENGTH_INDEFINITE);
-      swipeRefreshLayout.setRefreshing(false);
-      errorSnackbar.show();
-    };
-  }
-
-  @NonNull private Action renderLoading() {
-    return () -> {
-      swipeRefreshLayout.setRefreshing(true);
-      if (errorSnackbar != null) {
-        errorSnackbar.dismiss();
-      }
-    };
-  }
-
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_top_repo_list);
     bindViews(this);
     setupProductListView();
+    swipeRefreshLayout.setOnRefreshListener(() -> store.dispatch(LoadTopRepoAction.REFRESH));
   }
 
   @Override protected void onStart() {
     super.onStart();
     store.dispatch(LoadTopRepoAction.LOAD);
+
+    final Observable<TopRepoListUiState> loading$ = store.state$()
+        .filter(TopRepoListUiState::loading);
+
+    final Observable<TopRepoListUiState> refreshing$ = store.state$()
+        .filter(TopRepoListUiState::refreshing);
+
+    final Observable<Throwable> loadError$ = store.state$()
+        .filter(state -> state.loadError() != null)
+        .map(TopRepoListUiState::loadError);
+
+    final Observable<Throwable> refreshError$ = store.state$()
+        .filter(state -> state.refreshError() != null)
+        .map(TopRepoListUiState::refreshError);
+
+    final Observable<List<Repo>> content$ = store.state$()
+        .filter(state -> !state.loading()
+            && !state.refreshing()
+            && state.loadError() == null
+            && state.refreshError() == null)
+        .map(TopRepoListUiState::content);
+
+    disposeOnStop(loading$.subscribe(ignored -> renderLoading()));
+    disposeOnStop(refreshing$.subscribe(ignored -> renderRefreshing()));
+    disposeOnStop(loadError$.subscribe(this::renderLoadError));
+    disposeOnStop(refreshError$.subscribe(this::renderRefreshError));
+    disposeOnStop(content$.subscribe(this::renderContent));
   }
 
   private void setupProductListView() {
@@ -118,7 +111,7 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
     rvRepoList.addOnScrollListener(new InfiniteScrollListener(
         layoutManager,
         3,
-        () -> store.dispatch(LoadTopRepoAction.REFRESH)));
+        () -> store.dispatch(LoadTopRepoAction.LOAD_MORE)));
 
     adapter = productListAdapter();
     rvRepoList.setAdapter(adapter);
@@ -143,5 +136,36 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
           }
         })
         .build();
+  }
+
+  private void renderRefreshError(Throwable error) {
+    swipeRefreshLayout.setRefreshing(false);
+    Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
+  }
+
+  private void renderRefreshing() {
+    swipeRefreshLayout.setRefreshing(true);
+    if (errorSnackbar != null) {
+      errorSnackbar.dismiss();
+    }
+  }
+
+  private void renderContent(List<Repo> repoList) {
+    swipeRefreshLayout.setRefreshing(false);
+    adapter.setItems(repoList);
+  }
+
+  private void renderLoadError(Throwable error) {
+    swipeRefreshLayout.setRefreshing(false);
+    errorSnackbar = Snackbar.make(contentView, error.getMessage(),
+        BaseTransientBottomBar.LENGTH_INDEFINITE);
+    errorSnackbar.show();
+  }
+
+  private void renderLoading() {
+    swipeRefreshLayout.setRefreshing(true);
+    if (errorSnackbar != null) {
+      errorSnackbar.dismiss();
+    }
   }
 }

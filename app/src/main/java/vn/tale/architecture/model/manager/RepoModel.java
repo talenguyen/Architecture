@@ -13,14 +13,27 @@ import vn.tale.architecture.model.api.GithubApi;
 
 public class RepoModel {
 
+  private static final String[] LANGUAGES = { "java", "swift", "javascript", "ruby" };
+
   private final GithubApi githubApi;
+  private String language;
 
   public RepoModel(GithubApi githubApi) {
     this.githubApi = githubApi;
+    language = randomLanguage();
   }
 
-  public Single<List<Repo>> getPublicRepos(int page) {
-    return githubApi.searchRepos("language:java", "stars", "desc", page, 10)
+  private String randomLanguage() {
+    int randomIndex = (int) (System.currentTimeMillis() % LANGUAGES.length);
+    return LANGUAGES[randomIndex];
+  }
+
+  public Single<List<Repo>> getPublicRepos(boolean refresh, int page) {
+    if (refresh) {
+      language = randomLanguage();
+    }
+    final String query = String.format("language:%s", language);
+    return githubApi.searchRepos(query, "stars", "desc", page, 10)
         .map(response ->
             Ix.from(response.getItems())
                 .map(repoResponse ->
