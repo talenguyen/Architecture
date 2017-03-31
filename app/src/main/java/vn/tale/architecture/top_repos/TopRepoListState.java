@@ -9,14 +9,14 @@ import vn.tale.architecture.model.Repo;
  * Created by Giang Nguyen on 3/27/17.
  */
 @com.google.auto.value.AutoValue
-public abstract class TopRepoListUiState {
+public abstract class TopRepoListState {
 
-  public static Builder builder(TopRepoListUiState source) {
-    return new AutoValue_TopRepoListUiState.Builder(source);
+  public static Builder builder(TopRepoListState source) {
+    return new AutoValue_TopRepoListState.Builder(source);
   }
 
   public static Builder builder() {
-    return new AutoValue_TopRepoListUiState.Builder()
+    return new AutoValue_TopRepoListState.Builder()
         .loading(false)
         .loadingMore(false)
         .refreshing(false)
@@ -24,7 +24,7 @@ public abstract class TopRepoListUiState {
         .content(Collections.emptyList());
   }
 
-  public static TopRepoListUiState idle() {
+  public static TopRepoListState idle() {
     return builder().make();
   }
 
@@ -62,6 +62,6 @@ public abstract class TopRepoListUiState {
 
     public abstract Builder page(int page);
 
-    public abstract TopRepoListUiState make();
+    public abstract TopRepoListState make();
   }
 }

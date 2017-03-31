@@ -4,11 +4,11 @@ package vn.tale.architecture.common.reduxer;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public class LifecycleDelegate<UiState> {
+public class LifecycleDelegate<State> {
 
-  private final Store<UiState> store;
+  private final Store<State> store;
 
-  public LifecycleDelegate(Store<UiState> store) {
+  public LifecycleDelegate(Store<State> store) {
     this.store = store;
   }
 

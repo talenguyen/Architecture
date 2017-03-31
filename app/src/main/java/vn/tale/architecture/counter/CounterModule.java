@@ -3,7 +3,7 @@ package vn.tale.architecture.counter;
 import dagger.Module;
 import dagger.Provides;
 import vn.tale.architecture.common.reduxer.Store;
-import vn.tale.architecture.counter.transformer.ChangeValueTransformer;
+import vn.tale.architecture.counter.effect.ChangeValueEffect;
 
 /**
  * Created by Giang Nguyen on 3/24/17.
@@ -11,10 +11,10 @@ import vn.tale.architecture.counter.transformer.ChangeValueTransformer;
 @Module
 public class CounterModule {
 
-  @Provides Store<CounterUiState> provideCounterUiModelViewModel() {
-    return Store.<CounterUiState>builder()
-        .initialState(CounterUiState.make(0))
-        .transformers(new ChangeValueTransformer())
+  @Provides Store<CounterState> provideCounterUiModelViewModel() {
+    return Store.<CounterState>builder()
+        .initialState(CounterState.make(0))
+        .transformers(new ChangeValueEffect())
         .reducer(new CounterReducer())
         .make();
   }

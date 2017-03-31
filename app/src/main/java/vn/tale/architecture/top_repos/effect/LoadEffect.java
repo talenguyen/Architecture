@@ -1,38 +1,38 @@
-package vn.tale.architecture.top_repos.transformer;
+package vn.tale.architecture.top_repos.effect;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import vn.tale.architecture.common.reduxer.Action;
 import vn.tale.architecture.common.reduxer.Function0;
 import vn.tale.architecture.common.reduxer.Result;
-import vn.tale.architecture.common.reduxer.Transformer;
+import vn.tale.architecture.common.reduxer.Effect;
 import vn.tale.architecture.model.manager.RepoModel;
-import vn.tale.architecture.top_repos.TopRepoListUiState;
+import vn.tale.architecture.top_repos.TopRepoListState;
 import vn.tale.architecture.top_repos.action.LoadTopRepoAction;
-import vn.tale.architecture.top_repos.result.LoadTopRepoResult;
+import vn.tale.architecture.top_repos.result.LoadResult;
 
 /**
  * Created by Giang Nguyen on 3/28/17.
  */
 
-public class TopRepoListTransformer implements Transformer<TopRepoListUiState> {
+public class LoadEffect implements Effect<TopRepoListState> {
 
   private final RepoModel repoModel;
 
-  public TopRepoListTransformer(RepoModel repoModel) {
+  public LoadEffect(RepoModel repoModel) {
     this.repoModel = repoModel;
   }
 
-  @Override public Observable<Result> transform(Observable<Action> action$,
-      Function0<TopRepoListUiState> getState) {
+  @Override public Observable<Result> apply(Observable<Action> action$,
+      Function0<TopRepoListState> getState) {
     return action$
         .filter(action -> action == LoadTopRepoAction.LOAD)
         .filter(ignored -> getState.apply().content().isEmpty())
         .flatMap(ignored -> repoModel.getPublicRepos(false, 1)
             .toObservable()
-            .map(LoadTopRepoResult::success)
-            .onErrorReturn(LoadTopRepoResult::failure)
+            .map(LoadResult::success)
+            .onErrorReturn(LoadResult::failure)
             .subscribeOn(Schedulers.io())
-            .startWith(LoadTopRepoResult.inProgress()));
+            .startWith(LoadResult.inProgress()));
   }
 }

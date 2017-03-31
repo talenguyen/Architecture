@@ -1,5 +1,6 @@
 package vn.tale.architecture.login;
 
+import vn.tale.architecture.common.reduxer.Reducer;
 import vn.tale.architecture.common.reduxer.Result;
 import vn.tale.architecture.login.result.CheckEmailResult;
 import vn.tale.architecture.login.result.SubmitResult;
@@ -8,15 +9,15 @@ import vn.tale.architecture.login.result.SubmitResult;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public class LoginReducer implements vn.tale.architecture.common.reduxer.Reducer<LoginUiState> {
+public class LoginReducer implements Reducer<LoginState> {
 
-  @Override public LoginUiState apply(LoginUiState loginUiState, Result result) {
+  @Override public LoginState apply(LoginState loginState, Result result) {
     if (result == SubmitResult.IN_FLIGHT) {
-      return LoginUiState.inProgress();
+      return LoginState.inProgress();
     } else if (result == CheckEmailResult.SUCCESS) {
-      return LoginUiState.idle();
+      return LoginState.idle();
     } else if (result == SubmitResult.SUCCESS) {
-      return LoginUiState.success();
+      return LoginState.success();
     }
     final Throwable error;
     if (result instanceof SubmitResult) {
@@ -24,8 +25,8 @@ public class LoginReducer implements vn.tale.architecture.common.reduxer.Reducer
     } else if (result instanceof CheckEmailResult) {
       error = ((CheckEmailResult) result).error();
     } else {
-      return loginUiState;
+      return loginState;
     }
-    return LoginUiState.error(error);
+    return LoginState.error(error);
   }
 }

@@ -11,15 +11,15 @@ import vn.tale.architecture.common.reduxer.Store;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public abstract class ReduxActivity<DaggerComponent, UiState>
+public abstract class ReduxERActivity<DaggerComponent, State>
     extends BaseActivity<DaggerComponent> {
 
-  private LifecycleDelegate<UiState> lifecycleDelegate;
+  private LifecycleDelegate<State> lifecycleDelegate;
   private CompositeDisposable disposables = new CompositeDisposable();
 
   protected abstract void injectDependencies();
 
-  protected abstract Store<UiState> store();
+  protected abstract Store<State> store();
 
   protected void disposeOnStop(Disposable disposable) {
     disposables.add(disposable);

@@ -3,7 +3,7 @@ package vn.tale.architecture.login;
 /**
  * Created by Giang Nguyen on 3/21/17.
  */
-public final class LoginUiState {
+public final class LoginState {
 
   public final boolean inProgress;
 
@@ -11,33 +11,33 @@ public final class LoginUiState {
 
   public final Throwable error;
 
-  private LoginUiState(boolean inProgress, boolean success, Throwable error) {
+  private LoginState(boolean inProgress, boolean success, Throwable error) {
     this.inProgress = inProgress;
     this.success = success;
     this.error = error;
   }
 
-  public static LoginUiState idle() {
-    return new LoginUiState(false, false, null);
+  public static LoginState idle() {
+    return new LoginState(false, false, null);
   }
 
-  public static LoginUiState inProgress() {
-    return new LoginUiState(true, false, null);
+  public static LoginState inProgress() {
+    return new LoginState(true, false, null);
   }
 
-  public static LoginUiState success() {
-    return new LoginUiState(false, true, null);
+  public static LoginState success() {
+    return new LoginState(false, true, null);
   }
 
-  public static LoginUiState error(Throwable throwable) {
-    return new LoginUiState(false, false, throwable);
+  public static LoginState error(Throwable throwable) {
+    return new LoginState(false, false, throwable);
   }
 
   @Override public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    LoginUiState that = (LoginUiState) o;
+    LoginState that = (LoginState) o;
 
     if (inProgress != that.inProgress) return false;
     if (success != that.success) return false;

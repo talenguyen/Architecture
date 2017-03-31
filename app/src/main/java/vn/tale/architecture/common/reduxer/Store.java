@@ -10,33 +10,33 @@ import vn.tale.architecture.common.Preconditions;
 /**
  * Created by Giang Nguyen on 3/23/17.
  */
-public class Store<UiState> {
+public class Store<State> {
 
-  private final Reducer<UiState> reducer;
+  private final Reducer<State> reducer;
   private final PublishSubject<Action> action$;
-  private final BehaviorSubject<UiState> state$;
+  private final BehaviorSubject<State> state$;
   private final Observable<Result> result$;
   private Disposable disposable;
 
-  Store(@NonNull UiState initialState,
-      @NonNull Reducer<UiState> reducer,
-      @NonNull Transformer<UiState>[] transformers) {
+  Store(@NonNull State initialState,
+      @NonNull Reducer<State> reducer,
+      @NonNull Effect<State>[] effects) {
     this.reducer = reducer;
     this.action$ = PublishSubject.create();
     this.state$ = BehaviorSubject.createDefault(initialState);
-    this.result$ = Observable.fromArray(transformers)
-        .flatMap(transformer -> transformer.transform(action$, this::currentState));
+    this.result$ = Observable.fromArray(effects)
+        .flatMap(transformer -> transformer.apply(action$, this::currentState));
   }
 
-  public static <UiState> Builder<UiState> builder() {
+  public static <State> Builder<State> builder() {
     return new Builder<>();
   }
 
-  private UiState currentState() {
+  private State currentState() {
     return state$.getValue();
   }
 
-  public Observable<UiState> state$() {
+  public Observable<State> state$() {
     return state$;
   }
 
@@ -61,37 +61,37 @@ public class Store<UiState> {
     }
   }
 
-  public static class Builder<UiState> {
-    private UiState initialState;
-    private Reducer<UiState> reducer;
-    private Transformer<UiState>[] transformers;
+  public static class Builder<State> {
+    private State initialState;
+    private Reducer<State> reducer;
+    private Effect<State>[] effects;
 
     Builder() {
       // private constructor
     }
 
-    public Builder<UiState> initialState(@NonNull UiState initialState) {
+    public Builder<State> initialState(@NonNull State initialState) {
       Preconditions.checkNotNull(initialState, "initialState must not be null");
       this.initialState = initialState;
       return this;
     }
 
-    public Builder<UiState> reducer(@NonNull Reducer<UiState> reducer) {
+    public Builder<State> reducer(@NonNull Reducer<State> reducer) {
       Preconditions.checkNotNull(reducer, "reducer must not be null");
       this.reducer = reducer;
       return this;
     }
 
     @SafeVarargs
-    public final Builder<UiState> transformers(@NonNull Transformer<UiState>... transformers) {
-      Preconditions.checkNotNull(transformers);
-      Preconditions.checkNotEmpty(transformers, "transformers must not be empty");
-      this.transformers = transformers;
+    public final Builder<State> transformers(@NonNull Effect<State>... effects) {
+      Preconditions.checkNotNull(effects);
+      Preconditions.checkNotEmpty(effects, "effects must not be empty");
+      this.effects = effects;
       return this;
     }
 
-    public Store<UiState> make() {
-      return new Store<>(initialState, reducer, transformers);
+    public Store<State> make() {
+      return new Store<>(initialState, reducer, effects);
     }
   }
 }

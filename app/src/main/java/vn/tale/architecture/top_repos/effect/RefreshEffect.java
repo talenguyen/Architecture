@@ -1,37 +1,37 @@
-package vn.tale.architecture.top_repos.transformer;
+package vn.tale.architecture.top_repos.effect;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import vn.tale.architecture.common.reduxer.Action;
 import vn.tale.architecture.common.reduxer.Function0;
 import vn.tale.architecture.common.reduxer.Result;
-import vn.tale.architecture.common.reduxer.Transformer;
+import vn.tale.architecture.common.reduxer.Effect;
 import vn.tale.architecture.model.manager.RepoModel;
-import vn.tale.architecture.top_repos.TopRepoListUiState;
+import vn.tale.architecture.top_repos.TopRepoListState;
 import vn.tale.architecture.top_repos.action.LoadTopRepoAction;
-import vn.tale.architecture.top_repos.result.RefreshTopRepoResult;
+import vn.tale.architecture.top_repos.result.RefreshResult;
 
 /**
  * Created by Giang Nguyen on 3/28/17.
  */
 
-public class RefreshRepoListTransformer implements Transformer<TopRepoListUiState> {
+public class RefreshEffect implements Effect<TopRepoListState> {
 
   private final RepoModel repoModel;
 
-  public RefreshRepoListTransformer(RepoModel repoModel) {
+  public RefreshEffect(RepoModel repoModel) {
     this.repoModel = repoModel;
   }
 
-  @Override public Observable<Result> transform(Observable<Action> action$,
-      Function0<TopRepoListUiState> getState) {
+  @Override public Observable<Result> apply(Observable<Action> action$,
+      Function0<TopRepoListState> getState) {
     return action$
         .filter(action -> action == LoadTopRepoAction.REFRESH)
         .flatMap(ignored -> repoModel.getPublicRepos(true, 1)
             .toObservable()
-            .map(RefreshTopRepoResult::success)
-            .onErrorReturn(RefreshTopRepoResult::failure)
+            .map(RefreshResult::success)
+            .onErrorReturn(RefreshResult::failure)
             .subscribeOn(Schedulers.io())
-            .startWith(RefreshTopRepoResult.inProgress()));
+            .startWith(RefreshResult.inProgress()));
   }
 }

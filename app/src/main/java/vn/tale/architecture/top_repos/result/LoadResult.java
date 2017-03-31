@@ -10,32 +10,32 @@ import vn.tale.architecture.model.Repo;
  * Created by Giang Nguyen on 3/27/17.
  */
 @com.google.auto.value.AutoValue
-public abstract class RefreshTopRepoResult implements Result {
+public abstract class LoadResult implements Result {
 
-  public static Builder builder(RefreshTopRepoResult source) {
-    return new AutoValue_RefreshTopRepoResult.Builder(source);
+  public static Builder builder(LoadResult source) {
+    return new AutoValue_LoadResult.Builder(source);
   }
 
   public static Builder builder() {
-    return new AutoValue_RefreshTopRepoResult.Builder()
+    return new AutoValue_LoadResult.Builder()
         .loading(false)
         .content(Collections.emptyList())
         .error(null);
   }
 
-  public static RefreshTopRepoResult inProgress() {
+  public static LoadResult inProgress() {
     return builder()
         .loading(true)
         .make();
   }
 
-  public static RefreshTopRepoResult success(List<Repo> content) {
+  public static LoadResult success(List<Repo> content) {
     return builder()
         .content(content)
         .make();
   }
 
-  public static RefreshTopRepoResult failure(Throwable throwable) {
+  public static LoadResult failure(Throwable throwable) {
     return builder()
         .error(throwable)
         .make();
@@ -55,6 +55,6 @@ public abstract class RefreshTopRepoResult implements Result {
 
     public abstract Builder content(List<Repo> content);
 
-    public abstract RefreshTopRepoResult make();
+    public abstract LoadResult make();
   }
 }

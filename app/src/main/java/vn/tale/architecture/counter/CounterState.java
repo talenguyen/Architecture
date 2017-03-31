@@ -6,10 +6,10 @@ import com.google.auto.value.AutoValue;
  * Created by Giang Nguyen on 3/24/17.
  */
 @AutoValue
-public abstract class CounterUiState {
+public abstract class CounterState {
 
-  public static CounterUiState make(int value) {
-    return new AutoValue_CounterUiState(value);
+  public static CounterState make(int value) {
+    return new AutoValue_CounterState(value);
   }
 
   public abstract int value();

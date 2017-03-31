@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
 import vn.tale.architecture.R2;
-import vn.tale.architecture.common.base.ReduxActivity;
+import vn.tale.architecture.common.base.ReduxERActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
 import vn.tale.architecture.common.reduxer.Store;
 import vn.tale.architecture.counter.action.ChangeValueAction;
@@ -18,16 +18,16 @@ import vn.tale.architecture.counter.action.ChangeValueAction;
  * Created by Giang Nguyen on 3/24/17.
  */
 
-public class CounterActivity extends ReduxActivity<CounterComponent, CounterUiState> {
+public class CounterActivity extends ReduxERActivity<CounterComponent, CounterState> {
 
-  @Inject Store<CounterUiState> store;
+  @Inject Store<CounterState> store;
   @BindView(R2.id.tvValue) TextView tvValue;
 
   @Override protected void injectDependencies() {
     daggerComponent().inject(this);
   }
 
-  @Override protected Store<CounterUiState> store() {
+  @Override protected Store<CounterState> store() {
     return store;
   }
 

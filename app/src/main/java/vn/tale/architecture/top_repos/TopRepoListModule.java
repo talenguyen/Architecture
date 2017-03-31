@@ -5,9 +5,9 @@ import dagger.Provides;
 import vn.tale.architecture.ActivityScope;
 import vn.tale.architecture.common.reduxer.Store;
 import vn.tale.architecture.model.manager.RepoModel;
-import vn.tale.architecture.top_repos.transformer.LoadMoreTransformer;
-import vn.tale.architecture.top_repos.transformer.RefreshRepoListTransformer;
-import vn.tale.architecture.top_repos.transformer.TopRepoListTransformer;
+import vn.tale.architecture.top_repos.effect.LoadMoreEffect;
+import vn.tale.architecture.top_repos.effect.RefreshEffect;
+import vn.tale.architecture.top_repos.effect.LoadEffect;
 
 /**
  * Created by Giang Nguyen on 3/27/17.
@@ -16,13 +16,13 @@ import vn.tale.architecture.top_repos.transformer.TopRepoListTransformer;
 public class TopRepoListModule {
 
   @ActivityScope
-  @Provides Store<TopRepoListUiState> provideViewModel(RepoModel repoModel) {
-    return Store.<TopRepoListUiState>builder()
-        .initialState(TopRepoListUiState.idle())
+  @Provides Store<TopRepoListState> provideViewModel(RepoModel repoModel) {
+    return Store.<TopRepoListState>builder()
+        .initialState(TopRepoListState.idle())
         .transformers(
-            new TopRepoListTransformer(repoModel),
-            new RefreshRepoListTransformer(repoModel),
-            new LoadMoreTransformer(repoModel))
+            new LoadEffect(repoModel),
+            new RefreshEffect(repoModel),
+            new LoadMoreEffect(repoModel))
         .reducer(new TopRepoListReducer())
         .make();
   }

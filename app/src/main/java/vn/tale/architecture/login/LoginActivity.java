@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
 import vn.tale.architecture.R2;
-import vn.tale.architecture.common.base.ReduxActivity;
+import vn.tale.architecture.common.base.ReduxERActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
 import vn.tale.architecture.common.reduxer.Store;
 import vn.tale.architecture.login.action.CheckEmailAction;
@@ -30,7 +30,7 @@ import vn.tale.architecture.model.error.OnErrorNotImplementedException;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public class LoginActivity extends ReduxActivity<LoginComponent, LoginUiState> {
+public class LoginActivity extends ReduxERActivity<LoginComponent, LoginState> {
 
   @BindView(R2.id.etEmail) TextInputEditText etEmail;
   @BindView(R2.id.tilEmailWrapper) TextInputLayout tilEmailWrapper;
@@ -41,7 +41,7 @@ public class LoginActivity extends ReduxActivity<LoginComponent, LoginUiState> {
   @BindString(R2.string.email_is_invalid) String textEmailIsInvalid;
   @BindString(R2.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
 
-  @Inject Store<LoginUiState> store;
+  @Inject Store<LoginState> store;
 
   @Override protected DaggerComponentFactory<LoginComponent> daggerComponentFactory() {
     return () -> App.get(this).getAppComponent().plus(new LoginModule());
@@ -51,7 +51,7 @@ public class LoginActivity extends ReduxActivity<LoginComponent, LoginUiState> {
     daggerComponent().inject(this);
   }
 
-  @Override protected Store<LoginUiState> store() {
+  @Override protected Store<LoginState> store() {
     return store;
   }
 
@@ -75,13 +75,13 @@ public class LoginActivity extends ReduxActivity<LoginComponent, LoginUiState> {
             etPassword.getText().toString()))
         .subscribe(action -> store.dispatch(action)));
 
-    final Observable<LoginUiState> idle$ = store.state$()
-        .filter(state -> state.equals(LoginUiState.idle()));
+    final Observable<LoginState> idle$ = store.state$()
+        .filter(state -> state.equals(LoginState.idle()));
 
-    final Observable<LoginUiState> loading$ = store.state$()
+    final Observable<LoginState> loading$ = store.state$()
         .filter(state -> state.inProgress);
 
-    final Observable<LoginUiState> success$ = store.state$()
+    final Observable<LoginState> success$ = store.state$()
         .filter(state -> state.success);
 
     final Observable<Throwable> error$ = store.state$()

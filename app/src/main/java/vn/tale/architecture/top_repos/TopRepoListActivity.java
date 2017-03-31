@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
 import vn.tale.architecture.R2;
-import vn.tale.architecture.common.base.ReduxActivity;
+import vn.tale.architecture.common.base.ReduxERActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
 import vn.tale.architecture.common.reduxer.Store;
 import vn.tale.architecture.common.util.ImageLoader;
@@ -32,10 +32,10 @@ import vn.tiki.noadapter2.OnlyAdapter;
  * Created by Giang Nguyen on 3/27/17.
  */
 
-public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, TopRepoListUiState> {
+public class TopRepoListActivity extends ReduxERActivity<TopRepoListComponent, TopRepoListState> {
 
   @Inject ImageLoader imageLoader;
-  @Inject Store<TopRepoListUiState> store;
+  @Inject Store<TopRepoListState> store;
 
   @BindView(R2.id.rvRepoList) RecyclerView rvRepoList;
   @BindView(R2.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
@@ -52,7 +52,7 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
     daggerComponent().inject(this);
   }
 
-  @Override protected Store<TopRepoListUiState> store() {
+  @Override protected Store<TopRepoListState> store() {
     return store;
   }
 
@@ -68,29 +68,29 @@ public class TopRepoListActivity extends ReduxActivity<TopRepoListComponent, Top
     super.onStart();
     store.dispatch(LoadTopRepoAction.LOAD);
 
-    final Observable<TopRepoListUiState> state$ = store.state$()
+    final Observable<TopRepoListState> state$ = store.state$()
         .observeOn(AndroidSchedulers.mainThread());
 
-    final Observable<TopRepoListUiState> loading$ = state$
-        .filter(TopRepoListUiState::loading);
+    final Observable<TopRepoListState> loading$ = state$
+        .filter(TopRepoListState::loading);
 
-    final Observable<TopRepoListUiState> refreshing$ = state$
-        .filter(TopRepoListUiState::refreshing);
+    final Observable<TopRepoListState> refreshing$ = state$
+        .filter(TopRepoListState::refreshing);
 
     final Observable<Throwable> loadError$ = state$
         .filter(state -> state.loadError() != null)
-        .map(TopRepoListUiState::loadError);
+        .map(TopRepoListState::loadError);
 
     final Observable<Throwable> refreshError$ = state$
         .filter(state -> state.refreshError() != null)
-        .map(TopRepoListUiState::refreshError);
+        .map(TopRepoListState::refreshError);
 
     final Observable<List<Repo>> content$ = store.state$()
         .filter(state -> !state.loading()
             && !state.refreshing()
             && state.loadError() == null
             && state.refreshError() == null)
-        .map(TopRepoListUiState::content);
+        .map(TopRepoListState::content);
 
     disposeOnStop(loading$.subscribe(ignored -> renderLoading()));
     disposeOnStop(refreshing$.subscribe(ignored -> renderRefreshing()));
