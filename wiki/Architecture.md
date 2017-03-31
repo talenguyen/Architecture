@@ -4,8 +4,7 @@
   * [Reducer](#reducer)
   * [Effects](#effects)
   * [Store](#store)
-* [ViewModel](#view-model)
-* [View](#view)
+* [ViewModel](#viewmodel)
 
 ## RVVM
 ![RVVM](./Rvvm.png "RVVM")
@@ -57,7 +56,6 @@ Store.<State> store = Store.<State>builder()
         .make()
 ~~~
 
-<div id=‘view-model’/>
 ## ViewModel
 Handle view’s logic then you can test.
 
