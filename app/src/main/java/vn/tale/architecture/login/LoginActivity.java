@@ -42,6 +42,7 @@ public class LoginActivity extends ReduxERActivity<LoginComponent, LoginState> {
   @BindString(R2.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
 
   @Inject Store<LoginState> store;
+  @Inject LoginRenderer renderer;
 
   @Override protected DaggerComponentFactory<LoginComponent> daggerComponentFactory() {
     return () -> App.get(this).getAppComponent().plus(new LoginModule());
@@ -75,23 +76,11 @@ public class LoginActivity extends ReduxERActivity<LoginComponent, LoginState> {
             etPassword.getText().toString()))
         .subscribe(action -> store.dispatch(action)));
 
-    final Observable<LoginState> idle$ = store.state$()
-        .filter(state -> state.equals(LoginState.idle()));
-
-    final Observable<LoginState> loading$ = store.state$()
-        .filter(state -> state.inProgress);
-
-    final Observable<LoginState> success$ = store.state$()
-        .filter(state -> state.success);
-
-    final Observable<Throwable> error$ = store.state$()
-        .filter(state -> state.error != null)
-        .map(state -> state.error);
-
-    disposeOnStop(idle$.subscribe(ignored -> renderIdle()));
-    disposeOnStop(loading$.subscribe(ignored -> renderLoading()));
-    disposeOnStop(success$.subscribe(ignored -> renderSuccess()));
-    disposeOnStop(error$.subscribe(this::renderError));
+    final Observable<LoginState> state$ = store.state$();
+    disposeOnStop(state$.compose(renderer.idle()).subscribe(ignored -> renderIdle()));
+    disposeOnStop(state$.compose(renderer.loading()).subscribe(ignored -> renderLoading()));
+    disposeOnStop(state$.compose(renderer.success()).subscribe(ignored -> renderSuccess()));
+    disposeOnStop(state$.compose(renderer.error()).subscribe(this::renderError));
   }
 
   private void renderLoading() {

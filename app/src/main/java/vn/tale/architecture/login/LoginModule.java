@@ -15,6 +15,9 @@ import vn.tale.architecture.model.manager.UserModel;
 @Module
 public class LoginModule {
 
+  @Provides LoginRenderer provideLoginRenderer() {
+    return new LoginRenderer();
+  }
   @ActivityScope
   @Provides
   Store<LoginState> provideLoginStore(UserModel userModel,
