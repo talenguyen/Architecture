@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import vn.tale.architecture.common.mvvm.LifecycleDelegate;
-import vn.tale.architecture.common.mvvm.Store;
+import vn.tale.architecture.common.reduxer.LifecycleDelegate;
+import vn.tale.architecture.common.reduxer.Store;
 
 /**
  * Created by Giang Nguyen on 3/23/17.

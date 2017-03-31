@@ -1,4 +1,4 @@
-package vn.tale.architecture.common.mvvm;
+package vn.tale.architecture.common.reduxer;
 
 /**
  * A functional interface that returns a value, allows throwing a checked exception.

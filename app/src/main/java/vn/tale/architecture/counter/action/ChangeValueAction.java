@@ -1,6 +1,6 @@
 package vn.tale.architecture.counter.action;
 
-import vn.tale.architecture.common.mvvm.Action;
+import vn.tale.architecture.common.reduxer.Action;
 
 /**
  * Created by Giang Nguyen on 3/24/17.

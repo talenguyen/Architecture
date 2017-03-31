@@ -4,7 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import vn.tale.architecture.ActivityScope;
 import vn.tale.architecture.common.EmailValidator;
-import vn.tale.architecture.common.mvvm.Store;
+import vn.tale.architecture.common.reduxer.Store;
 import vn.tale.architecture.login.transformer.CheckEmailTransformer;
 import vn.tale.architecture.login.transformer.SubmitTransformer;
 import vn.tale.architecture.model.manager.UserModel;

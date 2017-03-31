@@ -1,6 +1,6 @@
 package vn.tale.architecture.login.result;
 
-import vn.tale.architecture.common.mvvm.Result;
+import vn.tale.architecture.common.reduxer.Result;
 
 /**
  * Created by Giang Nguyen on 3/23/17.

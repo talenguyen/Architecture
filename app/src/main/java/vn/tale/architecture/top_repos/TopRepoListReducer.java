@@ -2,8 +2,8 @@ package vn.tale.architecture.top_repos;
 
 import ix.Ix;
 import java.util.List;
-import vn.tale.architecture.common.mvvm.Reducer;
-import vn.tale.architecture.common.mvvm.Result;
+import vn.tale.architecture.common.reduxer.Reducer;
+import vn.tale.architecture.common.reduxer.Result;
 import vn.tale.architecture.model.Repo;
 import vn.tale.architecture.top_repos.result.LoadMoreResult;
 import vn.tale.architecture.top_repos.result.LoadTopRepoResult;

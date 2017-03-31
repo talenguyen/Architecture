@@ -11,7 +11,7 @@ import vn.tale.architecture.R;
 import vn.tale.architecture.R2;
 import vn.tale.architecture.common.base.ReduxActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
-import vn.tale.architecture.common.mvvm.Store;
+import vn.tale.architecture.common.reduxer.Store;
 import vn.tale.architecture.counter.action.ChangeValueAction;
 
 /**

@@ -2,10 +2,10 @@ package vn.tale.architecture.top_repos.transformer;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
-import vn.tale.architecture.common.mvvm.Action;
-import vn.tale.architecture.common.mvvm.Function0;
-import vn.tale.architecture.common.mvvm.Result;
-import vn.tale.architecture.common.mvvm.Transformer;
+import vn.tale.architecture.common.reduxer.Action;
+import vn.tale.architecture.common.reduxer.Function0;
+import vn.tale.architecture.common.reduxer.Result;
+import vn.tale.architecture.common.reduxer.Transformer;
 import vn.tale.architecture.model.manager.RepoModel;
 import vn.tale.architecture.top_repos.TopRepoListUiState;
 import vn.tale.architecture.top_repos.action.LoadTopRepoAction;

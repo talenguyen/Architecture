@@ -1,7 +1,7 @@
 package vn.tale.architecture.counter.result;
 
 import com.google.auto.value.AutoValue;
-import vn.tale.architecture.common.mvvm.Result;
+import vn.tale.architecture.common.reduxer.Result;
 
 /**
  * Created by Giang Nguyen on 3/24/17.

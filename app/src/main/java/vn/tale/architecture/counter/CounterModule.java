@@ -2,7 +2,7 @@ package vn.tale.architecture.counter;
 
 import dagger.Module;
 import dagger.Provides;
-import vn.tale.architecture.common.mvvm.Store;
+import vn.tale.architecture.common.reduxer.Store;
 import vn.tale.architecture.counter.transformer.ChangeValueTransformer;
 
 /**

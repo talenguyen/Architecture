@@ -1,6 +1,6 @@
 package vn.tale.architecture.login;
 
-import vn.tale.architecture.common.mvvm.Result;
+import vn.tale.architecture.common.reduxer.Result;
 import vn.tale.architecture.login.result.CheckEmailResult;
 import vn.tale.architecture.login.result.SubmitResult;
 
@@ -8,7 +8,7 @@ import vn.tale.architecture.login.result.SubmitResult;
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public class LoginReducer implements vn.tale.architecture.common.mvvm.Reducer<LoginUiState> {
+public class LoginReducer implements vn.tale.architecture.common.reduxer.Reducer<LoginUiState> {
 
   @Override public LoginUiState apply(LoginUiState loginUiState, Result result) {
     if (result == SubmitResult.IN_FLIGHT) {

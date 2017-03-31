@@ -1,4 +1,4 @@
-package vn.tale.architecture.common.mvvm;
+package vn.tale.architecture.common.reduxer;
 
 import io.reactivex.Observable;
 

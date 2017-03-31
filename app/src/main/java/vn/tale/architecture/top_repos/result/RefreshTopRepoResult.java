@@ -3,7 +3,7 @@ package vn.tale.architecture.top_repos.result;
 import android.support.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
-import vn.tale.architecture.common.mvvm.Result;
+import vn.tale.architecture.common.reduxer.Result;
 import vn.tale.architecture.model.Repo;
 
 /**
