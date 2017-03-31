@@ -16,17 +16,25 @@ task javaCodeCoverage(type: JacocoReport, dependsOn: 'testDevDebugUnitTest') {
   def classFileTree = fileTree(dir: "${buildDir}/intermediates/classes/",
       excludes: ['**/R.class',
                  '**/R$*.class',
+                 '**/BR.class',
                  '**/BuildConfig.*',
                  '**/Manifest*.*',
                  '**/*Test*.*',
                  '**/App.*',
                  '**/*Activity.*',
+                 '**/*Fragment.*',
+                 '**/*Dialog.*',
+                 '**/*Adapter.*',
                  '**/*Module.*',
                  '**/*Component.*',
-                 '**/*MembersInjector.*',
+                 '**/*MembersInjector.*', // Dagger auto-generated code.
+                 '**/*_Provide*Factory*.*', // Dagger auto-generated code.
                  '**/*AutoValue_*.*',
                  'android/**/*.*',
                  '**/*Factory.*',
+                 '**/databinding/**',
+                 '**/widget/**',
+                 '**/**_ViewBinding.*',
                  '**/*$*.class'])
 
   classDirectories = files([classFileTree])

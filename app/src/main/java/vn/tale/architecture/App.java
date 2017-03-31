@@ -2,6 +2,8 @@ package vn.tale.architecture;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
+import timber.log.Timber;
 
 /**
  * Created by Giang Nguyen on 2/21/17.
@@ -17,13 +19,45 @@ public class App extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
-    appComponent = DaggerAppComponent.builder()
+    initTimber();
+    appComponent = makeAppComponent();
+  }
+
+  public AppComponent getAppComponent() {
+    return appComponent;
+  }
+
+  private AppComponent makeAppComponent() {
+    return DaggerAppComponent.builder()
         .appModule(new AppModule())
         .appSingletonModule(new AppSingletonModule())
         .build();
   }
 
-  public AppComponent getAppComponent() {
-    return appComponent;
+  private void initTimber() {
+    if (BuildConfig.DEBUG) {
+      Timber.plant(new Timber.DebugTree());
+    } else {
+      Timber.plant(new CrashReportingTree());
+    }
+  }
+
+  private static class CrashReportingTree extends Timber.Tree {
+
+    @Override protected void log(int priority, String tag, String message, Throwable t) {
+      if (priority == Log.VERBOSE || priority == Log.DEBUG) {
+        return;
+      }
+
+      Log.println(priority, tag, message);
+
+      if (t != null) {
+        if (priority == Log.ERROR) {
+          Log.e(tag, message, t);
+        } else if (priority == Log.WARN) {
+          Log.w(tag, message, t);
+        }
+      }
+    }
   }
 }

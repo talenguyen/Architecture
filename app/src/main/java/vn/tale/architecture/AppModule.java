@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers;
 import vn.tale.architecture.common.EmailValidator;
 import vn.tale.architecture.common.SchedulerObservableTransformer;
 import vn.tale.architecture.common.SchedulerSingleTransformer;
+import vn.tale.architecture.common.util.ImageLoader;
 
 /**
  * Created by Giang Nguyen on 2/27/17.
@@ -39,5 +40,9 @@ import vn.tale.architecture.common.SchedulerSingleTransformer;
             .observeOn(AndroidSchedulers.mainThread());
       }
     };
+  }
+
+  @Provides ImageLoader provideImageLoader() {
+    return new GlideImageLoader();
   }
 }

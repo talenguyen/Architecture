@@ -57,7 +57,7 @@ public class LoginTest {
     when(mockedUserModel.login(eq(VALID_EMAIL), eq(VALID_PASSWORD)))
         .thenReturn(Single.just(mock(User.class)));
     when(mockedUserModel.login(eq(VALID_EMAIL), eq(INVALID_PASSWORD)))
-        .thenReturn(Single.<User>error(new AuthenticateError("")));
+        .thenReturn(Single.error(new AuthenticateError()));
   }
 
   @Test
@@ -112,14 +112,14 @@ public class LoginTest {
   private static class LoginRobot {
 
     LoginRobot inputEmail(String email) {
-      onView(withId(R.id.etEmail))
+      onView(withId(R2.id.etEmail))
           .perform(ViewActions.typeText(email));
       return this;
     }
 
     LoginRobot inputPassword(String password) {
       closeSoftKeyboard();
-      onView(withId(R.id.etPassword))
+      onView(withId(R2.id.etPassword))
           .perform(ViewActions.typeText(password));
       return this;
     }
