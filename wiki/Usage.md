@@ -157,8 +157,8 @@ class TopRepoListActivity extends AppCompatActivity {
     // Dispatch action
     store.dispatch(LoadTopRepoAction.LOAD);
 
-	 // Binding 
-	 disposable = store.state$()
+	// Binding 
+	disposable = store.state$()
 	   .filter(state -> state.loading())
 	   .subscribe(ignored -> renderLoading());
   }

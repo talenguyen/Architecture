@@ -7,9 +7,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import vn.tale.architecture.ActivityScope;
 import vn.tale.architecture.common.redux.Store;
 import vn.tale.architecture.model.manager.RepoModel;
+import vn.tale.architecture.top_repos.effect.LoadEffect;
 import vn.tale.architecture.top_repos.effect.LoadMoreEffect;
 import vn.tale.architecture.top_repos.effect.RefreshEffect;
-import vn.tale.architecture.top_repos.effect.LoadEffect;
 
 /**
  * Created by Giang Nguyen on 3/27/17.

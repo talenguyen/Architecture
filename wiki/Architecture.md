@@ -1,33 +1,65 @@
 # Architecture
 
+* [Redux](#redux)
+  * [Reducer](#reducer)
+  * [Effects](#effects)
+  * [Store](#store)
+* [ViewModel](#view-model)
+* [View](#view)
+
 ## RVVM
 ![RVVM](./Rvvm.png "RVVM")
 
 ## Redux
+See more from [Redux](http://redux.js.org)
 
-### Store
-- Central, brain of the Model. It’s a Delegator 
-- Ask Effects to get the Result then give the Result to Reducer to update state.
+### Reducer
+See more from [Redux](http://redux.js.org/docs/basics/Reducers.html)
+
+The reducer is a pure function that takes the previous state and a Result, and returns the next state.
+
+It's called a reducer because it's the type of function you would pass to `Observable.reduce(initialValue, reducer)`. It's very important that the reducer stays pure. It only computes the next state. It should be completely predictable: calling it with the same inputs many times should produce the same outputs. Things you should never do inside a reducer:
+
+- Mutate its arguments;
+- Perform side effects like API calls and routing transitions;
+- Call non-pure functions, e.g. Date.now() or Math.random().
+
+### Effects
+Effects is the place where side-effect happens. Idea is pretty same as [Epics](https://redux-observable.js.org/docs/basics/Epics.html) from [redux-observable](https://redux-observable.js.org/). The different is we called the output is Result. 
 
 ~~~java
-class Store<State> { 
-  void dispatch(Action action) {
-    ...
-  }
-  Observable<State> state$() {
-    ...
-  }
+public interface Effect<State> {
+
+  Observable<Result> apply(Observable<Action> action$, Function0<State> getState);
 }
 ~~~
 
-### Effect
-- Call external services e.g. database, api... to get result
+### Store
+See more from [Redux](http://redux.js.org/docs/basics/Store.html#store)
 
-### Reducer
-- Pure function
+In the previous sections, we defined the actions that represent the facts about “what happened”, effects that handle side-effect (e.g. call api, update database or call non-pure functions) then turn those action into results and the reducers that update the state according to those results.
 
+The Store is the object that brings them together. The store has the following responsibilities:
+
+- Holds application state;
+- Allows access to state via state$();
+- Allows state to be updated via dispatch(action);
+
+It's important to note that you'll have many stores in your application base on your app’s dependencies scopes.
+
+Create store by use its Builder
+
+~~~java
+Store.<State> store = Store.<State>builder()
+        .initialState(/* initial state */)
+        .effects(/* array of effects */)
+        .reducer(/* reducer */)
+        .make()
+~~~
+
+<div id=‘view-model’/>
 ## ViewModel
-Simply map **State** to **UiModel**.
+Handle view’s logic then you can test.
 
 e.g. [LoginViewModel.java](../app/src/main/java/vn/tale/architecture/login/LoginViewModel.java)
 
