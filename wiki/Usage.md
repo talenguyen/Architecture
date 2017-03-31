@@ -1,9 +1,6 @@
 # Usage
 
 ## Reducer
-- Implement Reducer to handle state change
-
-e.g.
 
 ~~~java
 
@@ -74,9 +71,6 @@ public class TopRepoListReducer implements Reducer<TopRepoListState> {
 ~~~
 
 ## Effect
-- Implement `Effects` to handle side effect e.g. database, api...
-
-e.g.
 
 [LoadEffect.java](../app/src/main/java/vn/tale/architecture/top_repos/effect/LoadEffect.java)
 
