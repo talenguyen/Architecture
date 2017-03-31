@@ -83,7 +83,7 @@ public class Store<State> {
     }
 
     @SafeVarargs
-    public final Builder<State> transformers(@NonNull Effect<State>... effects) {
+    public final Builder<State> effects(@NonNull Effect<State>... effects) {
       Preconditions.checkNotNull(effects);
       Preconditions.checkNotEmpty(effects, "effects must not be empty");
       this.effects = effects;

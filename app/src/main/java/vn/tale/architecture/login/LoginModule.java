@@ -24,7 +24,7 @@ public class LoginModule {
     return Store.<LoginState>builder()
         .initialState(LoginState.idle())
         .reducer(new LoginReducer())
-        .transformers(
+        .effects(
             new CheckEmailEffect(emailValidator),
             new SubmitEffect(userModel)
         )

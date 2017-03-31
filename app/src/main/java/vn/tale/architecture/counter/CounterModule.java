@@ -14,7 +14,7 @@ public class CounterModule {
   @Provides Store<CounterState> provideCounterUiModelViewModel() {
     return Store.<CounterState>builder()
         .initialState(CounterState.make(0))
-        .transformers(new ChangeValueEffect())
+        .effects(new ChangeValueEffect())
         .reducer(new CounterReducer())
         .make();
   }

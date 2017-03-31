@@ -21,7 +21,7 @@ public class TopRepoListModule {
   @Provides Store<TopRepoListState> provideViewModel(RepoModel repoModel) {
     return Store.<TopRepoListState>builder()
         .initialState(TopRepoListState.idle())
-        .transformers(
+        .effects(
             new LoadEffect(repoModel),
             new RefreshEffect(repoModel),
             new LoadMoreEffect(repoModel))
