@@ -1,4 +1,4 @@
-package vn.tale.architecture.common.reduxer;
+package vn.tale.architecture.common.redux;
 
 import android.support.annotation.NonNull;
 import io.reactivex.Observable;

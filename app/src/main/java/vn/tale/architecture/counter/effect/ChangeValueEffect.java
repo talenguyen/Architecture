@@ -1,10 +1,10 @@
 package vn.tale.architecture.counter.effect;
 
 import io.reactivex.Observable;
-import vn.tale.architecture.common.reduxer.Action;
-import vn.tale.architecture.common.reduxer.Function0;
-import vn.tale.architecture.common.reduxer.Result;
-import vn.tale.architecture.common.reduxer.Effect;
+import vn.tale.architecture.common.redux.Action;
+import vn.tale.architecture.common.redux.Function0;
+import vn.tale.architecture.common.redux.Result;
+import vn.tale.architecture.common.redux.Effect;
 import vn.tale.architecture.counter.CounterState;
 import vn.tale.architecture.counter.action.ChangeValueAction;
 import vn.tale.architecture.counter.result.ChangeValueResult;

@@ -2,9 +2,11 @@ package vn.tale.architecture.login;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import vn.tale.architecture.ActivityScope;
 import vn.tale.architecture.common.EmailValidator;
-import vn.tale.architecture.common.reduxer.Store;
+import vn.tale.architecture.common.redux.Store;
 import vn.tale.architecture.login.effect.CheckEmailEffect;
 import vn.tale.architecture.login.effect.SubmitEffect;
 import vn.tale.architecture.model.manager.UserModel;
@@ -15,9 +17,6 @@ import vn.tale.architecture.model.manager.UserModel;
 @Module
 public class LoginModule {
 
-  @Provides LoginRenderer provideLoginRenderer() {
-    return new LoginRenderer();
-  }
   @ActivityScope
   @Provides
   Store<LoginState> provideLoginStore(UserModel userModel,
@@ -30,5 +29,11 @@ public class LoginModule {
             new SubmitEffect(userModel)
         )
         .make();
+  }
+
+  @Provides LoginViewModel provideLoginRenderer(Store<LoginState> store) {
+    final Observable<LoginState> state$ = store.state$()
+        .observeOn(AndroidSchedulers.mainThread());
+    return new LoginViewModel(state$);
   }
 }

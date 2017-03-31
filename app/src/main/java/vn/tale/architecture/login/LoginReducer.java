@@ -1,7 +1,7 @@
 package vn.tale.architecture.login;
 
-import vn.tale.architecture.common.reduxer.Reducer;
-import vn.tale.architecture.common.reduxer.Result;
+import vn.tale.architecture.common.redux.Reducer;
+import vn.tale.architecture.common.redux.Result;
 import vn.tale.architecture.login.result.CheckEmailResult;
 import vn.tale.architecture.login.result.SubmitResult;
 

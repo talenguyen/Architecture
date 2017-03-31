@@ -11,15 +11,14 @@ import butterknife.BindString;
 import butterknife.BindView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-import io.reactivex.Observable;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
 import vn.tale.architecture.R2;
-import vn.tale.architecture.common.base.ReduxERActivity;
+import vn.tale.architecture.common.base.RvvmActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
-import vn.tale.architecture.common.reduxer.Store;
+import vn.tale.architecture.common.redux.Store;
 import vn.tale.architecture.login.action.CheckEmailAction;
 import vn.tale.architecture.login.action.SubmitAction;
 import vn.tale.architecture.model.error.AuthenticateError;
@@ -30,7 +29,7 @@ import vn.tale.architecture.model.error.OnErrorNotImplementedException;
  * Created by Giang Nguyen on 2/21/17.
  */
 
-public class LoginActivity extends ReduxERActivity<LoginComponent, LoginState> {
+public class LoginActivity extends RvvmActivity<LoginComponent, LoginState> {
 
   @BindView(R2.id.etEmail) TextInputEditText etEmail;
   @BindView(R2.id.tilEmailWrapper) TextInputLayout tilEmailWrapper;
@@ -42,7 +41,7 @@ public class LoginActivity extends ReduxERActivity<LoginComponent, LoginState> {
   @BindString(R2.string.email_and_password_are_mismatched) String textEmailAndPasswordAreMismatch;
 
   @Inject Store<LoginState> store;
-  @Inject LoginRenderer renderer;
+  @Inject LoginViewModel viewModel;
 
   @Override protected DaggerComponentFactory<LoginComponent> daggerComponentFactory() {
     return () -> App.get(this).getAppComponent().plus(new LoginModule());
@@ -76,11 +75,10 @@ public class LoginActivity extends ReduxERActivity<LoginComponent, LoginState> {
             etPassword.getText().toString()))
         .subscribe(action -> store.dispatch(action)));
 
-    final Observable<LoginState> state$ = store.state$();
-    disposeOnStop(state$.compose(renderer.idle()).subscribe(ignored -> renderIdle()));
-    disposeOnStop(state$.compose(renderer.loading()).subscribe(ignored -> renderLoading()));
-    disposeOnStop(state$.compose(renderer.success()).subscribe(ignored -> renderSuccess()));
-    disposeOnStop(state$.compose(renderer.error()).subscribe(this::renderError));
+    disposeOnStop(viewModel.idle().subscribe(ignored -> renderIdle()));
+    disposeOnStop(viewModel.loading().subscribe(ignored -> renderLoading()));
+    disposeOnStop(viewModel.success().subscribe(ignored -> renderSuccess()));
+    disposeOnStop(viewModel.error().subscribe(this::renderError));
   }
 
   private void renderLoading() {

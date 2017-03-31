@@ -249,7 +249,7 @@ android_build_config(
 		'String APPLICATION_ID = "vn.tale.architecture.dev"',
 		'String BUILD_TYPE = "release"',
 		'String FLAVOR = "dev"',
-		'int VERSION_CODE = 1490934318',
+		'int VERSION_CODE = 1490937059',
 	],
 	visibility = [
 		'PUBLIC',
@@ -464,7 +464,7 @@ android_build_config(
 		'String APPLICATION_ID = "vn.tale.architecture.dev"',
 		'String BUILD_TYPE = "debug"',
 		'String FLAVOR = "dev"',
-		'int VERSION_CODE = 1490934318',
+		'int VERSION_CODE = 1490937059',
 	],
 	visibility = [
 		'PUBLIC',

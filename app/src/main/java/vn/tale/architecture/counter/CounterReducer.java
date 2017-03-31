@@ -1,7 +1,7 @@
 package vn.tale.architecture.counter;
 
-import vn.tale.architecture.common.reduxer.Reducer;
-import vn.tale.architecture.common.reduxer.Result;
+import vn.tale.architecture.common.redux.Reducer;
+import vn.tale.architecture.common.redux.Result;
 import vn.tale.architecture.counter.result.ChangeValueResult;
 
 /**

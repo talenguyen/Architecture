@@ -4,14 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import vn.tale.architecture.common.reduxer.LifecycleDelegate;
-import vn.tale.architecture.common.reduxer.Store;
+import vn.tale.architecture.common.redux.LifecycleDelegate;
+import vn.tale.architecture.common.redux.Store;
 
 /**
  * Created by Giang Nguyen on 3/23/17.
  */
 
-public abstract class ReduxERActivity<DaggerComponent, State>
+public abstract class RvvmActivity<DaggerComponent, State>
     extends BaseActivity<DaggerComponent> {
 
   private LifecycleDelegate<State> lifecycleDelegate;

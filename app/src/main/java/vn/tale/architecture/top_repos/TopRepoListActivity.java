@@ -11,16 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import java.util.List;
 import javax.inject.Inject;
+import timber.log.Timber;
 import vn.tale.architecture.App;
 import vn.tale.architecture.R;
 import vn.tale.architecture.R2;
-import vn.tale.architecture.common.base.ReduxERActivity;
+import vn.tale.architecture.common.base.RvvmActivity;
 import vn.tale.architecture.common.dagger.DaggerComponentFactory;
-import vn.tale.architecture.common.reduxer.Store;
+import vn.tale.architecture.common.redux.Store;
 import vn.tale.architecture.common.util.ImageLoader;
 import vn.tale.architecture.common.util.InfiniteScrollListener;
 import vn.tale.architecture.model.Constants;
@@ -32,10 +31,11 @@ import vn.tiki.noadapter2.OnlyAdapter;
  * Created by Giang Nguyen on 3/27/17.
  */
 
-public class TopRepoListActivity extends ReduxERActivity<TopRepoListComponent, TopRepoListState> {
+public class TopRepoListActivity extends RvvmActivity<TopRepoListComponent, TopRepoListState> {
 
   @Inject ImageLoader imageLoader;
   @Inject Store<TopRepoListState> store;
+  @Inject TopRepoListViewModel viewModel;
 
   @BindView(R2.id.rvRepoList) RecyclerView rvRepoList;
   @BindView(R2.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
@@ -68,35 +68,13 @@ public class TopRepoListActivity extends ReduxERActivity<TopRepoListComponent, T
     super.onStart();
     store.dispatch(LoadTopRepoAction.LOAD);
 
-    final Observable<TopRepoListState> state$ = store.state$()
-        .observeOn(AndroidSchedulers.mainThread());
-
-    final Observable<TopRepoListState> loading$ = state$
-        .filter(TopRepoListState::loading);
-
-    final Observable<TopRepoListState> refreshing$ = state$
-        .filter(TopRepoListState::refreshing);
-
-    final Observable<Throwable> loadError$ = state$
-        .filter(state -> state.loadError() != null)
-        .map(TopRepoListState::loadError);
-
-    final Observable<Throwable> refreshError$ = state$
-        .filter(state -> state.refreshError() != null)
-        .map(TopRepoListState::refreshError);
-
-    final Observable<List<Repo>> content$ = store.state$()
-        .filter(state -> !state.loading()
-            && !state.refreshing()
-            && state.loadError() == null
-            && state.refreshError() == null)
-        .map(TopRepoListState::content);
-
-    disposeOnStop(loading$.subscribe(ignored -> renderLoading()));
-    disposeOnStop(refreshing$.subscribe(ignored -> renderRefreshing()));
-    disposeOnStop(loadError$.subscribe(this::renderLoadError));
-    disposeOnStop(refreshError$.subscribe(this::renderRefreshError));
-    disposeOnStop(content$.subscribe(this::renderContent));
+    disposeOnStop(viewModel.loading$().subscribe(ignored -> renderLoading()));
+    disposeOnStop(viewModel.refreshing$().subscribe(ignored -> renderRefreshing()));
+    disposeOnStop(viewModel.loadingMore$().subscribe(ignored -> renderLoadingMore()));
+    disposeOnStop(viewModel.loadError$().subscribe(this::renderLoadError));
+    disposeOnStop(viewModel.loadMoreError$().subscribe(this::renderLoadMoreError));
+    disposeOnStop(viewModel.refreshError$().subscribe(this::renderRefreshError));
+    disposeOnStop(viewModel.content$().subscribe(this::renderContent));
   }
 
   private void setupProductListView() {
@@ -143,6 +121,11 @@ public class TopRepoListActivity extends ReduxERActivity<TopRepoListComponent, T
         .build();
   }
 
+  private void renderLoadMoreError(Throwable error) {
+    swipeRefreshLayout.setRefreshing(false);
+    Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
+  }
+
   private void renderRefreshError(Throwable error) {
     swipeRefreshLayout.setRefreshing(false);
     Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -153,6 +136,10 @@ public class TopRepoListActivity extends ReduxERActivity<TopRepoListComponent, T
     if (errorSnackbar != null) {
       errorSnackbar.dismiss();
     }
+  }
+
+  private void renderLoadingMore() {
+    Timber.d("renderLoadingMore");
   }
 
   private void renderContent(List<Repo> repoList) {

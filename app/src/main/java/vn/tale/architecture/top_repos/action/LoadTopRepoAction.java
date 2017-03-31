@@ -1,6 +1,6 @@
 package vn.tale.architecture.top_repos.action;
 
-import vn.tale.architecture.common.reduxer.Action;
+import vn.tale.architecture.common.redux.Action;
 
 /**
  * Created by Giang Nguyen on 3/27/17.

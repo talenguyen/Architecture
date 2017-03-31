@@ -2,10 +2,10 @@ package vn.tale.architecture.top_repos.effect;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
-import vn.tale.architecture.common.reduxer.Action;
-import vn.tale.architecture.common.reduxer.Function0;
-import vn.tale.architecture.common.reduxer.Result;
-import vn.tale.architecture.common.reduxer.Effect;
+import vn.tale.architecture.common.redux.Action;
+import vn.tale.architecture.common.redux.Function0;
+import vn.tale.architecture.common.redux.Result;
+import vn.tale.architecture.common.redux.Effect;
 import vn.tale.architecture.model.manager.RepoModel;
 import vn.tale.architecture.top_repos.TopRepoListState;
 import vn.tale.architecture.top_repos.action.LoadTopRepoAction;
